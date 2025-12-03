@@ -1,0 +1,34 @@
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Model files (too large for GitHub)
+trained_model/
+*.bin
+*.safetensors
+
+# Output files
+test_results.txt
+
+# HuggingFace cache
+.cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
