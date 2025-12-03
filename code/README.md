@@ -25,6 +25,20 @@ Fine-tuned LLaMA-3 8B model for Indian cultural context and Christian-Hindu dial
 5. Click "Generate" and **COPY THE TOKEN**
 6. Accept LLaMA 3 license at: [https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct)
 
+## Git Setup (if needed)
+
+Before starting, verify Git is installed:
+```cmd
+git --version
+```
+
+If Git is not found:
+1. Download from [https://git-scm.com/download/win](https://git-scm.com/download/win)
+2. Run installer (requires admin access)
+3. Check "Add Git to PATH" during installation
+4. Restart Command Prompt
+5. Verify: `git --version`
+
 ## Quick Start
 
 ### Step 1: Clone Repository
