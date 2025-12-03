@@ -13,10 +13,14 @@ if %errorlevel% neq 0 (
 )
 
 echo Step 1: Checking Python Version
-python -c "import sys; v=sys.version_info; exit(0 if v.major==3 and v.minor>=10 else 1)"
+python -c "import sys; v=sys.version_info; exit(0 if v.major==3 and 10<=v.minor<=12 else 1)"
 if %errorlevel% neq 0 (
-    echo ERROR: Python 3.10 or higher is required
+    echo ERROR: Python 3.10, 3.11, or 3.12 is required
+    echo Your version:
     python --version
+    echo.
+    echo PyTorch does not yet support Python 3.13+
+    echo Please install Python 3.11 from: https://www.python.org/downloads/release/python-3119/
     pause
     exit /b 1
 )

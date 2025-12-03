@@ -16,8 +16,6 @@ Fine-tuned LLaMA-3 8B model for Indian cultural context and Christian-Hindu dial
 
 ## Pre-Setup: Get HuggingFace Token
 
-**IMPORTANT: Complete this BEFORE starting**
-
 1. Create account at [https://huggingface.co/join](https://huggingface.co/join)
 2. Go to [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
 3. Click "New token"
@@ -25,7 +23,18 @@ Fine-tuned LLaMA-3 8B model for Indian cultural context and Christian-Hindu dial
 5. Click "Generate" and **COPY THE TOKEN**
 6. Accept LLaMA 3 license at: [https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct)
 
-## Git Setup (if needed)
+### 1. Install Python 3.11
+
+**IMPORTANT**: Python 3.13+ is not yet supported by PyTorch.
+
+1. Download Python 3.11.9: [https://www.python.org/downloads/release/python-3119/](https://www.python.org/downloads/release/python-3119/)
+2. Choose "Windows installer (64-bit)"
+3. Run installer
+4. **Check "Add Python to PATH"** during installation
+5. Restart Command Prompt
+6. Verify: `python --version` should show 3.11.x
+
+## 2. Git Setup (if needed)
 
 Before starting, verify Git is installed:
 ```cmd
