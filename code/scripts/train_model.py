@@ -92,90 +92,35 @@ tokenizer.padding_side = "right"
 print("Tokenizer loaded successfully")
 
 print("\n" + "="*80)
-print("Step 3: Detecting GPU and Configuring Memory")
+print("Step 3: Detecting GPU")
 print("="*80)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using device: {device}")
-
-import platform
-is_windows = platform.system() == "Windows"
 
 if device == "cuda":
     gpu_memory = torch.cuda.get_device_properties(0).total_memory / 1024**3
     gpu_name = torch.cuda.get_device_name(0)
     print(f"GPU: {gpu_name}")
     print(f"Total GPU Memory: {gpu_memory:.1f} GB")
-    print(f"Operating System: {platform.system()}")
     
-    if is_windows:
-        print("\nNote: 8-bit loading disabled on Windows due to bitsandbytes compatibility")
-        print("Using 16-bit precision with aggressive memory optimizations")
-        use_8bit = False
-        
-        if gpu_memory < 8:
-            print("\nWARNING: GPU has less than 8GB memory")
-            print("Training will use maximum memory optimizations")
-            batch_size = 1
-            grad_accum = 32
-            max_length = 256
-        elif gpu_memory < 16:
-            print("\nUsing optimized settings for 6-16GB GPU")
-            batch_size = 1
-            grad_accum = 32
-            max_length = 384
-        else:
-            print("\nUsing standard settings")
-            batch_size = 2
-            grad_accum = 16
-            max_length = 512
-    else:
-        if gpu_memory < 8:
-            print("\nWARNING: GPU has less than 8GB memory")
-            response = input("Continue anyway? (yes/no): ")
-            if response.lower() != "yes":
-                print("Training cancelled.")
-                sys.exit(0)
-            use_8bit = True
-            batch_size = 1
-            grad_accum = 32
-            max_length = 256
-        elif gpu_memory < 16:
-            print("\nUsing 8-bit quantization for 6-16GB GPU")
-            use_8bit = True
-            batch_size = 1
-            grad_accum = 32
-            max_length = 384
-        elif gpu_memory < 24:
-            print("\nUsing standard settings for 16-24GB GPU")
-            use_8bit = False
-            batch_size = 2
-            grad_accum = 16
-            max_length = 512
-        else:
-            print("\nUsing optimal settings for 24GB+ GPU")
-            use_8bit = False
-            batch_size = 4
-            grad_accum = 8
-            max_length = 512
-    
-    print(f"\nConfiguration:")
-    print(f"  Batch size: {batch_size}")
-    print(f"  Gradient accumulation: {grad_accum}")
-    print(f"  Max sequence length: {max_length}")
-    print(f"  Effective batch size: {batch_size * grad_accum}")
-    print(f"  8-bit loading: {use_8bit}")
-else:
-    print("\nWARNING: No GPU detected. Training will be very slow.")
-    print("Estimated time: 24-48 hours")
-    response = input("Continue anyway? (yes/no): ")
-    if response.lower() != "yes":
-        print("Training cancelled.")
-        sys.exit(0)
-    use_8bit = False
-    batch_size = 1
-    grad_accum = 32
-    max_length = 256
+    if gpu_memory < 20:
+        print("\nWARNING: GPU has less than 20GB memory")
+        print("Training will use reduced batch size and sequence length")
+        response = input("Continue anyway? (yes/no): ")
+        if response.lower() != "yes":
+            print("Training cancelled.")
+            sys.exit(0)
+
+batch_size = 1
+grad_accum = 32
+max_length = 384
+
+print(f"\nTraining Configuration:")
+print(f"  Batch size: {batch_size}")
+print(f"  Gradient accumulation: {grad_accum}")
+print(f"  Max sequence length: {max_length}")
+print(f"  Effective batch size: {batch_size * grad_accum}")
 
 print("\n" + "="*80)
 print("Step 4: Preparing Datasets")
@@ -220,21 +165,12 @@ print("Step 5: Loading Base Model")
 print("="*80)
 print("This may take several minutes...")
 
-if use_8bit:
-    print("Loading model in 8-bit mode to save memory...")
-    model = AutoModelForCausalLM.from_pretrained(
-        MODEL_NAME,
-        device_map="auto",
-        load_in_8bit=True,
-        low_cpu_mem_usage=True
-    )
-else:
-    model = AutoModelForCausalLM.from_pretrained(
-        MODEL_NAME,
-        device_map="auto",
-        torch_dtype=torch.float16 if device == "cuda" else torch.float32,
-        low_cpu_mem_usage=True
-    )
+model = AutoModelForCausalLM.from_pretrained(
+    MODEL_NAME,
+    device_map="auto",
+    torch_dtype=torch.float16 if device == "cuda" else torch.float32,
+    low_cpu_mem_usage=True
+)
 
 model.gradient_checkpointing_enable()
 print("Base model loaded successfully")
