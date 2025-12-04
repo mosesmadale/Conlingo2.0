@@ -107,6 +107,16 @@ print("Environment setup complete!")
 print("=" * 60)
 PYTHON_CHECK
 
+# Auto-login to HuggingFace with environment variable
+echo ""
+if [ ! -z "$HF_TOKEN" ]; then
+    echo "Logging into HuggingFace..."
+    echo "$HF_TOKEN" | python3 -c "from huggingface_hub import login; import sys; login(token=sys.stdin.read().strip())"
+    echo "HuggingFace login complete"
+else
+    echo "Warning: HF_TOKEN not set. You'll need to login manually with: huggingface-cli login"
+fi
+
 deactivate
 
 echo ""
@@ -115,7 +125,6 @@ echo "Setup completed: $(date)"
 echo "========================================"
 echo ""
 echo "Next steps:"
-echo "1. Login to HuggingFace: huggingface-cli login"
-echo "2. Accept LLaMA-3 license: https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct"
-echo "3. Run training: sbatch train_titan.sh"
+echo "1. Run training: sbatch train_titan.sh"
+echo "2. After training: sbatch test_titan.sh"
 echo ""

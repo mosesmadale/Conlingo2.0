@@ -1,223 +1,147 @@
-# ConLingo 2.0 - Cultural AI Model Training
+# ConLingo 2.0 - Titan Deployment Guide
 
-Fine-tuned LLaMA-3 8B model for Indian cultural context and Christian-Hindu dialogue.
+Fine-tuned LLaMA-3 8B model for Indian cultural awareness in Christian contexts.
 
-## System Requirements
+## Prerequisites
 
-### Hardware
-- NVIDIA GPU with 24GB+ VRAM (RTX 3090, RTX 4090, or A5000+)
-- 32GB+ RAM recommended
-- 50GB free disk space
+- Titan cluster access with GPU partition
+- HuggingFace account with LLaMA-3 access approval
 
-### Software
-- Windows 10/11
-- Python 3.10 or 3.11
-- Git
+## Setup Instructions
 
-## Pre-Setup: Get HuggingFace Token
+### Step 1: Get HuggingFace Access
 
-1. Create account at [https://huggingface.co/join](https://huggingface.co/join)
-2. Go to [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
-3. Click "New token"
-4. Name: "conlingo-demo", Type: "Read"
-5. Click "Generate" and **COPY THE TOKEN**
-6. Accept LLaMA 3 license at: [https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct)
+1. Create account at https://huggingface.co
+2. Request access to LLaMA-3: https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct
+3. Wait for approval email (usually within hours)
+4. Get your access token: https://huggingface.co/settings/tokens
 
-### 1. Install Python 3.11
-
-**IMPORTANT**: Python 3.13+ is not yet supported by PyTorch.
-
-1. Download Python 3.11.9: [https://www.python.org/downloads/release/python-3119/](https://www.python.org/downloads/release/python-3119/)
-2. Choose "Windows installer (64-bit)"
-3. Run installer
-4. **Check "Add Python to PATH"** during installation
-5. Restart Command Prompt
-6. Verify: `python --version` should show 3.11.x
-
-## 2. Git Setup (if needed)
-
-Before starting, verify Git is installed:
-```cmd
-git --version
-```
-
-If Git is not found:
-1. Download from [https://git-scm.com/download/win](https://git-scm.com/download/win)
-2. Run installer (requires admin access)
-3. Check "Add Git to PATH" during installation
-4. Restart Command Prompt
-5. Verify: `git --version`
-
-## Quick Start
-
-### Step 1: Clone Repository
-
-Open Command Prompt:
+### Step 2: Clone Repository
 ```bash
-cd Desktop
+module load git
 git clone https://github.com/mosesmadale/Conlingo2.0.git
-cd Conlingo2.0\code
+cd Conlingo2.0/code
 ```
 
-### Step 2: Run Setup
+### Step 3: Setup Environment
+
+Set your HuggingFace token (replace with your actual token):
 ```bash
-setup_windows.bat
+export HF_TOKEN="<paste your token here>"
 ```
 
-What this does:
-- Checks Python version (requires 3.10+)
-- Creates virtual environment
-- Installs dependencies (10-15 minutes)
-- Prompts for HuggingFace token
-- Authenticates with HuggingFace
-
-When prompted, paste your HuggingFace token.
-
-### Step 3: Train Model
+Run setup (takes 10-15 minutes):
 ```bash
-train.bat
+sbatch --export=HF_TOKEN setup_titan.sh
 ```
 
-What this does:
-- Loads 2,500 training examples from 5 datasets
-- Downloads LLaMA-3 8B base model (16GB)
-- Trains with LoRA fine-tuning for 3 epochs
-
-**Expected time**: 1-2 hours on GPU
-
-You'll see:
-- Training loss decreasing
-- Progress bars
-- Evaluation metrics every 100 steps
-
-### Step 4: Test Model
+Monitor setup progress:
 ```bash
-test.bat
+tail -f logs/setup_*.out
 ```
 
-What this does:
-- Loads trained model
-- Tests with 3 questions about Indian Christianity
-- Generates cultural responses
-- Saves to `test_results.txt`
-- Opens results in Notepad
+Wait until you see "Setup completed" message.
 
-**Expected time**: 2-3 minutes
+### Step 4: Run Training
 
-## Project Structure
-```
-Conlingo2.0/
-├── code/
-│   ├── data/                    # Training datasets (5 JSONL files)
-│   │   ├── youtube.jsonl
-│   │   ├── ted_talks.jsonl
-│   │   ├── wikipedia.jsonl
-│   │   ├── constitution.jsonl
-│   │   └── superstitions.jsonl
-│   ├── scripts/
-│   │   ├── train_model.py       # Training implementation
-│   │   └── test_model.py        # Testing implementation
-│   ├── setup_windows.bat        # Setup script
-│   ├── train.bat                # Training launcher
-│   ├── test.bat                 # Testing launcher
-│   └── requirements.txt         # Python dependencies
-└── README.md                    # This file
+Start training (takes 1-2 hours on 24GB GPU):
+```bash
+sbatch train_titan.sh
 ```
 
-## Training Data Sources
+Monitor training progress:
+```bash
+tail -f logs/train_*.out
+```
 
-1. **YouTube Transcripts** (512 examples) - Indian cultural content
-2. **TED Talks** (596 examples) - Indian speakers and topics
-3. **Wikipedia** (500 examples) - Indian culture and history
-4. **Constitution** (500 examples) - Indian legal and constitutional knowledge
-5. **Superstitions** (923 examples) - Regional beliefs and practices
+Training output will be saved to: `trained_model/final_model/`
 
-**Total**: 2,531 training examples covering diverse Indian cultural contexts
+### Step 5: Run Testing
+
+After training completes:
+```bash
+sbatch test_titan.sh
+```
+
+View results:
+```bash
+cat results/test_output.txt
+```
+
+## Directory Structure
+```
+code/
+├── setup_titan.sh          # Environment setup script
+├── train_titan.sh          # Training script
+├── test_titan.sh           # Testing script
+├── requirements.txt        # Python dependencies
+├── data/                   # Training data (5 JSONL files, 3MB total)
+├── scripts/
+│   ├── train_model.py      # Training implementation
+│   └── test_model.py       # Testing implementation
+├── logs/                   # Job outputs (auto-created)
+├── trained_model/          # Model checkpoints (auto-created)
+└── results/                # Test outputs (auto-created)
+```
 
 ## Test Questions
 
-The model is tested with three questions about Christianity in Indian context:
+The model answers 3 culturally-sensitive questions:
 
 1. What sensitivities should pastors consider when mentioning Hindu deities in Christmas homilies?
 2. How can churches ensure caste-neutral seating and participation during worship?
 3. Why might some Christians still use caste surnames, and how should this be discussed?
 
-Expected: ~100 word culturally-aware responses for each question.
-
 ## Troubleshooting
 
-### Python not found
-- Install from [python.org](https://python.org)
-- Check "Add Python to PATH" during installation
-- Restart Command Prompt after installation
+### Setup fails
 
-### GPU not detected
-- Verify with: `nvidia-smi` in Command Prompt
-- Install drivers from [nvidia.com](https://nvidia.com)
-- Training will fall back to CPU (24+ hours, not recommended)
+Check error log:
+```bash
+cat logs/setup_*.err
+```
 
-### HuggingFace authentication failed
-- Verify token is correct
-- Confirm you accepted LLaMA 3 license
-- Token must have READ permission
-- Try creating new token
+Common issues:
+- HF_TOKEN not set: Re-run with `export HF_TOKEN="your_token"` and `sbatch --export=HF_TOKEN setup_titan.sh`
+- No disk space: Check with `df -h ~`
 
-### Out of memory during training
-- Close other applications
-- Edit `code/scripts/train_model.py` line 143
-- Change `per_device_train_batch_size=2` to `=1`
+### Training fails
 
-### Slow model download
-- LLaMA-3 is 16GB
-- First download: 20-30 minutes
-- Subsequent runs use cached version
+Check if logged into HuggingFace:
+```bash
+module load Python/3.12.3-GCCcore-13.3.0
+source ../venv/bin/activate
+python -c "from huggingface_hub import whoami; print(whoami())"
+deactivate
+```
 
-## Technical Details
+Check error log:
+```bash
+cat logs/train_*.err
+```
 
-### Model Architecture
-- Base: LLaMA-3 8B Instruct
-- Fine-tuning: LoRA (Low-Rank Adaptation)
-- Trainable parameters: 0.17% of total
-- Training epochs: 3
-- Learning rate: 2e-4
+### Out of memory
 
-### Training Configuration
-- Batch size: 2 per device
-- Gradient accumulation: 16 steps
-- Effective batch size: 32
-- Max sequence length: 512 tokens
-- Optimizer: AdamW with cosine scheduling
+Training requires 24GB GPU. If using smaller GPU, edit `scripts/train_model.py`:
+- Reduce `per_device_train_batch_size` from 2 to 1
+- Reduce `max_length` from 512 to 384
 
-### Hardware Usage
-- GPU VRAM: ~20GB during training
-- Disk space: ~35GB (model + cache)
-- Training time: 1-2 hours (GPU), 24+ hours (CPU)
+## Configuration
 
-## Output Files
+Edit `scripts/train_model.py` to modify:
+- `num_train_epochs` (default: 3)
+- `per_device_train_batch_size` (default: 2)
+- `learning_rate` (default: 2e-4)
 
-After successful run:
-- `trained_model/final_model/` - Fine-tuned model weights
-- `test_results.txt` - Test outputs with 3 questions answered
+## Dataset Information
 
-## Demo Checklist
+Training uses 5 datasets (3,031 total examples):
+- YouTube transcripts: 512 examples (16.9%)
+- TED Talks: 596 examples (19.7%)
+- Wikipedia articles: 500 examples (16.5%)
+- Indian Constitution: 500 examples (16.5%)
+- Cultural superstitions: 923 examples (30.5%)
 
-For running this demo:
+## Support
 
-- [ ] Python 3.10+ installed
-- [ ] Git installed
-- [ ] HuggingFace account created
-- [ ] HuggingFace token obtained
-- [ ] LLaMA 3 license accepted
-- [ ] GPU drivers installed
-- [ ] 50GB free disk space
-- [ ] Estimated total time: 2-3 hours
-
-## Authors
-
-Moses Madale - Oral Roberts University  
-Email: mmadale4@oru.edu
-
-## License
-
-This project uses LLaMA-3 which requires accepting Meta's license agreement.
-Training data compiled from public sources for educational purposes.
+For issues, contact: mmadale4@oru.edu
