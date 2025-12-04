@@ -167,7 +167,6 @@ print("This may take several minutes...")
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
-    device_map="auto",
     torch_dtype=torch.float16 if device == "cuda" else torch.float32,
     low_cpu_mem_usage=True,
     load_in_8bit=False,
