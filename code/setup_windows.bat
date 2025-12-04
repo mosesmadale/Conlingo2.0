@@ -64,10 +64,24 @@ echo pip upgraded successfully
 
 echo.
 echo ================================================================================
-echo Step 5: Installing Dependencies
+echo Step 5: Installing PyTorch with CUDA Support
+echo ================================================================================
+echo Checking for NVIDIA GPU...
+nvidia-smi >nul 2>&1
+if %errorlevel% equ 0 (
+    echo NVIDIA GPU detected, installing PyTorch with CUDA 11.8
+    pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu118
+) else (
+    echo No NVIDIA GPU detected, installing CPU-only PyTorch
+    pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2
+)
+
+echo.
+echo ================================================================================
+echo Step 6: Installing Other Dependencies
 echo ================================================================================
 echo This may take 5-10 minutes...
-pip install -r requirements.txt
+pip install transformers==4.36.2 accelerate==0.25.0 peft==0.7.1 datasets==2.15.0 scikit-learn==1.3.2 tqdm==4.66.1 huggingface-hub==0.20.2
 if %errorlevel% neq 0 (
     echo ERROR: Failed to install dependencies
     pause
@@ -77,7 +91,7 @@ echo Dependencies installed successfully
 
 echo.
 echo ================================================================================
-echo Step 6: Setting up HuggingFace Authentication
+echo Step 7: Setting up HuggingFace Authentication
 echo ================================================================================
 echo.
 echo You need a HuggingFace token to download the LLaMA model.

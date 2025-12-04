@@ -92,7 +92,69 @@ tokenizer.padding_side = "right"
 print("Tokenizer loaded successfully")
 
 print("\n" + "="*80)
-print("Step 3: Preparing Datasets")
+print("Step 3: Detecting GPU and Configuring Memory")
+print("="*80)
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"Using device: {device}")
+
+if device == "cuda":
+    gpu_memory = torch.cuda.get_device_properties(0).total_memory / 1024**3
+    gpu_name = torch.cuda.get_device_name(0)
+    print(f"GPU: {gpu_name}")
+    print(f"Total GPU Memory: {gpu_memory:.1f} GB")
+    
+    if gpu_memory < 8:
+        print("\nWARNING: GPU has less than 8GB memory")
+        print("Training may fail or be extremely slow")
+        response = input("Continue anyway? (yes/no): ")
+        if response.lower() != "yes":
+            print("Training cancelled.")
+            sys.exit(0)
+        use_8bit = True
+        batch_size = 1
+        grad_accum = 32
+        max_length = 256
+        print("Using aggressive memory optimizations")
+    elif gpu_memory < 16:
+        print("\nUsing 8-bit quantization for 6-16GB GPU")
+        use_8bit = True
+        batch_size = 1
+        grad_accum = 32
+        max_length = 384
+    elif gpu_memory < 24:
+        print("\nUsing standard settings for 16-24GB GPU")
+        use_8bit = False
+        batch_size = 2
+        grad_accum = 16
+        max_length = 512
+    else:
+        print("\nUsing optimal settings for 24GB+ GPU")
+        use_8bit = False
+        batch_size = 4
+        grad_accum = 8
+        max_length = 512
+    
+    print(f"Configuration:")
+    print(f"  Batch size: {batch_size}")
+    print(f"  Gradient accumulation: {grad_accum}")
+    print(f"  Max sequence length: {max_length}")
+    print(f"  Effective batch size: {batch_size * grad_accum}")
+    print(f"  8-bit loading: {use_8bit}")
+else:
+    print("\nWARNING: No GPU detected. Training will be very slow.")
+    print("Estimated time: 24-48 hours")
+    response = input("Continue anyway? (yes/no): ")
+    if response.lower() != "yes":
+        print("Training cancelled.")
+        sys.exit(0)
+    use_8bit = False
+    batch_size = 1
+    grad_accum = 32
+    max_length = 256
+
+print("\n" + "="*80)
+print("Step 4: Preparing Datasets")
 print("="*80)
 
 def format_instruction(example):
@@ -104,7 +166,7 @@ def tokenize_function(example):
     tokenized = tokenizer(
         text,
         truncation=True,
-        max_length=512,
+        max_length=max_length,
         padding="max_length",
         return_tensors=None
     )
@@ -130,33 +192,31 @@ print(f"Training dataset size: {len(train_dataset)}")
 print(f"Validation dataset size: {len(val_dataset)}")
 
 print("\n" + "="*80)
-print("Step 4: Loading Base Model")
+print("Step 5: Loading Base Model")
 print("="*80)
 print("This may take several minutes...")
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-print(f"Using device: {device}")
-
-if device == "cpu":
-    print("\nWARNING: No GPU detected. Training will be very slow.")
-    print("Estimated time: 24-48 hours")
-    response = input("Continue anyway? (yes/no): ")
-    if response.lower() != "yes":
-        print("Training cancelled.")
-        sys.exit(0)
-
-model = AutoModelForCausalLM.from_pretrained(
-    MODEL_NAME,
-    device_map="auto",
-    torch_dtype=torch.float16 if device == "cuda" else torch.float32,
-    low_cpu_mem_usage=True
-)
+if use_8bit:
+    print("Loading model in 8-bit mode to save memory...")
+    model = AutoModelForCausalLM.from_pretrained(
+        MODEL_NAME,
+        device_map="auto",
+        load_in_8bit=True,
+        low_cpu_mem_usage=True
+    )
+else:
+    model = AutoModelForCausalLM.from_pretrained(
+        MODEL_NAME,
+        device_map="auto",
+        torch_dtype=torch.float16 if device == "cuda" else torch.float32,
+        low_cpu_mem_usage=True
+    )
 
 model.gradient_checkpointing_enable()
 print("Base model loaded successfully")
 
 print("\n" + "="*80)
-print("Step 5: Configuring LoRA")
+print("Step 6: Configuring LoRA")
 print("="*80)
 
 lora_config = LoraConfig(
@@ -177,18 +237,18 @@ print(f"Trainable parameters: {trainable_params:,} ({100*trainable_params/total_
 print(f"Total parameters: {total_params:,}")
 
 print("\n" + "="*80)
-print("Step 6: Setting Up Training")
+print("Step 7: Setting Up Training")
 print("="*80)
 
 training_args = TrainingArguments(
     output_dir=OUTPUT_DIR,
     num_train_epochs=3,
-    per_device_train_batch_size=2,
-    per_device_eval_batch_size=2,
-    gradient_accumulation_steps=16,
+    per_device_train_batch_size=batch_size,
+    per_device_eval_batch_size=batch_size,
+    gradient_accumulation_steps=grad_accum,
     learning_rate=2e-4,
     lr_scheduler_type="cosine",
-    warmup_steps=100,
+    warmup_steps=50,
     logging_steps=10,
     save_steps=100,
     eval_steps=100,
@@ -197,7 +257,7 @@ training_args = TrainingArguments(
     load_best_model_at_end=True,
     metric_for_best_model="eval_loss",
     greater_is_better=False,
-    fp16=True if device == "cuda" else False,
+    fp16=True if device == "cuda" and not use_8bit else False,
     report_to="none",
     save_total_limit=2,
     remove_unused_columns=False,
@@ -207,6 +267,7 @@ training_args = TrainingArguments(
 print("Training configuration:")
 print(f"  Epochs: {training_args.num_train_epochs}")
 print(f"  Batch size: {training_args.per_device_train_batch_size}")
+print(f"  Gradient accumulation: {training_args.gradient_accumulation_steps}")
 print(f"  Learning rate: {training_args.learning_rate}")
 
 data_collator = DataCollatorForLanguageModeling(
@@ -223,9 +284,15 @@ trainer = Trainer(
 )
 
 print("\n" + "="*80)
-print("Step 7: Starting Training")
+print("Step 8: Starting Training")
 print("="*80)
-print("Training will take approximately 1-2 hours on GPU")
+if device == "cuda":
+    if gpu_memory < 16:
+        print("Training will take approximately 3-4 hours on this GPU (8-bit mode)")
+    else:
+        print("Training will take approximately 1-2 hours on this GPU")
+else:
+    print("Training will take 24-48 hours on CPU")
 print("Progress will be displayed below...")
 print("="*80 + "\n")
 
@@ -236,7 +303,7 @@ print("Training Complete!")
 print("="*80)
 
 print("\n" + "="*80)
-print("Step 8: Saving Model")
+print("Step 9: Saving Model")
 print("="*80)
 
 final_model_dir = os.path.join(OUTPUT_DIR, "final_model")
@@ -246,7 +313,7 @@ tokenizer.save_pretrained(final_model_dir)
 print(f"Model saved to: {final_model_dir}")
 
 print("\n" + "="*80)
-print("Step 9: Final Evaluation")
+print("Step 10: Final Evaluation")
 print("="*80)
 
 eval_results = trainer.evaluate()
