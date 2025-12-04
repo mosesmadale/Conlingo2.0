@@ -145,3 +145,9 @@ Training uses 5 datasets (3,031 total examples):
 ## Support
 
 For issues, contact: mmadale4@oru.edu
+
+## References
+
+Claude Sonnet 4.5
+- Used Claude Sonnet 4.5 LLM to assist with troubleshooting code errors.
+- Used Claude Sonnet 4.5 LLM to assist with optimizing the model training time.
