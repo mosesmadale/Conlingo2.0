@@ -169,7 +169,9 @@ model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
     device_map="auto",
     torch_dtype=torch.float16 if device == "cuda" else torch.float32,
-    low_cpu_mem_usage=True
+    low_cpu_mem_usage=True,
+    load_in_8bit=False,
+    load_in_4bit=False
 )
 
 model.gradient_checkpointing_enable()
@@ -217,7 +219,7 @@ training_args = TrainingArguments(
     load_best_model_at_end=True,
     metric_for_best_model="eval_loss",
     greater_is_better=False,
-    fp16=True if device == "cuda" and not use_8bit else False,
+    fp16=True if device == "cuda" else False,
     report_to="none",
     save_total_limit=2,
     remove_unused_columns=False,
@@ -248,7 +250,7 @@ print("Step 8: Starting Training")
 print("="*80)
 if device == "cuda":
     if gpu_memory < 16:
-        print("Training will take approximately 3-4 hours on this GPU (8-bit mode)")
+        print("Training will take approximately 3-4 hours on this GPU")
     else:
         print("Training will take approximately 1-2 hours on this GPU")
 else:
