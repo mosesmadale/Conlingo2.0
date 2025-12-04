@@ -18,7 +18,7 @@ echo "Node: $SLURM_NODELIST"
 echo "Start: $(date)"
 echo ""
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$SLURM_SUBMIT_DIR"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 VENV_DIR="${PROJECT_ROOT}/venv"
 

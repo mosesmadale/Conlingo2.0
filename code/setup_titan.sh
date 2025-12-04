@@ -19,7 +19,7 @@ echo "Start: $(date)"
 echo ""
 
 # Get the directory where this script is located
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$SLURM_SUBMIT_DIR"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 VENV_DIR="${PROJECT_ROOT}/venv"
 
