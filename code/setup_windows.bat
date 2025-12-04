@@ -88,8 +88,9 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
+echo.
 echo Installing bitsandbytes for 8-bit training support...
-pip install bitsandbytes
+pip install bitsandbytes==0.41.0
 if %errorlevel% neq 0 (
     echo WARNING: bitsandbytes installation failed
     echo 8-bit training may not work, but standard training should still function
