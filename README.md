@@ -5,5 +5,9 @@ The code folder in this repo consists of all our code that was used to run on ti
 
 
 Team
-Team Leader**: Rohan Aby
-Team Members**: Moses Madale, Suwilanji Mwanza, William Richards
+Team Leader: Rohan Aby
+Team Members: Moses Madale, Suwilanji Mwanza, William Richards
+
+Content description:
+Human Results: consists of the CSI scoring done by a human subject. 
+Model Results: consists of the responses from the different models. 
