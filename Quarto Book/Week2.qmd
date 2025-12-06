@@ -1,0 +1,665 @@
+# Week 2: Data Cleaning & Pipeline Setup
+
+## Overview
+The team expanded the dataset, finalized the fine-tuning pipeline, completed baseline and human evaluation preparations, and built initial tools and documentation to support quality checks and research development.
+
+## Rohan Aby Deliverables
+ **AI assistance: ChatGPT was used to develop the 200-question comprehensive test dataset (accessed Nov, 2025).**
+ 
+### 200-question comprehensive test dataset
+
+The dataset was expanded to 100 more questions using AI. The questions were divided into
+qusetions on biblical contextualization (25 questions), Cultural Sensitivity (25 questions), Controversial Topics (i.e. cow slaughter, forced conversion) (25 Questions), Regional Variations (25 Questions) 
+
+###  RAG baseline evaluation complete (CSI scoring) 
+
+Rohan selected 20 questions from the list and scored the responses based on the CSI frameowork. He scored the original model ([Download the results of original model's responses](../Appendix/RohanAby/Conlingo_20_question_answers.pdf)) vs the fine tuned model ([Download the results of fine tuned responses](../Appendix/RohanAby/20_Answers_to_Will's_Questions_Moses.pdf)). The result was that the orignal model performed better than the fine tuned model as can be seen in the image below. The original model had a score of 99.2 while the fine tuned model scored 85.55. The responses from the original model was more detailed and contained more information while the fine tuned model was short and did not contain much information. The scoring of the models can be seen below. 
+![CSI Score Result](Appendix/RohanAby/CSIScore_result.png)
+Fig. 1: CSI Score visualization
+
+
+## William Richards Deliverables
+
+Williams task was to validate the data by creating visualizations for each set of criteria to ensure the data aligned with them for fine-tuning. These criteria included Cultural Accuracy, Biases or Stereotyping, and Tone or Respect. This was the most time-intensive deliverable, as he reviewed each dataset manually to determine which entries were suitable. After completing his review, he ran the data through the then-new ChatGPT 5.1, which confirmed 95% of his validations.
+
+In addition, he worked on establishing the future direction for the project by creating a simple outline for the research paper that would ultimately serve as the final report.
+
+Data Quality Validation
+
+```{r , eval=FALSE}
+library(tidyverse)
+library(rstudioapi)
+
+data_path <- "Appendix/WilliamRichards/data/conlingo_week2_200_labeled.csv"
+tb_plots <- read.csv(data_path)
+glimpse(tb_plots)
+
+# Cultural Accuracy Plot: How accurate is the data to the respective culture?
+#   Scaling: 0 = Not at all
+#            1 = Simple references
+#            2 = Highly relevant
+ggplot(tb_plots, aes(x = "Cultural Accuracy", y = cultural_accuracy, color = keep)) +
+  geom_jitter(width = 0.15, alpha = 0.7) +
+  coord_cartesian(ylim = c(-0.1, 2.1)) +
+  labs(
+    title = "Cultural Accuracy (0–2)",
+    x = "",
+    y = "Score",
+    color = "Keep"
+  ) +
+  theme_classic()
+
+# Bias / Stereotype Plot: Is than an element of bias or blatant stereotyping?
+#   Scaling: 0 = No
+#            1 = Yes
+stereo_plot <- ggplot(tb_plots, aes(x = "Stereotype", y = stereotype, color = keep)) +
+  geom_jitter(width = 0.15, alpha = 0.7) +
+  coord_cartesian(ylim = c(-0.1, 1.1)) +
+  labs(
+    title = "Bias / Stereotype Flag (0–1)",
+    x = "",
+    y = "Flag"
+  ) +
+  theme_classic()
+stereo_plot
+
+# Tone / Respect Plot: Does the data present itself respectfully?
+#   Scaling: 0 = Disrespectful
+#            1 = Neutral
+#            2 = Highly respectful
+tone_plot <- ggplot(tb_plots, aes(x = "Tone", y = tone, color = keep)) +
+  geom_jitter(width = 0.15, alpha = 0.7) +
+  coord_cartesian(ylim = c(-0.1, 2.1)) +
+  labs(
+    title = "Tone / Respect (0–2)",
+    x = "",
+    y = "Score"
+  ) +
+  theme_minimal()
+tone_plot
+```
+
+Cultural Accuracy Visualization:
+![Cultural Accuracy Visualization:](Appendix/WilliamRichards/Cultural_Plot.png){fig-align="center"}
+
+Bias / Stereotype Visualization:
+
+![Bias / Stereotype Visualization](Appendix/WilliamRichards/Stereotype_Plot.png){fig-align="center"}
+
+Tone / Respect Visualization:
+![Tone / Respect Visualization](Appendix/WilliamRichards/Tone_Plot.png){fig-align="center"}
+
+Research Paper Outline
+
+I. Introduction
+A. Problem: Cultural contextualization for biblical content
+B. Thesis
+
+II. Related Work
+A. RAG Systems
+B. Fine-tuning for Cultural tasks
+C. Indian NLP
+
+III. Methodologies
+
+A. Data Collection
+B. Model Architecture
+C. Evaluation
+
+IV. Results
+A. Comparison Introduction
+B. RAG vs. Fine-tuned
+
+V. Discussion
+A. When to use what approach?
+B. Post-execution reflection
+
+VI. Conclusion
+A. Thesis Restate
+B. Recommendations for OneHope
+
+
+## Suwilanji Mwanza Deliverables
+
+### Overview of the Week 2 Deliverable
+
+Week 2's Deliverable was to solidify the training datasets for the fine-tuning process and then begin the cleaning process. In addition, ensuring that any unethical data was removed.
+
+###  Week 2 Deliverables:
+
+1.  2,500 raw examples collected (cumulative with Week 1: 3,000 total)
+2.  Initial cleaning applied
+3.  Source distribution documented
+4.  Bias check on collected data
+
+###  What was Accomplished:
+
+###  1. Reaching out to the Reddit API
+
+This week, I focused on identifying quality data and what it entails. I reached out to Reddit to obtain its API key for more relevant data, as I await its response to see if it would still be possible to use its data. (Filled in a form).
+
+### 2. Finalize Data Sources
+
+I collected data from these 7 sources, all of which perform a specific role or fit into the buckets from last week. These data sets were collected primarily from Kaggle and the rest HuggingFace, or webpages.
+
+1.  IndicQuestionGeneration (hindu) (Source: AI4Bharat HuggingFace)
+2.  Regional Indian Superstitions & Beliefs (Source: Kaggle)
+3.  World Values Survey India (Source: WVS website)
+4.  Top Spotify Podcast Episodes (Updated Daily) India (Source: Kaggle)
+5.  Pew India Survey Dataset (Source: Pew Research Center)
+6.  Hinglish TOP Dataset (Source: Kaggle)
+7.  India News Headlines Dataset (Source: Kaggle)
+
+-   The **IndicQuestionGeneration** dataset has 1,078,297 rows. It is part of the IndicNLG Benchmark that consists of one of AI4Bharat's models. It is a large multilingual collection designed for Natural Language Generation (NLG) tasks and is in 11 Indic languages. It is formatted in Question Generation format, which means that when given a context and an answer, it aims to generate a question that leads to that answer. This was derived from the Stanford Question Answering Dataset (SQuAD). There are \~98,000 examples per language, totaling around 1.08 **million examples** across all 11 languages. This dataset would be useful for training and evaluating models that generate comprehension questions in Indian languages. This dataset would be easy to use because it is in a question-answer pair format.
+
+-   The **Regional Indian Superstitions & Beliefs** dataset captures regional superstitions and beliefs from all 28 states and 8 union territories of India, showcasing the fascinating and often lesser-known cultural fabric that shapes daily life across the country. It is split into 500+ training entries and 100+ testing entries, each representing a specific superstition or folk belief. It is a data set for developing AI assistants that understand regional nuances.
+
+-   The **World Values Survey – India, Wave 7 (2017–2022)**, is a nationally representative dataset that captures the evolving social, political, economic, and cultural values of Indian society. Conducted through face-to-face interviews across multiple regions and languages, it surveyed approximately **2,400 respondents** aged 18 and above. The dataset comprises nearly 400 variables, encompassing priorities in life (family, work, religion, and politics), child-rearing values, trust in institutions, gender roles, democracy, corruption, globalization, and religious beliefs.
+
+-   The **Top Spotify Podcast Episodes (Updated Daily)** India contains a daily snapshot of Spotify's top 200 podcast episodes for every country. It also includes detailed information about podcast episodes and shows from the Spotify API. Daily data collection began on 2025-10-11; additionally, some data is available from 2024-09-02 to 2024-10-23. This dataset will help take a different angle on culture by comparingpodcast popularity to understand cultural influences on podcast consumption. India is one of the regions.
+
+-   The **Pew India Survey Dataset** is the raw data from a large-scale, face-to-face survey of 29,999 Indian adults (ages 18 and older) conducted by the [Pew Research Center](https://www.pewresearch.org/dataset/india-survey-dataset/) across 26 states and three union territories between November 17, 2019, and March 23, 2020. Conducted in 17 languages using computer-assisted personal interviews (CAPI), the sample was designed with an oversampling strategy to capture a broad view of religious demographics, including interviews with 22,975 Hindus, 3,336 Muslims, 1,782 Sikhs, 1,011 Christians, 719 Buddhists, and 109 Jains. This dataset provides researchers with detailed information on a wide range of social attitudes and beliefs in India, specifically covering topics such as religious identity, beliefs, practices, nationalism, and tolerance in Indian society.
+
+-   The **Hinglish TOP Dataset** comprises a large (10K) human-annotated code-switched semantic parsing dataset, which contains 10,000 real examples of people speaking in Hinglish commands. Humans have manually labeled or "tagged" the computer-readable meaning for each one. Additionally, the 170K generated utterances using the CST5 augmentation technique introduced in the paper were utilized, which significantly expanded the dataset. To achieve this, researchers employed a special trick called **CST5** to create **170,000 new, synthetic** (computer-generated) Hinglish commands based on the existing data. Queries are derived from TOPv2, a multi-domain task-oriented semantic parsing dataset.
+
+-   The **India News Headlines Dataset** is a comprehensive historical archive of notable events in the Indian subcontinent from 2001 to Q2 2023, recorded in real-time by journalists in India. It contains approximately 3.8 million events published by The Times of India. There are 3,876,557 rows in the CSV. Due to the heavy daily volume (avg. 600 articles) over multiple years, this data offers a deep insight into Indian society, its priorities, events, issues, and talking points, and how they have unfolded over time.
+
+These seven sources will be used to train our data. However, because these sets combined are millions of data points, we will only use 6,000 of them to start. I will also be manually validating them as much as I can for any toxicity.
+
+In this instance, **toxicity** is defined as data that may be considered harmful or detrimental. Sexual, indecent behaviour, curse words, and the like.
+
+An **Excel sheet** with the following categories of data was collected and shared with the team.
+
+###  3. Distribution of Data
+
+After deciding on these datasets, due to the large amount of data in each, I had to narrow down the dataset sizes to ensure we have 6,000 high-quality examples to train our model. We can gather these examples by numbering each data point and doing a random sample, with the no. of examples as the goal.
+
+The breakdown of the datasets and their approximate number of examples are:
+
+| Subset                                             | No. of Examples |
+|----------------------------------------------------|-----------------|
+| IndicQuestionGeneration                            | 1000            |
+| Regional Indian Superstitions & Beliefs            | 660             |
+| World Values Survey India                          | 1000            |
+| Top Spotify Podcast Episodes (Updated Daily) India | 500             |
+| Pew India Survey Dataset                           | 1000            |
+| Hinglish TOP Dataset                               | 1000            |
+| India News Headlines Dataset                       | 840             |
+| **Total:**                                         | **6,000**       |
+
+This shows the distribution of our data set piece:
+
+![Titan GPU environment setup confirmation](img/week_2.png)
+
+The bottleneck in this process is that the examples must be handpicked.
+
+###  4. Cleaning Script
+
+The initial cleaning script will be better created. I integrated Claude into its development, so I can understand what automating that part looks like and the different functions. I will then create my own based on the final recommendation from Moses on how he wants the data to be structured.
+
+```{md}
+# Fine-Tuning Pipeline for ConLingo 2.0
+# 10/30/25
+# ETL Pipeline
+
+# Datasets included:
+# - India News Headlines Datasets 2001-01-01 ; End Date: 2023-06-30 (for example)
+
+"""
+Data Cleaning & Preprocessing Pipeline for Fine-tuning
+
+Steps:
+1. Load datasets
+2. Clean text (remove URLs, excessive punctuation, spam)
+3. Deduplicate (cosine similarity > 0.9)
+4. Flag toxic content (Detoxify)
+"""
+
+import os
+import re
+import string
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from detoxify import Detoxify
+from tqdm import tqdm
+
+# ---------------------------
+# CONFIGURATION
+# ---------------------------
+DATASETS = {
+    "IndicQuestionGeneration_hi": "path/to/IndicQuestionGeneration.csv",
+    "RegionalIndianSuperstitions": "path/to/RegionalIndianSuperstitions.csv",
+    "WorldValuesSurveyIndia": "path/to/WorldValuesSurveyIndia.csv",
+    "TopSpotifyPodcastEpisodes": "path/to/TopSpotifyPodcastEpisodes.csv",
+    "IndiaPewSurvey": "path/to/IndiaPewSurvey.csv",
+    "HinglishTOP": "path/to/HinglishTOP.csv",
+    "IndiaNewsHeadlines": "path/to/IndiaNewsHeadlines.csv"
+}
+
+TEXT_COLUMN = "text"   # Change this if your datasets have a different column name
+
+# ---------------------------
+# TEXT CLEANING FUNCTIONS
+# ---------------------------
+def clean_text(text: str) -> str:
+    """Remove URLs, excessive punctuation, and obvious spam."""
+    if not isinstance(text, str):
+        return ""
+    text = re.sub(r"http\S+|www\S+|https\S+", "", text)  # remove URLs
+    text = re.sub(r"\s+", " ", text)  # collapse whitespace
+    text = re.sub(rf"[{re.escape(string.punctuation)}]", " ", text)  # remove punctuation
+    text = re.sub(r"\b(buy now|click here|free money|subscribe)\b", "", text, flags=re.I)
+    return text.strip()
+
+# ---------------------------
+# DEDUPLICATION
+# ---------------------------
+def deduplicate_texts(df: pd.DataFrame, column: str, threshold=0.9) -> pd.DataFrame:
+    """Remove near-duplicates using cosine similarity."""
+    texts = df[column].fillna("").tolist()
+    vectorizer = TfidfVectorizer().fit_transform(texts)
+    similarity = cosine_similarity(vectorizer)
+    to_drop = set()
+    for i in range(len(texts)):
+        for j in range(i + 1, len(texts)):
+            if similarity[i, j] > threshold:
+                to_drop.add(j)
+    return df.drop(df.index[list(to_drop)])
+
+# ---------------------------
+# TOXICITY FLAGGING
+# ---------------------------
+def flag_toxicity(df: pd.DataFrame, column: str) -> pd.DataFrame:
+    """Add a column with toxicity scores using Detoxify."""
+    model = Detoxify('original')
+    toxicity_scores = []
+    for text in tqdm(df[column], desc="Toxicity Scoring"):
+        score = model.predict(str(text))
+        toxicity_scores.append(score["toxicity"])
+    df["toxicity_score"] = toxicity_scores
+    df["is_toxic_flag"] = df["toxicity_score"] > 0.5  # manual review threshold
+    return df
+
+# ---------------------------
+# PIPELINE EXECUTION
+# ---------------------------
+def process_dataset(name, path):
+    print(f"\nProcessing {name}...")
+    df = pd.read_csv(path)
+    if TEXT_COLUMN not in df.columns:
+        raise ValueError(f"Column '{TEXT_COLUMN}' not found in {path}")
+
+    # Step 1: Clean
+    df[TEXT_COLUMN] = df[TEXT_COLUMN].apply(clean_text)
+
+    # Step 2: Deduplicate
+    df = deduplicate_texts(df, TEXT_COLUMN)
+
+    # Step 3: Flag toxicity
+    df = flag_toxicity(df, TEXT_COLUMN)
+
+    # Save processed version
+    out_path = f"cleaned_{name}.csv"
+    df.to_csv(out_path, index=False)
+    print(f"Saved cleaned dataset to {out_path}")
+
+# ---------------------------
+# MAIN SCRIPT
+# ---------------------------
+if __name__ == "__main__":
+    for name, path in DATASETS.items():
+        if os.path.exists(path):
+            process_dataset(name, path)
+        else:
+            print(f" Skipping {name}: file not found at {path}")
+
+```
+
+-   This script will aid in Removing URLs, excessive punctuation, and obvious spam. Deduplicate or Near-duplicate detection (cosine similarity \> 0.9) and lastly flag any toxic content using Detoxify classifier (which will require additional manual review).
+
+### AI assistance:
+
+-   "AI assistance: Gemini was used to summarize the data source pages of some of the sources for me to write my paragraphs."
+
+-   "AI assistance: Claude was used to generate an example script for a very simple backbone pipeline that would be expanded upon."
+
+
+## Moses Mandale Deliverables
+
+AI assistance:Claude Sonnet 4.5 was used to optimize the initial finetune_lora.py to use LoRA fine tuning instead of the normal fine tuning to that the fine tuning is more efficient.
+Claude Sonnet 4.5 was used to troubleshoot “memory exceeded” errors and optimize the training parameters like number of epochs and batch size to fit the 24GB RAM that is available on Titan. This an error that was really troubling me because the script was already optimized with LoRA and was wondering what exactly was missing (accessed Nov, 2025).
+
+
+### Overview
+
+Week 2 focused on developing the complete fine-tuning pipeline for the LLaMA-3 8B model. The primary deliverables included creating data preprocessing scripts, implementing the LoRA fine-tuning workflow, training the first model on Indian superstition data, and validating the training process. This week transformed the configured environment from Week 1 into a functional training system.
+
+### Fine-Tuning Pipeline Architecture
+
+#### Pipeline Overview
+
+The fine-tuning pipeline consists of two main stages: data preprocessing and model training. The architecture was designed to be modular, allowing for easy iteration on different datasets while maintaining consistent formatting and training procedures.
+
+![Fine-tuning pipeline architecture](Appendix/MosesMadale/img/2_1.png)
+
+**Pipeline Stages**:
+
+1. **Data Preprocessing** (`preprocess_data.py`): Converts raw CSV data into instruction-response format suitable for LLaMA-3 fine-tuning
+2. **Model Fine-Tuning** (`finetune_lora.py`): Trains LoRA adapters on the preprocessed data while keeping base model weights frozen
+
+### Data Flow
+
+```
+Raw CSV (Indian Superstitions)
+    ↓
+preprocess_data.py
+    ↓
+JSON instruction-response pairs
+    ↓
+Train/Validation Split (90/10)
+    ↓
+finetune_lora.py
+    ↓
+Fine-tuned Model with LoRA Adapters
+```
+
+### Data Preprocessing
+
+#### Input Dataset
+
+The preprocessing pipeline began with a dataset of Indian superstitions collected by team member Suwilanji from Kaggle. The raw dataset contained:
+
+- **Total Rows**: 660 entries
+- **Key Columns**: `superstition_name`, `description`, `region`, `category`, `origin_theory`, `modern_status`, `is_harmful`, `source`, `user_contributed`
+- **Format**: CSV file
+
+#### Preprocessing Script Design
+
+The `preprocess_data.py` script implements a systematic transformation from raw tabular data to instruction-response format suitable for LLM fine-tuning.
+
+**Key Processing Steps**:
+
+1. **Column Detection**: Automatically identifies name and description columns
+2. **Data Cleaning**: Filters out invalid entries (null values, insufficient length)
+3. **Unicode Normalization**: Converts Unicode quotation marks to ASCII equivalents
+4. **Question Generation**: Transforms superstition names into natural questions
+5. **JSON Structuring**: Creates instruction-response pairs with metadata
+6. **Train/Validation Split**: Implements 90/10 split with random shuffling
+
+**Data Transformation Example**:
+
+```python
+# Input (CSV row)
+superstition_name: "Mirror breaks, 7 years bad luck"
+description: "Believed to bring misfortune if a mirror breaks."
+
+# Output (JSON)
+{
+  "instruction": "What is the cultural significance and meaning of the superstition: 'Mirror breaks, 7 years bad luck'?",
+  "response": "Believed to bring misfortune if a mirror breaks.",
+  "metadata": {
+    "source": "superstition_dataset",
+    "category": "cultural_beliefs",
+    "original_name": "Mirror breaks, 7 years bad luck"
+  }
+}
+```
+
+![Data preprocessing transformation from CSV to JSON](Appendix/MosesMadale/img/2_2.png)
+
+#### Preprocessing Results
+
+The preprocessing pipeline successfully transformed the raw dataset:
+
+**Input Statistics**:
+- Raw CSV entries: 660
+- Valid entries after filtering: 658
+
+**Output Statistics**:
+- Training examples: 592 (90%)
+- Validation examples: 66 (10%)
+- Total processed: 658
+
+**Data Quality Measures**:
+- Filtered entries: 2 (entries with null values or insufficient text length)
+- Unicode normalization: Applied to all entries for ASCII compatibility
+- Question format: Consistent across all examples
+
+### Fine-Tuning Implementation
+
+#### Training Configuration
+
+The fine-tuning script (`finetune_lora.py`) implements LoRA-based parameter-efficient fine-tuning with the following configuration:
+
+**LoRA Hyperparameters**:
+
+| Parameter | Value | Purpose |
+|-----------|-------|---------|
+| Rank (r) | 16 | Dimensionality of adapter matrices |
+| Alpha | 32 | Scaling factor for adapter outputs |
+| Target Modules | q_proj, v_proj, k_proj, o_proj | Attention projection layers |
+| Dropout | 0.05 | Regularization to prevent overfitting |
+| Bias | None | No additional bias terms in adapters |
+
+**Training Hyperparameters**:
+
+| Parameter | Value | Explanation |
+|-----------|-------|-------------|
+| Epochs | 3 | Number of passes through training data |
+| Per-device Batch Size | 4 | Examples processed simultaneously |
+| Gradient Accumulation Steps | 8 | Effective batch size = 4 × 8 = 32 |
+| Learning Rate | 2e-4 | Step size for weight updates |
+| Max Sequence Length | 512 | Maximum tokens per example |
+| Evaluation Strategy | Steps | Evaluate periodically during training |
+| Save Steps | 100 | Checkpoint frequency |
+
+**Effective Training Configuration**:
+- Effective batch size: 32 examples per update
+- Total training steps: ~54 steps (592 examples / 32 batch size × 3 epochs)
+- Gradient checkpointing: Enabled for memory efficiency
+
+### Model Architecture
+
+The fine-tuning process adds LoRA adapters to specific layers of the LLaMA-3 8B model:
+
+**Parameter Breakdown**:
+- Base model parameters (frozen): 8,030,261,248
+- LoRA trainable parameters: 13,631,488
+- Total parameters: 8,043,892,736
+- **Trainable percentage: 0.17%**
+
+This parameter-efficient approach enables training with limited GPU memory while maintaining model quality.
+
+![Training configuration output](Appendix/MosesMadale/img/2_3.png)
+
+#### Tokenization and Data Formatting
+
+The training script implements a custom formatting function to structure data for instruction-following:
+
+```python
+def format_instruction(example):
+    """Format question-answer pair for training"""
+    text = f"### Question:\n{example['instruction']}\n\n### Answer:\n{example['response']}"
+    return text
+```
+
+This format provides clear delineation between the instruction (question) and expected response, helping the model learn the question-answering structure.
+
+### Training Process and Results
+
+#### Training Progress
+
+The model was trained for 3 epochs on the Indian superstition dataset. The training process exhibited expected behavior with decreasing loss values:
+
+**Loss Progression**:
+
+| Epoch | Training Loss | Gradient Norm | Learning Rate |
+|-------|---------------|---------------|---------------|
+| 0.6 | 3.4506 | 1.9107 | 3.6e-05 |
+| 1.18 | 3.0625 | 1.4718 | 7.6e-05 |
+| 1.78 | 2.5055 | 1.6695 | 1.16e-04 |
+| 2.36 | 2.1748 | 0.9833 | 1.56e-04 |
+| 2.96 | 2.0223 | 1.2655 | 1.96e-04 |
+
+**Final Metrics**:
+- Training loss: 2.6282
+- Validation loss: 2.0647
+- Training time: Approximately 10 minutes
+- GPU memory usage: ~16 GB during training
+
+![Training progress showing loss decrease over epochs](Appendix/MosesMadale/img/2_4.png)
+
+#### Loss Analysis
+
+The training loss decreased from 3.45 to 2.02, indicating successful learning:
+
+- **Initial loss (3.45)**: Model has limited knowledge of the specific cultural content
+- **Mid-training (2.51 at epoch 1.78)**: Model begins recognizing patterns in superstition descriptions
+- **Final loss (2.02)**: Model has learned to generate appropriate responses for cultural questions
+
+The validation loss of 2.06 is slightly higher than the final training loss, indicating minimal overfitting. This small gap suggests the model generalizes reasonably well to unseen examples.
+
+#### Model Checkpointing
+
+The fine-tuning pipeline automatically saves model checkpoints:
+
+**Saved Artifacts**:
+- Final model: `/home/mmadale/CSC463/conlingo/models/finetuned/final_model/`
+- Checkpoint size: Approximately 1.3 GB (includes LoRA adapters only)
+- Configuration files: `adapter_config.json`, `adapter_model.bin`
+
+The saved model contains only the LoRA adapters, not the full base model. This significantly reduces storage requirements while preserving the fine-tuning results.
+
+### Code Implementation Highlights
+
+#### Data Preprocessing
+
+Key implementation details from `preprocess_data.py`:
+
+```python
+# Unicode normalization for ASCII compatibility
+superstition_name = superstition_name.replace('\u2019', "'").replace('\u2018', "'")
+superstition_name = superstition_name.replace('\u201c', '"').replace('\u201d', '"')
+
+# Question generation
+question = f"What is the cultural significance and meaning of the superstition: '{superstition_name}'?"
+
+# Structured output
+instruction_response = {
+    "instruction": question,
+    "response": description,
+    "metadata": {
+        "source": "superstition_dataset",
+        "category": "cultural_beliefs",
+        "original_name": superstition_name
+    }
+}
+```
+
+#### Fine-Tuning Configuration
+
+Key implementation details from `finetune_lora.py`:
+
+```python
+# LoRA configuration
+lora_config = LoraConfig(
+    r=16,
+    lora_alpha=32,
+    target_modules=["q_proj", "v_proj", "k_proj", "o_proj"],
+    lora_dropout=0.05,
+    bias="none",
+    task_type="CAUSAL_LM"
+)
+
+# Training arguments
+training_args = TrainingArguments(
+    output_dir=OUTPUT_DIR,
+    num_train_epochs=3,
+    per_device_train_batch_size=4,
+    gradient_accumulation_steps=8,
+    learning_rate=2e-4,
+    evaluation_strategy="steps",
+    save_steps=100
+)
+```
+
+![Code snippet showing training configuration](Appendix/MosesMadale/img/2_5.png)
+
+### Technical Challenges and Solutions
+
+#### Memory Management
+
+**Challenge**: Training with batch size of 8 caused out-of-memory errors on the 24.6 GB GPU.
+
+**Solution**: Implemented gradient accumulation with batch size 4 and accumulation steps 8, achieving effective batch size of 32 while staying within memory constraints.
+
+#### Unicode Character Handling
+
+**Challenge**: Original dataset contained Unicode quotation marks (e.g., `\u2019`, `\u201c`) that could cause tokenization issues.
+
+**Solution**: Implemented systematic Unicode-to-ASCII conversion in preprocessing script, ensuring consistent character encoding throughout the dataset.
+
+#### Data Quality
+
+**Challenge**: Some CSV entries contained null values or insufficient text.
+
+**Solution**: Added validation checks in preprocessing script to filter entries with:
+- Null/missing superstition names or descriptions
+- Superstition names shorter than 3 characters
+- Descriptions shorter than 10 characters
+
+### Validation and Quality Assurance
+
+#### Data Validation
+
+The preprocessing script includes multiple validation steps:
+
+1. **Column Detection**: Automatically identifies relevant columns, adapting to CSV structure
+2. **Null Filtering**: Removes entries with missing critical information
+3. **Length Validation**: Ensures minimum content length for meaningful training
+4. **Unicode Normalization**: Standardizes character encoding
+
+**Validation Results**:
+- Entries processed: 660
+- Entries passed validation: 658 (99.7% retention rate)
+- Entries filtered: 2 (0.3%)
+
+#### Training Validation
+
+The training process includes continuous validation:
+
+- **Gradient Norm Monitoring**: Tracked to detect instability (all values < 2.0, indicating stable training)
+- **Validation Loss**: Evaluated every 100 steps to monitor generalization
+- **Checkpoint Saving**: Automatic preservation of model state for recovery
+
+### Key Achievements
+
+Week 2 successfully delivered a complete fine-tuning pipeline and initial trained model:
+
+1. **Data Preprocessing Pipeline**: Created robust script converting CSV to instruction-response format
+2. **658 Training Examples**: Processed and validated dataset of Indian superstitions
+3. **Fine-Tuning Script**: Implemented LoRA-based training with proper configuration
+4. **Trained Model**: Successfully fine-tuned LLaMA-3 8B on cultural content
+5. **Loss Reduction**: Achieved 41% decrease in training loss (3.45 → 2.02)
+6. **Model Artifacts**: Generated reusable LoRA adapters (~1.3 GB) for inference
+7. **Reproducible Pipeline**: Created modular scripts adaptable to new datasets
+
+### Lessons Learned
+
+#### Pipeline Design
+
+The modular pipeline architecture proved effective for rapid iteration. Separating preprocessing and training into distinct scripts allowed independent testing and debugging of each component.
+
+#### Batch Size Optimization
+
+Finding the optimal batch size required balancing:
+- GPU memory constraints (24.6 GB available)
+- Training stability (larger batches → more stable gradients)
+- Training speed (larger batches → fewer updates per epoch)
+
+The final configuration (batch size 4 with 8 accumulation steps) effectively balanced these factors.
+
+#### Data Quality Impact
+
+The high validation rate (99.7% of entries passed filtering) indicated good initial data quality. Manual inspection of filtered entries confirmed they were legitimately problematic (null values), validating the filtering criteria.

@@ -1,0 +1,250 @@
+---
+title: "ConLingo Week 3"
+author: Suwilanji Mwanza
+format: html
+---
+
+# ConLingo Project 2.0
+
+# Overview of the Week 3 Deliverable
+
+This week, we had a pivot in deliverables. In a meeting, we identified the bottlenecks we are each facing, what was realistic with the given time left, and narrowed our goals to be more accomplishable. In addition, my deliverable was to format the paper for the arXiv.
+
+# Week 3 Deliverables:
+
+-   Restructure deliverables moving forward.
+
+    -   Team meetings
+
+    -   Provide better clarity on the original ConLingo.
+
+-   Outline research paper according to arXiv guidelines
+
+# What Was Accomplished:
+
+## 1. Deliverable Pivot
+
+Due to this restructuring, I had to pause my data collection strategy process, as the decisions we made would impact whether my data would be helpful or not.
+
+**Meeting Agenda:**
+
+-   We defined what the existing ConLingo model is:
+
+    -   An AI assistant that helps you **bridge** the **cultural gap** between civilizations (starting with India).
+
+-   Revamped our deliverables due to two significant reasons:
+
+    -   \(1\) Initial deliverables were overambitious as the reality of our time was realized.
+
+    -   \(2\) We felt that because of this, we did not have SMART goals, emphasis on the A for Acheivable, and thus we redesigned the deliverables to be SMART goals for weeks 3-4.
+
+-   The seven categories of culture that I created were updated and further categorized into Non-Material and Material.
+
+    -   Non-Material Culture:​
+
+        -   **Values & Beliefs:** what is considered good, desirable, and accurate.​
+
+        -   **Norms & Customs**: routine practices, rituals, eg, Greetings, holiday celebrations.​
+
+        -   **Language**: A system of words, symbols, and non-verbal cues.​
+
+        -   **Religion & Spirituality**: morality and the supernatural​.
+
+        -   **Arts and Literature**: Music, dance, visual arts, stories, poetry, etc.​
+
+        -   **Social Organization**: family units (nuclear vs extended), social classes, and hierarchies based on wealth, age, and occupation​.
+
+    -   Material Culture:​
+
+        -   **Artifacts & Technology**: Eating utensils, transportation methods, and housing style​.
+
+        -   **Government & Economic Systems**: The structure  used to provide for everyday needs, distribute power, and manage resources​.
+
+-   Lastly, we had to make a final decision on whether to use Supervised Fine-Tuning (SFT) or Unsupervised Fine-Tuning (UFT) for our fine-tuning process. This decision is key because it affects how the data is formatted. If it is SFT that has to be labeled, the question-answer (QA) pairs are a must. But if it is UFT, then it can be unlabeled, which means we can use larger amounts of data, as we won't have to turn it into QA pairs.
+
+    -   We had the following constraints to consider:
+
+        -   Hardware: NVIDIA A30 GPU (24GB VRAM) on Titan​
+
+        -   Timeline: 3 Weeks​ (less than)
+
+        -   Team size: 4 people​
+
+        -   **Goal:** Beat the RAG implementation in having Indian culturally nuanced responses
+
+    -   **Supervised Fine-Tuning (SFT)** is a process of taking a pre-trained language model and further training it on a smaller, task-specific dataset with labeled examples. Its goal is to adjust the weights of the pre-trained model so that it performs better on our specific task without losing its general knowledge acquired during pre-training. (GeeksforGeeks, 2025)
+
+    -   **Unsupervised finetuning:** This method doesn’t require labeled data. Instead, the LLM is exposed to a large corpus of unlabeled text from the target domain. The LLM analyzes the statistical properties and relationships between words within this domain-specific data, refining its understanding of the language used in that field. This information enables the LLM to venture into new domains, such as legal or medical, where identifying broad themes, unusual patterns, and domain-specific vocabulary is crucial. Unsupervised finetuning is commonly used for tasks such as language modeling, where the model learns to predict the next word in a sequence based on its context. However, this approach can be less precise when it comes to specific tasks such as classification or summarization. (Padgaonkar & Ghoshal, 2024)
+
+    -   Due to time, team size, and computer resources constraints the only realistic option would be to use **Supervised Fine Tuning** where the primary focus would be to get excellent high quality Q & A pairs somewhere around 1000-1500 of them and do some fine tuning iterations on Titan and since training is in the form factor of hours in terms of the time taken, if the model is not performing as well it is easy to tweak parameters easily. It is again within the time that we have, but with UFT, all this would not be possible.
+
+-   Based on the datasets I collected, this was selected and then transformed by an AI-powered data cleaning pipeline created by Moses. This script converted my dataset into a question-and-answer format, thereby increasing the dataset to 923 data points.
+
+    -   Indian Superstition & Beliefs (**923**)​
+
+## 2. Outline of Research Paper
+
+I switched to creating the outline of our research paper. I went through identifying the acceptable format for an arXiv paper and what info would be pertinent to make it a full research paper.
+
+```{md}
+ConLingo 2.0: Fine-Tuning for Cultural Contextualization  
+
+By: Rohan Aby, Moses Madale, Suwilanji Mwanza, and William Richards 
+
+
+Abstract 
+
+Summary of the paper in one paragraph. Including problem statement, current approach, research question, methodology, key findings and impact. 
+
+Table of Contents 
+ 
+
+I. Introduction - Suwilanji  
+
+1.1 Problem Statement 
+
+1.2 Project Context 
+
+1.3 Research Question 
+
+1.4 Contributions 
+
+1.5. Roadmap 
+
+
+II. Related Work - Suwilanji 
+
+2.1 Retrieval Augmented Generation (RAG) 
+
+2.2 Fine-Tuning for Domain Adaptation 
+
+2.3 Cultural AI and NLP 
+
+2.4 Biblical Contextualization 
+
+2.5 Gap Analysis 
+ 
+
+III. Methodology - Moses 
+
+3.1 Data Collection 
+
+3.1.1 Data Sources 
+
+3.1.2 Collection Process 
+
+3.1.3 Data Annotation & Metadata 
+
+3.1.4 Ethical Considerations 
+
+3.1.5 Dataset Statistics 
+
+3.2 Model Architecture and Training 
+
+3.2.1 Model Selection 
+
+3.2.2 Environment Set Up 
+
+3.2.3 Fine-Tuning Approach 
+
+3.2.4 Training Details and Monitoring 
+
+3.3. Baseline Systems 
+
+3.3.1 RAG Baseline (Current ConLingo) 
+
+3.3.2 Additional Baselines 
+
+3.4 Evaluation Framework 
+
+3.4.1 Cultural Sensitivity Index (CSI) 
+
+3.4.2 Automated Metrics 
+
+3.4.3 Cost & Efficiency Metrics 
+
+3.4.4 Human Evaluation 
+
+3.5 Dataset Testing 
+
+
+IV. Results - Rohan 
+
+4.1 Quantitative Results 
+
+4.1.1 Overall Performance 
+
+4.1.2 Category-Wise Performance 
+
+4.1.3 Regional Analysis 
+
+4.1.4 Statistical Significance 
+
+4.2 Human Evaluation Results 
+
+4.2.1 Human CSI Scores 
+
+4.2.2 Qualitative Feedback from Indian testers? 
+
+4.3 Qualitative Analysis:  
+
+4.4 Error Analysis 
+
+4.4.1 Error Categories (What caused failure) 
+
+4.4.2 Deep Dive Into Failure Cases 
+
+
+V. Conclusion – Rohan + Moses 
+
+5.1 Evaluation Summary - Rohan 
+
+5.2 Why These Results? - Rohan 
+
+5.2.1 If Fine-Tuning Wins 
+
+5.2.2 If RAG Wins 
+
+5.3 Implications for Project - Moses 
+
+5.3.1 Deployment Recommendations 
+
+5.3.2 Scalability Considerations 
+
+5.4 Limitations - Moses 
+
+5.4.1 Dataset Limitations 
+
+5.4.2 Evaluation Limitations 
+
+5.4.3 Model Limitations 
+
+5.4.4 Methodological Limitations 
+
+5.5 Future Applications 
+
+5.6 Key Takeaways 
+ 
+
+References 
+
+
+Appendices 
+
+```
+
+# Next Steps:
+
+-   Create comprehensive visualizations about the performance of each of the 7 models, as well as the 2 combined models.
+
+-   Explore the datasets that contributed to the model's negative performance and suggest potential reasons for this.
+
+-   Create the full presentation that will be used as the Week 4 presentation.
+
+# References:
+
+GeeksforGeeks. (2025, July 23). *Supervised Fine-Tuning (SFT) for LLMs.* GeeksforGeeks. [https://www.geeksforgeeks.org/artificial-intelligence/supervised-fine-tuning-sft-for-llms/](https://www.geeksforgeeks.org/artificial-intelligence/supervised-fine-tuning-sft-for-llms/?utm_source=chatgpt.com)
+
+Padgaonkar, S., & Ghoshal, S. (2024, May 7). *Finetuning in large language models*. Oracle AI & Data Science Blog. [https://blogs.oracle.com/ai-and-datascience/finetuning-in-large-language-models](https://blogs.oracle.com/ai-and-datascience/finetuning-in-large-language-models?utm_source=chatgpt.com)
+
+"AI Assitance: ChatGPT was used to show an example outline of an arXiv document for formatting purposes, hence why the outline is long."

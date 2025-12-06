@@ -1,0 +1,20 @@
+# Future Improvements
+Through our research we learned that we had biases present in our research. The first bias was
+that we used humans to score the responses. Each person would bring their own biases to the respones of the model. Secondly, the weights used in the CSI score also added a bias of its own. 
+
+Dr. V advised us to tackle the bias of the CSI score by doing a multilinear regression model on our dataset to help us understand what weights we need to use to score the CSI score. 
+
+We had scores from Rohan and his mother. They both had scored the Original model, superstitions model, constitutions model and the youtube model. We then averaeged the scores between these models and used it as a dataset to feed into our multilinear regression model. 
+
+The below table shows the comparison between old and new weights for each of the different variables. 
+![Old Weights Vs New weights Percentage Difference](Appendix/RohanAby/Old_VS_new_weights_Percent_Diff)
+
+The formula to calculate the Percentage difference is ABS(B2 - C2) / ((B2 + C2) / 2) * 100
+
+The graph of all the CSI scores of all the models with the original weights and the CSI scores of all the models using the weights from the regression model can be seen in the below.
+
+![Old Weights Vs New weights graph](Appendix/RohanAby/Old Weights Vs New weights.png)
+
+The datasets that were used to generate the results can be found in the Appendix section under the RohanAby folder. The ConlingoAllData.xlsx was used to train the model. The code used to generate the new weights is called MLRConlingo.R. AI assistance: ChatGPT was used to generate this code (accessed Dec 4, 2025).
+The files are Conlingo Average.xlsx, ConlingoAllData.xlsx, Beena_CSI grades.xlsx and the CSI grades_11_14_2025.xlsx. 
+

@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>4&nbsp; Week 3: Data Searching, Data Vetting, Dataset Collection, Data Cleaning – ConLingo Quarto Book</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Week4.html" rel="next">
+<link href="./Week2.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-485d01fc63b59abcd3ee1bf1e8e2748d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Week3.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Week 3: Data Searching, Data Vetting, Dataset Collection, Data Cleaning</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">ConLingo Quarto Book</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">ConLingo 2.0</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Week 1: Foundations &amp; Data Collection</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Week 2: Data Cleaning &amp; Pipeline Setup</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week3.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Week 3: Data Searching, Data Vetting, Dataset Collection, Data Cleaning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Week 4: Data Searching, Data Vetting, Dataset Collection, Data Cleaning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Week 5: Compare Fine-tuned model with RAG implementation and ChatGPT-5 &amp; Research Paper</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Future_Improvments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Future Improvements</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">4.1</span> Overview</a></li>
+  <li><a href="#rohan-aby-deliverables" id="toc-rohan-aby-deliverables" class="nav-link" data-scroll-target="#rohan-aby-deliverables"><span class="header-section-number">4.2</span> Rohan Aby Deliverables</a>
+  <ul class="collapse">
+  <li><a href="#collection-and-sorting-of-wikipedia-data-related-to-india." id="toc-collection-and-sorting-of-wikipedia-data-related-to-india." class="nav-link" data-scroll-target="#collection-and-sorting-of-wikipedia-data-related-to-india."><span class="header-section-number">4.2.1</span> Collection and sorting of Wikipedia data related to India.</a></li>
+  </ul></li>
+  <li><a href="#william-richards-deliverables" id="toc-william-richards-deliverables" class="nav-link" data-scroll-target="#william-richards-deliverables"><span class="header-section-number">4.3</span> William Richards Deliverables</a>
+  <ul class="collapse">
+  <li><a href="#modern-vs-traditional" id="toc-modern-vs-traditional" class="nav-link" data-scroll-target="#modern-vs-traditional"><span class="header-section-number">4.3.1</span> Modern VS Traditional</a></li>
+  <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning"><span class="header-section-number">4.3.2</span> Data Cleaning</a></li>
+  <li><a href="#what-changed" id="toc-what-changed" class="nav-link" data-scroll-target="#what-changed"><span class="header-section-number">4.3.3</span> What Changed?</a></li>
+  </ul></li>
+  <li><a href="#suwilanji-mwanza-deliverables" id="toc-suwilanji-mwanza-deliverables" class="nav-link" data-scroll-target="#suwilanji-mwanza-deliverables"><span class="header-section-number">4.4</span> Suwilanji Mwanza Deliverables</a>
+  <ul class="collapse">
+  <li><a href="#overview-of-the-week-3-deliverable" id="toc-overview-of-the-week-3-deliverable" class="nav-link" data-scroll-target="#overview-of-the-week-3-deliverable"><span class="header-section-number">4.4.1</span> Overview of the Week 3 Deliverable</a></li>
+  <li><a href="#week-3-deliverables" id="toc-week-3-deliverables" class="nav-link" data-scroll-target="#week-3-deliverables"><span class="header-section-number">4.4.2</span> Week 3 Deliverables:</a></li>
+  <li><a href="#what-was-accomplished" id="toc-what-was-accomplished" class="nav-link" data-scroll-target="#what-was-accomplished"><span class="header-section-number">4.4.3</span> What Was Accomplished:</a></li>
+  <li><a href="#deliverable-pivot" id="toc-deliverable-pivot" class="nav-link" data-scroll-target="#deliverable-pivot"><span class="header-section-number">4.4.4</span> 1. Deliverable Pivot</a></li>
+  <li><a href="#outline-of-research-paper" id="toc-outline-of-research-paper" class="nav-link" data-scroll-target="#outline-of-research-paper"><span class="header-section-number">4.4.5</span> 2. Outline of Research Paper</a></li>
+  <li><a href="#ai-assitance" id="toc-ai-assitance" class="nav-link" data-scroll-target="#ai-assitance"><span class="header-section-number">4.4.6</span> AI Assitance:</a></li>
+  </ul></li>
+  <li><a href="#moses-madale-deliverables" id="toc-moses-madale-deliverables" class="nav-link" data-scroll-target="#moses-madale-deliverables"><span class="header-section-number">4.5</span> Moses Madale Deliverables</a>
+  <ul class="collapse">
+  <li><a href="#overview-1" id="toc-overview-1" class="nav-link" data-scroll-target="#overview-1"><span class="header-section-number">4.5.1</span> Overview</a></li>
+  <li><a href="#deliverable-revamp-from-ambitious-to-smart" id="toc-deliverable-revamp-from-ambitious-to-smart" class="nav-link" data-scroll-target="#deliverable-revamp-from-ambitious-to-smart"><span class="header-section-number">4.5.2</span> Deliverable Revamp: From Ambitious to SMART</a></li>
+  <li><a href="#establishing-the-8-pillars-of-culture" id="toc-establishing-the-8-pillars-of-culture" class="nav-link" data-scroll-target="#establishing-the-8-pillars-of-culture"><span class="header-section-number">4.5.3</span> Establishing the 8 Pillars of Culture</a></li>
+  <li><a href="#strategic-decision-supervised-vs-unsupervised-fine-tuning" id="toc-strategic-decision-supervised-vs-unsupervised-fine-tuning" class="nav-link" data-scroll-target="#strategic-decision-supervised-vs-unsupervised-fine-tuning"><span class="header-section-number">4.5.4</span> Strategic Decision: Supervised vs Unsupervised Fine-Tuning</a></li>
+  <li><a href="#dataset-collection-process" id="toc-dataset-collection-process" class="nav-link" data-scroll-target="#dataset-collection-process"><span class="header-section-number">4.5.5</span> Dataset Collection Process</a></li>
+  <li><a href="#ai-powered-data-cleaning-pipeline" id="toc-ai-powered-data-cleaning-pipeline" class="nav-link" data-scroll-target="#ai-powered-data-cleaning-pipeline"><span class="header-section-number">4.5.6</span> AI-Powered Data Cleaning Pipeline</a></li>
+  <li><a href="#individual-dataset-processing" id="toc-individual-dataset-processing" class="nav-link" data-scroll-target="#individual-dataset-processing"><span class="header-section-number">4.5.7</span> Individual Dataset Processing</a></li>
+  <li><a href="#standardized-jsonl-format" id="toc-standardized-jsonl-format" class="nav-link" data-scroll-target="#standardized-jsonl-format"><span class="header-section-number">4.5.8</span> Standardized JSONL Format</a></li>
+  <li><a href="#data-cleaning-with-r-tidyverse" id="toc-data-cleaning-with-r-tidyverse" class="nav-link" data-scroll-target="#data-cleaning-with-r-tidyverse"><span class="header-section-number">4.5.9</span> Data Cleaning with R Tidyverse</a></li>
+  <li><a href="#final-dataset-statistics" id="toc-final-dataset-statistics" class="nav-link" data-scroll-target="#final-dataset-statistics"><span class="header-section-number">4.5.10</span> Final Dataset Statistics</a></li>
+  <li><a href="#key-achievements" id="toc-key-achievements" class="nav-link" data-scroll-target="#key-achievements"><span class="header-section-number">4.5.11</span> Key Achievements</a></li>
+  <li><a href="#challenges-and-solutions" id="toc-challenges-and-solutions" class="nav-link" data-scroll-target="#challenges-and-solutions"><span class="header-section-number">4.5.12</span> Challenges and Solutions</a></li>
+  <li><a href="#challenge-dataset-imbalance" id="toc-challenge-dataset-imbalance" class="nav-link" data-scroll-target="#challenge-dataset-imbalance"><span class="header-section-number">4.5.13</span> Challenge: Dataset Imbalance</a></li>
+  <li><a href="#lessons-learned" id="toc-lessons-learned" class="nav-link" data-scroll-target="#lessons-learned"><span class="header-section-number">4.5.14</span> Lessons Learned</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Week 3: Data Searching, Data Vetting, Dataset Collection, Data Cleaning</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">4.1</span> Overview</h2>
+<p>In Week 3, the team focused on searching, evaluating, and collecting culturally relevant datasets across multiple sources, developing a cultural vetting framework, defining cultural values, improving data quality and formatting, categorizing data into modern and traditional culture, and collaboratively selecting five high-quality datasets for further preparation.</p>
+</section>
+<section id="rohan-aby-deliverables" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="rohan-aby-deliverables"><span class="header-section-number">4.2</span> Rohan Aby Deliverables</h2>
+<p><strong>AI assistance: ChatGPT was used to develop the scripts used for collecting and sorting the Wikipedia data related to India (accessed Nov, 2025).</strong></p>
+<section id="collection-and-sorting-of-wikipedia-data-related-to-india." class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="collection-and-sorting-of-wikipedia-data-related-to-india."><span class="header-section-number">4.2.1</span> Collection and sorting of Wikipedia data related to India.</h3>
+<p>Rohan collected Wikipedia data by writing two python files which were written to create to download a subset of English Wikipedia articles and then categorize those articles based on their relevance to Indian culture and history between the years 1900 and 2025.</p>
+<p>LoadIndiaDataSet1900_2025.py was created to load and filter the dataset. It uses a regular expression to grab data that only has a range from 1900 to 2025. The articles had to contain at least one mention of a year within the 1900–2025 range in their text. The resulting subset of articles is saved to a local directory named “wikipedia_1900_2025”. The LoadIndiaDataSet1900_2025.py can be seen below.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> load_dataset</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load English Wikipedia snapshot (latest available)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> load_dataset(<span class="st">"wikimedia/wikipedia"</span>, <span class="st">"20231101.en"</span>, split<span class="op">=</span><span class="st">"train"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Define regex for years between 1900 and 2025</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>year_pattern <span class="op">=</span> re.<span class="bu">compile</span>(<span class="vs">r"</span><span class="dv">\b</span><span class="kw">(</span><span class="vs">19</span><span class="pp">[0-9]</span><span class="op">{2}</span><span class="cf">|</span><span class="vs">20</span><span class="pp">[0-2][0-9]</span><span class="cf">|</span><span class="vs">2025</span><span class="kw">)</span><span class="dv">\b</span><span class="vs">"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mentions_year_range(example):</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> example[<span class="st">"text"</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">bool</span>(year_pattern.search(text))</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter dataset for pages mentioning years 1900–2025</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>dataset_filtered <span class="op">=</span> dataset.<span class="bu">filter</span>(mentions_year_range)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Filtered dataset size: </span><span class="sc">{</span><span class="bu">len</span>(dataset_filtered)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>dataset_filtered.save_to_disk(<span class="st">"wikipedia_1900_2025"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>SortIndiaData.py was created to take the filtered data from the first script and sorts it into specific categories related to Indian culture. It creates an output directory named “india_categorized”. It uses a dictionary structure to define two main categories, “Non-Material Culture” and “Material Culture”, which are further divided into specific subcategories, each with a list of associated keywords (e.g., “Religion &amp; Spirituality” has keywords like “hinduism,” “yoga,” “temple,” etc.). The script iterates through every article in the loaded dataset and performs a two-step filtering process: A helper function (is_india_paragraph) ensures a paragraph is kept only if it contains the words “india,” “indian,” or “bharat.” This is done paragraph-by-paragraph to avoid including entire articles that only mention India once in an unrelated context. It then checks the remaining India-related paragraphs to see if they contain any of the keywords defined for the current subcategory being processed. The SortIndiaData.py can is shown below.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> load_from_disk</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Load dataset</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>dataset_dir <span class="op">=</span> <span class="st">"wikipedia_1900_2025"</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> load_from_disk(dataset_dir)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total articles loaded: </span><span class="sc">{</span><span class="bu">len</span>(dataset)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Define categories &amp; keywords</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>categories <span class="op">=</span> {</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Non-Material Culture"</span>: {</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Values &amp; Beliefs"</span>: [<span class="st">"values"</span>, <span class="st">"beliefs"</span>, <span class="st">"morality"</span>, <span class="st">"ethics"</span>],</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Regional Indian Superstitions &amp; Beliefs"</span>: [<span class="st">"superstition"</span>, <span class="st">"omen"</span>, <span class="st">"ritual"</span>, <span class="st">"folk belief"</span>],</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Norms &amp; Customs"</span>: [<span class="st">"norms"</span>, <span class="st">"customs"</span>, <span class="st">"traditions"</span>, <span class="st">"practices"</span>],</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"India News Headlines"</span>: [<span class="st">"news"</span>, <span class="st">"headlines"</span>, <span class="st">"current events"</span>, <span class="st">"india"</span>],</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Language"</span>: [<span class="st">"language"</span>, <span class="st">"dialect"</span>, <span class="st">"linguistic"</span>, <span class="st">"vernacular"</span>],</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Religion &amp; Spirituality"</span>: [<span class="st">"hinduism"</span>, <span class="st">"buddhism"</span>, <span class="st">"sikhism"</span>, <span class="st">"islam"</span>, <span class="st">"christianity"</span>, <span class="st">"spirituality"</span>, <span class="st">"temple"</span>, <span class="st">"yoga"</span>],</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Arts and Literature"</span>: [<span class="st">"art"</span>, <span class="st">"literature"</span>, <span class="st">"painting"</span>, <span class="st">"music"</span>, <span class="st">"dance"</span>, <span class="st">"poetry"</span>],</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Social Organization"</span>: [<span class="st">"caste"</span>, <span class="st">"community"</span>, <span class="st">"society"</span>, <span class="st">"family"</span>, <span class="st">"clan"</span>],</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Material Culture"</span>: {</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Artifacts &amp; Technology"</span>: [<span class="st">"artifact"</span>, <span class="st">"tool"</span>, <span class="st">"technology"</span>, <span class="st">"weapon"</span>, <span class="st">"craft"</span>],</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Government &amp; Economic Systems"</span>: [<span class="st">"government"</span>, <span class="st">"politics"</span>, <span class="st">"economy"</span>, <span class="st">"trade"</span>, <span class="st">"industry"</span>],</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Create output directory</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>output_dir <span class="op">=</span> <span class="st">"india_categorized"</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>os.makedirs(output_dir, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper function: check India context</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_india_paragraph(paragraph):</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    paragraph_lower <span class="op">=</span> paragraph.lower()</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Keep paragraph only if it mentions India/Indian/Bharat</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">any</span>(x <span class="kw">in</span> paragraph_lower <span class="cf">for</span> x <span class="kw">in</span> [<span class="st">"india"</span>, <span class="st">"indian"</span>, <span class="st">"bharat"</span>])</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter and categorize</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> super_category, subcats <span class="kw">in</span> categories.items():</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> subcat_name, keywords <span class="kw">in</span> subcats.items():</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>        filtered_articles <span class="op">=</span> []</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> example <span class="kw">in</span> dataset:</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>            title <span class="op">=</span> example.get(<span class="st">"title"</span>, <span class="st">""</span>).strip()</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>            text <span class="op">=</span> example.get(<span class="st">"text"</span>, <span class="st">""</span>)</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> text:</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Split into paragraphs to avoid unrelated global mentions</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>            paragraphs <span class="op">=</span> [p.strip() <span class="cf">for</span> p <span class="kw">in</span> text.split(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>) <span class="cf">if</span> p.strip()]</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>            india_paragraphs <span class="op">=</span> [p <span class="cf">for</span> p <span class="kw">in</span> paragraphs <span class="cf">if</span> is_india_paragraph(p)]</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> india_paragraphs:</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Check category keywords in India paragraphs</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>            matched_paragraphs <span class="op">=</span> []</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> p <span class="kw">in</span> india_paragraphs:</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="bu">any</span>(k.lower() <span class="kw">in</span> p.lower() <span class="cf">for</span> k <span class="kw">in</span> keywords):</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>                    matched_paragraphs.append(p)</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> matched_paragraphs:</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>                filtered_articles.append({<span class="st">"title"</span>: title, <span class="st">"text"</span>: <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(matched_paragraphs)})</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Save subcategory as JSONL</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>        subcat_file <span class="op">=</span> os.path.join(output_dir, <span class="ss">f"</span><span class="sc">{</span>subcat_name<span class="sc">.</span>replace(<span class="st">' '</span>, <span class="st">'_'</span>)<span class="sc">}</span><span class="ss">.jsonl"</span>)</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> <span class="bu">open</span>(subcat_file, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> article <span class="kw">in</span> filtered_articles:</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>                json.dump(article, f)</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>                f.write(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>subcat_name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="bu">len</span>(filtered_articles)<span class="sc">}</span><span class="ss"> articles saved."</span>)</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="william-richards-deliverables" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="william-richards-deliverables"><span class="header-section-number">4.3</span> William Richards Deliverables</h2>
+<p>Specified Data Collection</p>
+<p><strong>AI Assistance: ChatGPT was used to receive the modern and traditional csv files and add in Bible verses, additional activities, and prompt/answer columns for each example (accessed Nov 4, 2025)</strong></p>
+<section id="modern-vs-traditional" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="modern-vs-traditional"><span class="header-section-number">4.3.1</span> Modern VS Traditional</h3>
+<p>William was tasked with collecting 1,000 examples from the datasets selected by Suwilanji in the previous week’s deliverable. His responsibility was to clean these datasets and organize them into separate categories: modern or traditional.</p>
+<p><strong>Modern</strong> = Hinglish, Spotify, Indian News Survey, and World Values Survey</p>
+<p><strong>Traditional</strong> = Regional Indian Superstitions and Pew Indian Survey</p>
+</section>
+<section id="data-cleaning" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="data-cleaning"><span class="header-section-number">4.3.2</span> Data Cleaning</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstudioapi)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>script_dir <span class="ot">=</span> <span class="fu">dirname</span>(rstudioapi<span class="sc">::</span><span class="fu">getActiveDocumentContext</span>()<span class="sc">$</span>path)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(script_dir)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Modern</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">#######################################################</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>data_path_h <span class="ot">&lt;-</span> <span class="st">"Appendix/WilliamRichards/data/train.tsv"</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>tb_hinglish <span class="ot">=</span> <span class="fu">read.csv</span>(data_path_h)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Locate NAs</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>NAs_found <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (nm <span class="cf">in</span> <span class="fu">names</span>(tb_hinglish)) {</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">sum</span>(<span class="fu">is.na</span>(tb_hinglish[[nm]]))) {</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="fu">paste</span>(nm, <span class="st">"has NA's"</span>))</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    NAs_found <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span>NAs_found) {</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">"No NAs found"</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop any rows with NA's</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>tb_hinglish <span class="ot">&lt;-</span> tb_hinglish <span class="sc">%&gt;%</span> </span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(tb_hinglish, <span class="at">file =</span> <span class="st">"hinglish.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>data_path_s <span class="ot">&lt;-</span> <span class="st">"Appendix/WilliamRichards/data/top_podcasts.csv"</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>tb_spotify <span class="ot">=</span> <span class="fu">read.csv</span>(data_path_s)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Locate NAs</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>NAs_found <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (nm <span class="cf">in</span> <span class="fu">names</span>(tb_spotify)) {</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">sum</span>(<span class="fu">is.na</span>(tb_spotify[[nm]]))) {</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="fu">paste</span>(nm, <span class="st">"has NA's"</span>))</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    NAs_found <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span>NAs_found) {</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">"No NAs found"</span>)</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop any rows with NA's</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>tb_spotify <span class="ot">&lt;-</span> tb_spotify <span class="sc">%&gt;%</span> </span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(tb_spotify, <span class="at">file =</span> <span class="st">"spotify.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>data_path_w <span class="ot">&lt;-</span> <span class="st">"Appendix/WilliamRichards/data/world_values_survey_india.xlsx"</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>tb_world_vals <span class="ot">=</span> <span class="fu">read.csv</span>(data_path_w)</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Locate NAs</span></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>NAs_found <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (nm <span class="cf">in</span> <span class="fu">names</span>(tb_world_vals)) {</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">sum</span>(<span class="fu">is.na</span>(tb_world_vals[[nm]]))) {</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="fu">paste</span>(nm, <span class="st">"has NA's"</span>))</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    NAs_found <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span>NAs_found) {</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">"No NAs found"</span>)</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop any rows with NA's</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>tb_world_vals <span class="ot">&lt;-</span> tb_world_vals <span class="sc">%&gt;%</span> </span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(tb_world_vals, <span class="at">file =</span> <span class="st">"world_values.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>data_path_n <span class="ot">&lt;-</span> <span class="st">"Appendix/WilliamRichards/data/india-news-headlines.csv"</span></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>tb_news <span class="ot">=</span> <span class="fu">read.csv</span>(data_path_n)</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="co"># Locate NAs</span></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>NAs_found <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (nm <span class="cf">in</span> <span class="fu">names</span>(tb_news)) {</span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">sum</span>(<span class="fu">is.na</span>(tb_news[[nm]]))) {</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="fu">paste</span>(nm, <span class="st">"has NA's"</span>))</span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>    NAs_found <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span>NAs_found) {</span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">"No NAs found"</span>)</span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop any rows with NA's</span></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>tb_news <span class="ot">&lt;-</span> tb_news <span class="sc">%&gt;%</span> </span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(tb_news, <span class="at">file =</span> <span class="st">"news.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a><span class="co"># Traditional</span></span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a><span class="do">#######################################################</span></span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>data_path_s <span class="ot">&lt;-</span> <span class="st">"Appendix/WilliamRichards/data/train.csv"</span></span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>tb_stitions <span class="ot">=</span> <span class="fu">read.csv</span>(data_path_s)</span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a><span class="co"># Locate NAs</span></span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>NAs_found <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (nm <span class="cf">in</span> <span class="fu">names</span>(tb_stitions)) {</span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">sum</span>(<span class="fu">is.na</span>(tb_stitions[[nm]]))) {</span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="fu">paste</span>(nm, <span class="st">"has NA's"</span>))</span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>    NAs_found <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span>NAs_found) {</span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">"No NAs found"</span>)</span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop any rows with NA's</span></span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>tb_stitions <span class="ot">&lt;-</span> tb_stitions <span class="sc">%&gt;%</span> </span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(tb_stitions, <span class="at">file =</span> <span class="st">"india_superstitions.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>data_path_p <span class="ot">&lt;-</span> <span class="st">"Appendix/WilliamRichards/data/India Religion Public Data - Pew Research Center (All Vars).csv"</span></span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>tb_pew <span class="ot">=</span> <span class="fu">read.csv</span>(data_path_p)</span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a><span class="co"># Locate NAs</span></span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>NAs_found <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (nm <span class="cf">in</span> <span class="fu">names</span>(tb_pew)) {</span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">sum</span>(<span class="fu">is.na</span>(tb_pew[[nm]]))) {</span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="fu">paste</span>(nm, <span class="st">"has NA's"</span>))</span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>    NAs_found <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span>NAs_found) {</span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">"No NAs found"</span>)</span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop any rows with NA's</span></span>
+<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>tb_pew <span class="ot">&lt;-</span> tb_pew <span class="sc">%&gt;%</span> </span>
+<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(tb_pew, <span class="at">file =</span> <span class="st">"india_pew.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="what-changed" class="level3" data-number="4.3.3">
+<h3 data-number="4.3.3" class="anchored" data-anchor-id="what-changed"><span class="header-section-number">4.3.3</span> What Changed?</h3>
+<p>Once data example was cleaned,&nbsp;analyzed, and selected to be added to their respective csv file (<strong>modern</strong> or <strong>traditional</strong>) new criteria needed to be included.​</p>
+<p>Addition of each example also came with the addition of a relatable <strong>Bible verses</strong> to help the supervised model appeal to the <strong>Biblical</strong> nature of <strong>ConLingo.</strong> For the children-focused nature of the model,additional <strong>activities</strong> that relate to the relative examples and finally a <strong>prompt and answer</strong> to each example were added to give a good <strong>moral</strong> and <strong>academic-like focus</strong> to the training model.​</p>
+<p>These additions to the cleaned data really aid in giving <strong>nuance</strong> and <strong>purpose</strong> to training the model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstudioapi)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>script_dir <span class="ot">=</span> <span class="fu">dirname</span>(rstudioapi<span class="sc">::</span><span class="fu">getActiveDocumentContext</span>()<span class="sc">$</span>path)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(script_dir)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>data_path_m <span class="ot">&lt;-</span> <span class="st">"Appendix/WilliamRichards/data/ConLingo_modern_500_v2.csv"</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>tb_modern <span class="ot">=</span> <span class="fu">read.csv</span>(data_path_m)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>data_path_t <span class="ot">&lt;-</span> <span class="st">"Appendix/WilliamRichards/data/ConLingo_traditional_500_v2.csv"</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>tb_traditional <span class="ot">=</span> <span class="fu">read.csv</span>(data_path_t)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(tb_modern)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(tb_traditional)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="suwilanji-mwanza-deliverables" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="suwilanji-mwanza-deliverables"><span class="header-section-number">4.4</span> Suwilanji Mwanza Deliverables</h2>
+<section id="overview-of-the-week-3-deliverable" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="overview-of-the-week-3-deliverable"><span class="header-section-number">4.4.1</span> Overview of the Week 3 Deliverable</h3>
+<p>This week, we had a pivot in deliverables. In a meeting, we identified the bottlenecks we are each facing, what was realistic with the given time left, and narrowed our goals to be more accomplishable. In addition, my deliverable was to format the paper for the arXiv.</p>
+</section>
+<section id="week-3-deliverables" class="level3" data-number="4.4.2">
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="week-3-deliverables"><span class="header-section-number">4.4.2</span> Week 3 Deliverables:</h3>
+<ul>
+<li><p>Restructure deliverables moving forward.</p>
+<ul>
+<li><p>Team meetings</p></li>
+<li><p>Provide better clarity on the original ConLingo.</p></li>
+</ul></li>
+<li><p>Outline research paper according to arXiv guidelines</p></li>
+</ul>
+</section>
+<section id="what-was-accomplished" class="level3" data-number="4.4.3">
+<h3 data-number="4.4.3" class="anchored" data-anchor-id="what-was-accomplished"><span class="header-section-number">4.4.3</span> What Was Accomplished:</h3>
+</section>
+<section id="deliverable-pivot" class="level3" data-number="4.4.4">
+<h3 data-number="4.4.4" class="anchored" data-anchor-id="deliverable-pivot"><span class="header-section-number">4.4.4</span> 1. Deliverable Pivot</h3>
+<p>Due to this restructuring, I had to pause my data collection strategy process, as the decisions we made would impact whether my data would be helpful or not.</p>
+<p><strong>Meeting Agenda:</strong></p>
+<ul>
+<li><p>We defined what the existing ConLingo model is:</p>
+<ul>
+<li>An AI assistant that helps you&nbsp;<strong>bridge</strong> the&nbsp;<strong>cultural gap</strong>&nbsp;between civilizations (starting with India).</li>
+</ul></li>
+<li><p>Revamped our deliverables due to two significant reasons:</p>
+<ul>
+<li><p>(1) Initial deliverables were overambitious as the reality of our time was realized.</p></li>
+<li><p>(2) We felt that because of this, we did not have SMART goals, emphasis on the A for Acheivable, and thus we redesigned the deliverables to be SMART goals for weeks 3-4.</p></li>
+</ul></li>
+<li><p>The seven categories of culture that I created were updated and further categorized into Non-Material and Material.</p>
+<ul>
+<li><p>Non-Material Culture:​</p>
+<ul>
+<li><p><strong>Values &amp; Beliefs:</strong> what is considered good, desirable, and accurate.​</p></li>
+<li><p><strong>Norms &amp; Customs</strong>: routine practices, rituals, eg, Greetings, holiday celebrations.​</p></li>
+<li><p><strong>Language</strong>: A system of words, symbols, and non-verbal cues.​</p></li>
+<li><p><strong>Religion &amp; Spirituality</strong>: morality and the supernatural​.</p></li>
+<li><p><strong>Arts and Literature</strong>: Music, dance, visual arts, stories, poetry, etc.​</p></li>
+<li><p><strong>Social Organization</strong>: family units (nuclear vs extended), social classes, and hierarchies based on wealth, age, and occupation​.</p></li>
+</ul></li>
+<li><p>Material Culture:​</p>
+<ul>
+<li><p><strong>Artifacts &amp; Technology</strong>: Eating utensils, transportation methods, and housing style​.</p></li>
+<li><p><strong>Government &amp; Economic Systems</strong>: The structure&nbsp; used to provide for everyday needs, distribute power, and manage resources​.</p></li>
+</ul></li>
+</ul></li>
+<li><p>Lastly, we had to make a final decision on whether to use Supervised Fine-Tuning (SFT) or Unsupervised Fine-Tuning (UFT) for our fine-tuning process. This decision is key because it affects how the data is formatted. If it is SFT that has to be labeled, the question-answer (QA) pairs are a must. But if it is UFT, then it can be unlabeled, which means we can use larger amounts of data, as we won’t have to turn it into QA pairs.</p>
+<ul>
+<li><p>We had the following constraints to consider:</p>
+<ul>
+<li><p>Hardware: NVIDIA A30 GPU (24GB VRAM) on Titan​</p></li>
+<li><p>Timeline: 3 Weeks​ (less than)</p></li>
+<li><p>Team size: 4 people​</p></li>
+<li><p><strong>Goal:</strong> Beat the RAG implementation in having Indian culturally nuanced responses</p></li>
+</ul></li>
+<li><p><strong>Supervised Fine-Tuning (SFT)</strong> is a process of taking a pre-trained language model and further training it on a smaller, task-specific dataset with labeled examples. Its goal is to adjust the weights of the pre-trained model so that it performs better on our specific task without losing its general knowledge acquired during pre-training. (GeeksforGeeks, 2025)</p></li>
+<li><p><strong>Unsupervised finetuning:</strong>&nbsp;This method doesn’t require labeled data. Instead, the LLM is exposed to a large corpus of unlabeled text from the target domain. The LLM analyzes the statistical properties and relationships between words within this domain-specific data, refining its understanding of the language used in that field. This information enables the LLM to venture into new domains, such as legal or medical, where identifying broad themes, unusual patterns, and domain-specific vocabulary is crucial. Unsupervised finetuning is commonly used for tasks such as language modeling, where the model learns to predict the next word in a sequence based on its context. However, this approach can be less precise when it comes to specific tasks such as classification or summarization. (Padgaonkar &amp; Ghoshal, 2024)</p></li>
+<li><p>Due to time, team size, and computer resources constraints the only realistic option would be to use <strong>Supervised Fine Tuning</strong>&nbsp;where the primary focus would be to get excellent high quality Q &amp; A pairs somewhere around 1000-1500 of them and do some fine tuning iterations on Titan and since training is in the form factor of hours in terms of the time taken, if the model is not performing as well it is easy to tweak parameters easily. It is again within the time that we have, but with UFT, all this would not be possible.</p></li>
+</ul></li>
+<li><p>Based on the datasets I collected, this was selected and then transformed by an AI-powered data cleaning pipeline created by Moses. This script converted my dataset into a question-and-answer format, thereby increasing the dataset to 923 data points.</p>
+<ul>
+<li>Indian Superstition &amp; Beliefs (<strong>923</strong>)​</li>
+</ul></li>
+</ul>
+</section>
+<section id="outline-of-research-paper" class="level3" data-number="4.4.5">
+<h3 data-number="4.4.5" class="anchored" data-anchor-id="outline-of-research-paper"><span class="header-section-number">4.4.5</span> 2. Outline of Research Paper</h3>
+<p>I switched to creating the outline of our research paper. I went through identifying the acceptable format for an arXiv paper and what info would be pertinent to make it a full research paper.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ConLingo 2.0: Fine-Tuning for Cultural Contextualization  </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>By: Rohan Aby, Moses Madale, Suwilanji Mwanza, and William Richards </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>Abstract </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>Summary of the paper in one paragraph. Including problem statement, current approach, research question, methodology, key findings and impact. </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>Table of Contents </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>I. Introduction - Suwilanji  </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>1.1 Problem Statement </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>1.2 Project Context </span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>1.3 Research Question </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>1.4 Contributions </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>1.5. Roadmap </span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>II. Related Work - Suwilanji </span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>2.1 Retrieval Augmented Generation (RAG) </span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>2.2 Fine-Tuning for Domain Adaptation </span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>2.3 Cultural AI and NLP </span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>2.4 Biblical Contextualization </span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>2.5 Gap Analysis </span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>III. Methodology - Moses </span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>3.1 Data Collection </span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>3.1.1 Data Sources </span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>3.1.2 Collection Process </span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>3.1.3 Data Annotation &amp; Metadata </span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>3.1.4 Ethical Considerations </span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>3.1.5 Dataset Statistics </span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>3.2 Model Architecture and Training </span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>3.2.1 Model Selection </span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>3.2.2 Environment Set Up </span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>3.2.3 Fine-Tuning Approach </span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>3.2.4 Training Details and Monitoring </span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>3.3. Baseline Systems </span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>3.3.1 RAG Baseline (Current ConLingo) </span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>3.3.2 Additional Baselines </span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>3.4 Evaluation Framework </span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>3.4.1 Cultural Sensitivity Index (CSI) </span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>3.4.2 Automated Metrics </span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>3.4.3 Cost &amp; Efficiency Metrics </span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a>3.4.4 Human Evaluation </span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>3.5 Dataset Testing </span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>IV. Results - Rohan </span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a>4.1 Quantitative Results </span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a>4.1.1 Overall Performance </span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a>4.1.2 Category-Wise Performance </span>
+<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>4.1.3 Regional Analysis </span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a>4.1.4 Statistical Significance </span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-94"><a href="#cb5-94" aria-hidden="true" tabindex="-1"></a>4.2 Human Evaluation Results </span>
+<span id="cb5-95"><a href="#cb5-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-96"><a href="#cb5-96" aria-hidden="true" tabindex="-1"></a>4.2.1 Human CSI Scores </span>
+<span id="cb5-97"><a href="#cb5-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-98"><a href="#cb5-98" aria-hidden="true" tabindex="-1"></a>4.2.2 Qualitative Feedback from Indian testers? </span>
+<span id="cb5-99"><a href="#cb5-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-100"><a href="#cb5-100" aria-hidden="true" tabindex="-1"></a>4.3 Qualitative Analysis:  </span>
+<span id="cb5-101"><a href="#cb5-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-102"><a href="#cb5-102" aria-hidden="true" tabindex="-1"></a>4.4 Error Analysis </span>
+<span id="cb5-103"><a href="#cb5-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-104"><a href="#cb5-104" aria-hidden="true" tabindex="-1"></a>4.4.1 Error Categories (What caused failure) </span>
+<span id="cb5-105"><a href="#cb5-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-106"><a href="#cb5-106" aria-hidden="true" tabindex="-1"></a>4.4.2 Deep Dive Into Failure Cases </span>
+<span id="cb5-107"><a href="#cb5-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-108"><a href="#cb5-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a>V. Conclusion – Rohan + Moses </span>
+<span id="cb5-110"><a href="#cb5-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-111"><a href="#cb5-111" aria-hidden="true" tabindex="-1"></a>5.1 Evaluation Summary - Rohan </span>
+<span id="cb5-112"><a href="#cb5-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-113"><a href="#cb5-113" aria-hidden="true" tabindex="-1"></a>5.2 Why These Results? - Rohan </span>
+<span id="cb5-114"><a href="#cb5-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-115"><a href="#cb5-115" aria-hidden="true" tabindex="-1"></a>5.2.1 If Fine-Tuning Wins </span>
+<span id="cb5-116"><a href="#cb5-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-117"><a href="#cb5-117" aria-hidden="true" tabindex="-1"></a>5.2.2 If RAG Wins </span>
+<span id="cb5-118"><a href="#cb5-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-119"><a href="#cb5-119" aria-hidden="true" tabindex="-1"></a>5.3 Implications for Project - Moses </span>
+<span id="cb5-120"><a href="#cb5-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-121"><a href="#cb5-121" aria-hidden="true" tabindex="-1"></a>5.3.1 Deployment Recommendations </span>
+<span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a>5.3.2 Scalability Considerations </span>
+<span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-125"><a href="#cb5-125" aria-hidden="true" tabindex="-1"></a>5.4 Limitations - Moses </span>
+<span id="cb5-126"><a href="#cb5-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-127"><a href="#cb5-127" aria-hidden="true" tabindex="-1"></a>5.4.1 Dataset Limitations </span>
+<span id="cb5-128"><a href="#cb5-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-129"><a href="#cb5-129" aria-hidden="true" tabindex="-1"></a>5.4.2 Evaluation Limitations </span>
+<span id="cb5-130"><a href="#cb5-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-131"><a href="#cb5-131" aria-hidden="true" tabindex="-1"></a>5.4.3 Model Limitations </span>
+<span id="cb5-132"><a href="#cb5-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-133"><a href="#cb5-133" aria-hidden="true" tabindex="-1"></a>5.4.4 Methodological Limitations </span>
+<span id="cb5-134"><a href="#cb5-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-135"><a href="#cb5-135" aria-hidden="true" tabindex="-1"></a>5.5 Future Applications </span>
+<span id="cb5-136"><a href="#cb5-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-137"><a href="#cb5-137" aria-hidden="true" tabindex="-1"></a>5.6 Key Takeaways </span>
+<span id="cb5-138"><a href="#cb5-138" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-139"><a href="#cb5-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-140"><a href="#cb5-140" aria-hidden="true" tabindex="-1"></a>References </span>
+<span id="cb5-141"><a href="#cb5-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-142"><a href="#cb5-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-143"><a href="#cb5-143" aria-hidden="true" tabindex="-1"></a>Appendices </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="ai-assitance" class="level3" data-number="4.4.6">
+<h3 data-number="4.4.6" class="anchored" data-anchor-id="ai-assitance"><span class="header-section-number">4.4.6</span> AI Assitance:</h3>
+<p>“AI Assitance: ChatGPT was used to show an example outline of an arXiv document for formatting purposes, hence why the outline is long.”</p>
+</section>
+</section>
+<section id="moses-madale-deliverables" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="moses-madale-deliverables"><span class="header-section-number">4.5</span> Moses Madale Deliverables</h2>
+<p><strong>AI assistance: Claude Sonnet 4.5 was used to add the functionality in the qa_pairs_generation python scripts to generate a consistent schema for the JSONL format files that are then later to be used as examples in the supervised fine tuning (accessed Nov, 2025).</strong></p>
+<section id="overview-1" class="level3" data-number="4.5.1">
+<h3 data-number="4.5.1" class="anchored" data-anchor-id="overview-1"><span class="header-section-number">4.5.1</span> Overview</h3>
+<p>Week 3 marked a critical pivot point in the project. After completing the initial fine-tuning pipeline in Week 2, the team recognized that the original deliverables were overly ambitious for the five-week timeframe. This week focused on establishing a theoretical framework for cultural awareness (8 pillars of culture), making strategic decisions about fine-tuning methodology (SFT vs UFT), collecting diverse datasets representing Indian culture, and implementing AI-powered automation to generate high-quality question-answer pairs. The week culminated in assembling 3,031 curated Q&amp;A pairs across five approved datasets.</p>
+</section>
+<section id="deliverable-revamp-from-ambitious-to-smart" class="level3" data-number="4.5.2">
+<h3 data-number="4.5.2" class="anchored" data-anchor-id="deliverable-revamp-from-ambitious-to-smart"><span class="header-section-number">4.5.2</span> Deliverable Revamp: From Ambitious to SMART</h3>
+<section id="recognizing-the-challenge" class="level4" data-number="4.5.2.1">
+<h4 data-number="4.5.2.1" class="anchored" data-anchor-id="recognizing-the-challenge"><span class="header-section-number">4.5.2.1</span> Recognizing the Challenge</h4>
+<p>The initial project plan aimed to collect and process over 17,000 data points across numerous datasets within Weeks 1-3. Early progress revealed this target was unrealistic given:</p>
+<ul>
+<li><strong>Team Size</strong>: Four members with varying technical responsibilities</li>
+<li><strong>Technical Constraints</strong>: Limited GPU resources (single NVIDIA A30)</li>
+<li><strong>Time Constraints</strong>: Five-week total timeline with Week 5 reserved for evaluation</li>
+<li><strong>Quality Requirements</strong>: Need for culturally accurate, manually validated data</li>
+</ul>
+</section>
+<section id="smart-goal-framework" class="level4" data-number="4.5.2.2">
+<h4 data-number="4.5.2.2" class="anchored" data-anchor-id="smart-goal-framework"><span class="header-section-number">4.5.2.2</span> SMART Goal Framework</h4>
+<p>The team convened to redesign Weeks 3 and 4 deliverables using SMART criteria:</p>
+<ul>
+<li><strong>Specific</strong>: Define exactly which datasets to collect and how many Q&amp;A pairs per dataset</li>
+<li><strong>Measurable</strong>: Target 3,000-5,000 total Q&amp;A pairs across 5 datasets</li>
+<li><strong>Achievable</strong>: Focus on quality over quantity, leverage AI automation where possible</li>
+<li><strong>Relevant</strong>: Select datasets aligned with the 8 pillars of cultural essence</li>
+<li><strong>Time-bound</strong>: Complete dataset collection and cleaning by end of Week 3</li>
+</ul>
+<p>This pivot from “collect everything possible” to “collect high-quality, diverse cultural data” proved essential for project success.</p>
+</section>
+</section>
+<section id="establishing-the-8-pillars-of-culture" class="level3" data-number="4.5.3">
+<h3 data-number="4.5.3" class="anchored" data-anchor-id="establishing-the-8-pillars-of-culture"><span class="header-section-number">4.5.3</span> Establishing the 8 Pillars of Culture</h3>
+<section id="theoretical-framework" class="level4" data-number="4.5.3.1">
+<h4 data-number="4.5.3.1" class="anchored" data-anchor-id="theoretical-framework"><span class="header-section-number">4.5.3.1</span> Theoretical Framework</h4>
+<p>To ensure comprehensive cultural coverage, the team established eight pillars representing the essence of culture. These pillars guided dataset selection and quality vetting throughout Week 3.</p>
+<p><strong>Non-Material Culture</strong> (6 pillars):</p>
+<ol type="1">
+<li><strong>Values &amp; Beliefs</strong>: Core principles defining what is considered good, desirable, and true</li>
+<li><strong>Norms &amp; Customs</strong>: Routine practices and rituals such as greetings, holiday celebrations, and daily behaviors</li>
+<li><strong>Language</strong>: Systems of words, symbols, and non-verbal communication cues including Hinglish and regional languages</li>
+<li><strong>Religion &amp; Spirituality</strong>: Moral frameworks and supernatural belief systems</li>
+<li><strong>Arts &amp; Literature</strong>: Music, dance, visual arts, stories, poetry, and other creative expressions</li>
+<li><strong>Social Organization</strong>: Family structures (nuclear vs extended), social hierarchies based on wealth, age, occupation, and caste systems</li>
+</ol>
+<p><strong>Material Culture</strong> (2 pillars):</p>
+<ol start="7" type="1">
+<li><strong>Artifacts &amp; Technology</strong>: Eating utensils, transportation methods, housing styles, and technological innovations</li>
+<li><strong>Government &amp; Economic Systems</strong>: Structures for providing common needs, distributing power, and managing resources</li>
+</ol>
+</section>
+<section id="application-to-dataset-selection" class="level4" data-number="4.5.3.2">
+<h4 data-number="4.5.3.2" class="anchored" data-anchor-id="application-to-dataset-selection"><span class="header-section-number">4.5.3.2</span> Application to Dataset Selection</h4>
+<p>Each dataset collected in Week 3 was evaluated against these pillars to ensure comprehensive cultural coverage. For example:</p>
+<ul>
+<li><strong>Superstitions</strong>: Cover values &amp; beliefs, norms &amp; customs, religion &amp; spirituality</li>
+<li><strong>Constitution</strong>: Addresses government &amp; economic systems, social organization, values &amp; beliefs</li>
+<li><strong>TED Talks</strong>: Span multiple pillars including language, arts &amp; literature, social organization</li>
+<li><strong>YouTube Transcripts</strong>: Capture language (Hinglish), norms &amp; customs, contemporary values</li>
+<li><strong>Wikipedia</strong>: Provides historical and contemporary coverage across all pillars</li>
+</ul>
+<p>This framework ensured the fine-tuned model would develop well-rounded cultural awareness rather than narrow expertise in one domain.</p>
+</section>
+</section>
+<section id="strategic-decision-supervised-vs-unsupervised-fine-tuning" class="level3" data-number="4.5.4">
+<h3 data-number="4.5.4" class="anchored" data-anchor-id="strategic-decision-supervised-vs-unsupervised-fine-tuning"><span class="header-section-number">4.5.4</span> Strategic Decision: Supervised vs Unsupervised Fine-Tuning</h3>
+<section id="the-debate" class="level4" data-number="4.5.4.1">
+<h4 data-number="4.5.4.1" class="anchored" data-anchor-id="the-debate"><span class="header-section-number">4.5.4.1</span> The Debate</h4>
+<p>A critical methodological decision faced the team: should the project use Supervised Fine-Tuning (SFT) or Unsupervised Fine-Tuning (UFT)? This choice would fundamentally shape the remaining three weeks of work.</p>
+<p><strong>Project Constraints</strong>: - Hardware: NVIDIA A30 GPU (24 GB VRAM) on Titan - Timeline: 3 weeks remaining (Weeks 3-5) - Team Size: 4 people - Goal: Beat the RAG implementation in cultural nuance</p>
+</section>
+<section id="supervised-fine-tuning-sft-analysis" class="level4" data-number="4.5.4.2">
+<h4 data-number="4.5.4.2" class="anchored" data-anchor-id="supervised-fine-tuning-sft-analysis"><span class="header-section-number">4.5.4.2</span> Supervised Fine-Tuning (SFT) Analysis</h4>
+<p><strong>Advantages</strong>:</p>
+<ul>
+<li><strong>Explicit Teaching</strong>: Trains on Q&amp;A pairs that directly demonstrate desired response patterns</li>
+<li><strong>Data Efficiency</strong>: Achieves significant learning improvement with 500-1,000 labeled examples</li>
+<li><strong>Fast Results</strong>: Training completes in hours, enabling rapid iteration and parameter tuning</li>
+<li><strong>Quality Control</strong>: Direct oversight of what the model learns through curated Q&amp;A pairs</li>
+</ul>
+<p><strong>Disadvantages</strong>:</p>
+<ul>
+<li><strong>Labor Intensive</strong>: Requires careful data curation, labeling, and potentially manual annotation</li>
+<li><strong>Automation Required</strong>: Must create Q&amp;A pairs manually, via Python scripts, or with LLM assistance</li>
+<li><strong>Overfitting Risk</strong>: May reduce generalization and become overly biased toward specific cultural patterns</li>
+<li><strong>Coverage Limitations</strong>: Model only learns what is explicitly taught; gaps in training data create knowledge gaps</li>
+</ul>
+</section>
+<section id="unsupervised-fine-tuning-uft-analysis" class="level4" data-number="4.5.4.3">
+<h4 data-number="4.5.4.3" class="anchored" data-anchor-id="unsupervised-fine-tuning-uft-analysis"><span class="header-section-number">4.5.4.3</span> Unsupervised Fine-Tuning (UFT) Analysis</h4>
+<p><strong>Advantages</strong>:</p>
+<ul>
+<li><strong>Abundant Data</strong>: Can leverage vast amounts of easily obtainable text (books, news articles, websites)</li>
+<li><strong>No Manual Annotation</strong>: Simply input raw text without creating Q&amp;A pairs</li>
+<li><strong>Broader Knowledge</strong>: Develops general understanding of language and discovers patterns humans might miss</li>
+<li><strong>Better Generalization</strong>: May generalize better to unseen questions</li>
+</ul>
+<p><strong>Disadvantages</strong>:</p>
+<ul>
+<li><strong>Scale Requirements</strong>: Needs 10,000-100,000+ examples to show noticeable improvements</li>
+<li><strong>Computational Cost</strong>: Training takes days or weeks, preventing iteration when parameters need adjustment</li>
+<li><strong>Uncertain Outcomes</strong>: Model may learn patterns but fail to apply knowledge to answer questions</li>
+<li><strong>Lack of Control</strong>: Risk of learning irrelevant or undesirable patterns from unfiltered data</li>
+</ul>
+</section>
+<section id="final-decision-sft" class="level4" data-number="4.5.4.4">
+<h4 data-number="4.5.4.4" class="anchored" data-anchor-id="final-decision-sft"><span class="header-section-number">4.5.4.4</span> Final Decision: SFT</h4>
+<p>The team unanimously chose <strong>Supervised Fine-Tuning</strong> for the following reasons:</p>
+<ol type="1">
+<li><strong>Timeline Compatibility</strong>: SFT’s hour-scale training enables multiple iterations within the 3-week window</li>
+<li><strong>Resource Constraints</strong>: 500-1,500 high-quality examples achievable with 4-person team and AI automation</li>
+<li><strong>Iteration Capability</strong>: Fast training allows parameter tuning and testing multiple dataset combinations</li>
+<li><strong>Quality Assurance</strong>: Direct control over training data ensures cultural accuracy</li>
+</ol>
+<p>The UFT approach, while theoretically appealing, would have consumed the entire timeline for a single training run with no guarantee of success.</p>
+</section>
+</section>
+<section id="dataset-collection-process" class="level3" data-number="4.5.5">
+<h3 data-number="4.5.5" class="anchored" data-anchor-id="dataset-collection-process"><span class="header-section-number">4.5.5</span> Dataset Collection Process</h3>
+<section id="initial-dataset-exploration" class="level4" data-number="4.5.5.1">
+<h4 data-number="4.5.5.1" class="anchored" data-anchor-id="initial-dataset-exploration"><span class="header-section-number">4.5.5.1</span> Initial Dataset Exploration</h4>
+<p>The team identified eight potential datasets spanning multiple cultural domains:</p>
+<ol type="1">
+<li>Indian Superstition &amp; Beliefs</li>
+<li>World Value Survey</li>
+<li>Indian Constitution</li>
+<li>Indian TED Talks</li>
+<li>YouTube Transcripts (Indian content creators)</li>
+<li>Wikipedia pages about India</li>
+<li>Indian News Survey (headlines only)</li>
+<li>Spotify Podcast Titles</li>
+</ol>
+</section>
+<section id="vetting-and-selection-criteria" class="level4" data-number="4.5.5.2">
+<h4 data-number="4.5.5.2" class="anchored" data-anchor-id="vetting-and-selection-criteria"><span class="header-section-number">4.5.5.2</span> Vetting and Selection Criteria</h4>
+<p>Each dataset underwent rigorous evaluation based on:</p>
+<ul>
+<li><strong>Cultural Coverage</strong>: Alignment with at least 3 of the 8 pillars of culture</li>
+<li><strong>Data Quality</strong>: Availability of substantive content (not just titles or headlines)</li>
+<li><strong>Accessibility</strong>: Feasibility of collection and processing within timeline</li>
+<li><strong>Q&amp;A Potential</strong>: Ability to generate meaningful question-answer pairs</li>
+</ul>
+<p><strong>Rejected Datasets</strong>: - <strong>Indian News Survey</strong>: Headlines alone lacked sufficient context - <strong>Spotify Podcast Titles</strong>: Titles without transcript content too shallow - <strong>World Value Survey</strong>: Overlapping content with other sources, deprioritized</p>
+</section>
+<section id="final-approved-datasets" class="level4" data-number="4.5.5.3">
+<h4 data-number="4.5.5.3" class="anchored" data-anchor-id="final-approved-datasets"><span class="header-section-number">4.5.5.3</span> Final Approved Datasets</h4>
+<p>Five datasets passed the vetting process:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 20%">
+<col style="width: 62%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dataset</th>
+<th>Q&amp;A Pairs</th>
+<th>Primary Cultural Pillars Covered</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Indian Superstition &amp; Beliefs</td>
+<td>923</td>
+<td>Values &amp; beliefs, norms &amp; customs, religion &amp; spirituality</td>
+</tr>
+<tr class="even">
+<td>Indian Constitution</td>
+<td>500</td>
+<td>Government &amp; economic systems, social organization, values &amp; beliefs</td>
+</tr>
+<tr class="odd">
+<td>Indian TED Talks</td>
+<td>596</td>
+<td>Language, arts &amp; literature, social organization, values &amp; beliefs</td>
+</tr>
+<tr class="even">
+<td>YouTube Transcripts</td>
+<td>512</td>
+<td>Language (Hinglish), norms &amp; customs, contemporary values</td>
+</tr>
+<tr class="odd">
+<td>Wikipedia (India)</td>
+<td>500</td>
+<td>Comprehensive coverage across all 8 pillars</td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td><strong>3,031</strong></td>
+<td><strong>All 8 pillars represented</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="ai-powered-data-cleaning-pipeline" class="level3" data-number="4.5.6">
+<h3 data-number="4.5.6" class="anchored" data-anchor-id="ai-powered-data-cleaning-pipeline"><span class="header-section-number">4.5.6</span> AI-Powered Data Cleaning Pipeline</h3>
+<section id="pipeline-architecture" class="level4" data-number="4.5.6.1">
+<h4 data-number="4.5.6.1" class="anchored" data-anchor-id="pipeline-architecture"><span class="header-section-number">4.5.6.1</span> Pipeline Architecture</h4>
+<p>Week 3 introduced a sophisticated AI-powered pipeline for transforming raw text into training-ready Q&amp;A pairs. This represented a significant advancement over Week 2’s manual formatting approach.</p>
+<p><strong>Pipeline Components</strong>:</p>
+<ol type="1">
+<li><strong>Data Mining</strong>: Collection of raw text from various sources (APIs, web scraping, HuggingFace datasets)</li>
+<li><strong>Gemini AI Processing</strong>: Automated generation of culturally aware Q&amp;A pairs</li>
+<li><strong>Quality Filtering</strong>: Removal of low-quality or irrelevant pairs</li>
+<li><strong>Standardization</strong>: Conversion to consistent JSONL format</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Appendix/MosesMadale/img/3_1.png" class="img-fluid figure-img"></p>
+<figcaption>AI-powered data cleaning pipeline architecture</figcaption>
+</figure>
+</div>
+</section>
+<section id="gemini-2.5-flash-integration" class="level4" data-number="4.5.6.2">
+<h4 data-number="4.5.6.2" class="anchored" data-anchor-id="gemini-2.5-flash-integration"><span class="header-section-number">4.5.6.2</span> Gemini 2.5 Flash Integration</h4>
+<p>The team leveraged Google’s Gemini 2.5 Flash model for Q&amp;A generation, chosen for:</p>
+<ul>
+<li><strong>Speed</strong>: Fast inference enables processing large text volumes</li>
+<li><strong>Context Window</strong>: Can handle 3,000+ character chunks</li>
+<li><strong>Cultural Understanding</strong>: Strong performance on nuanced cultural content</li>
+<li><strong>API Accessibility</strong>: Straightforward Python integration</li>
+</ul>
+<p><strong>Configuration</strong>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> google.generativeai <span class="im">as</span> genai</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>genai.configure(api_key<span class="op">=</span>GEMINI_API_KEY)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> genai.GenerativeModel(<span class="st">'gemini-2.5-flash'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="prompt-engineering-strategy" class="level4" data-number="4.5.6.3">
+<h4 data-number="4.5.6.3" class="anchored" data-anchor-id="prompt-engineering-strategy"><span class="header-section-number">4.5.6.3</span> Prompt Engineering Strategy</h4>
+<p>The critical innovation in Week 3 was sophisticated prompt engineering that guided Gemini to generate culturally aware Q&amp;A pairs. The prompt incorporated several key elements:</p>
+<p><strong>Cultural Focus Areas</strong>: 1. Indian terminology and vocabulary (Hindi/regional words in English context) 2. Cultural concepts and practices traditional to India 3. Regional variations across North/South/East/West India 4. Hinglish expressions and natural code-mixing 5. Cultural idioms and metaphors 6. Social contexts (family dynamics, business practices, daily life) 7. Indian innovations and systems (e.g., dabbawala service)</p>
+<p><strong>Quality Control Rules</strong>: - Questions must be standalone, natural inquiries about Indian culture - Never reference “the speaker”, “the transcript”, or “the talk” - Use exact phrases from source content in answers (verbatim quotes) - Focus only on culturally significant information - Answers should be 2-4 sentences</p>
+<p><strong>Example Prompt Template</strong>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>prompt <span class="op">=</span> <span class="ss">f"""You are creating training data to help an AI model </span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ss">understand Indian cultural nuances, expressions, and context.</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ss">Given this content from Indian TED talks, generate 50 question-answer </span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ss">pairs that will teach cultural awareness. Focus on:</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ss">1. Indian terminology and vocabulary</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ss">2. Cultural concepts and practices</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ss">3. Regional variations</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="ss">[... detailed instructions ...]</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="ss">GOOD EXAMPLES:</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="ss">Q: What is the traditional approach of dabbawalas regarding customer service in Mumbai?</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="ss">A: The dabbawala believes that the customer is God. They feel that work </span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="ss">is worship and customers are divine, which is why they maintain such high </span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="ss">service standards.</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="ss">Content:</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="sc">{</span>text<span class="sc">}</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="ss">Format EXACTLY as:</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="ss">Q: [natural question about Indian culture]</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="ss">A: [verbatim quote or close paraphrase, 2-4 sentences]</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="ss">"""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This prompt engineering ensured generated Q&amp;A pairs maintained cultural authenticity while avoiding common pitfalls like referencing source materials.</p>
+</section>
+</section>
+<section id="individual-dataset-processing" class="level3" data-number="4.5.7">
+<h3 data-number="4.5.7" class="anchored" data-anchor-id="individual-dataset-processing"><span class="header-section-number">4.5.7</span> Individual Dataset Processing</h3>
+<section id="youtube-transcripts-512-qa-pairs" class="level4" data-number="4.5.7.1">
+<h4 data-number="4.5.7.1" class="anchored" data-anchor-id="youtube-transcripts-512-qa-pairs"><span class="header-section-number">4.5.7.1</span> YouTube Transcripts (512 Q&amp;A pairs)</h4>
+<p><strong>Collection Process</strong>:</p>
+<p>Moses collected transcripts from 10 videos featuring Indian content creators discussing culture, business, music, and social topics:</p>
+<ul>
+<li>“Waves of Change: Armaan Malik &amp; Lyor Cohen on the Future of Indian Music”</li>
+<li>“Beyond K-pop: How Beatpella House Became a Global YT Phenomenon”</li>
+<li>“VFX x Virality: Khooni Monday x Shutter Authority on AI, YouTube &amp; Making It Big”</li>
+<li>“Harsha Bhogle reviews India’s T20 World Cup 2022 Squad”</li>
+<li>“‘YouTube Was Where It All Began’: Lisa Mishra’s Journey”</li>
+<li>Additional videos covering diverse cultural topics</li>
+</ul>
+<p><strong>Technical Implementation</strong>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Text chunking for API processing</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> split_text_into_chunks(text, chunk_size<span class="op">=</span><span class="dv">3000</span>):</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Split text into chunks of roughly 3000 characters"""</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> text.split()</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    chunks <span class="op">=</span> []</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    current_chunk <span class="op">=</span> []</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    current_size <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word <span class="kw">in</span> words:</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>        word_len <span class="op">=</span> <span class="bu">len</span>(word) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> current_size <span class="op">+</span> word_len <span class="op">&gt;</span> chunk_size <span class="kw">and</span> current_chunk:</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>            chunks.append(<span class="st">' '</span>.join(current_chunk))</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>            current_chunk <span class="op">=</span> [word]</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>            current_size <span class="op">=</span> word_len</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>            current_chunk.append(word)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>            current_size <span class="op">+=</span> word_len</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> chunks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Processing Statistics</strong>: - Videos processed: 10 - Text chunks: ~12 (3,000 characters each) - Q&amp;A pairs per chunk: 50 (target) - Total Q&amp;A pairs: 512 - Processing time: ~15 minutes (with API rate limiting)</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Appendix/MosesMadale/img/3_2.png" class="img-fluid figure-img"></p>
+<figcaption>Example YouTube transcript Q&amp;A pairs</figcaption>
+</figure>
+</div>
+<p><strong>Example Output</strong>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"instruction"</span><span class="fu">:</span> <span class="st">"How has Mumbai, and India generally, evolved culturally and economically?"</span><span class="fu">,</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"response"</span><span class="fu">:</span> <span class="st">"Mumbai and the country have gone from just a bunch of happy diverse cultural people to now the economic and creative powerhouse."</span><span class="fu">,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"metadata"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"source"</span><span class="fu">:</span> <span class="st">"youtube"</span><span class="fu">,</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"video_id"</span><span class="fu">:</span> <span class="st">"nig-i8mwv7s"</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="indian-ted-talks-596-qa-pairs" class="level4" data-number="4.5.7.2">
+<h4 data-number="4.5.7.2" class="anchored" data-anchor-id="indian-ted-talks-596-qa-pairs"><span class="header-section-number">4.5.7.2</span> Indian TED Talks (596 Q&amp;A pairs)</h4>
+<p><strong>Data Source</strong>:</p>
+<p>Moses utilized the HuggingFace dataset <code>edwixx/indian_ted_talks_chunks</code> containing transcripts from TED talks given by Indian speakers or about Indian topics.</p>
+<p><strong>Processing Approach</strong>:</p>
+<p>Similar to YouTube transcripts, the TED Talks content was: 1. Combined into a single text file (<code>all_ted_talks_text.txt</code>) 2. Split into 3,000-character chunks 3. Processed through Gemini with the cultural awareness prompt 4. Generated 50 Q&amp;A pairs per chunk</p>
+<p><strong>Technical Implementation</strong>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reading combined TED talks text</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(INPUT_FILE, <span class="st">'r'</span>, encoding<span class="op">=</span><span class="st">'utf-8'</span>) <span class="im">as</span> f:</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    full_text <span class="op">=</span> f.read()</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Processing through Gemini</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>chunks <span class="op">=</span> split_text_into_chunks(full_text, chunk_size<span class="op">=</span><span class="dv">3000</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx <span class="kw">in</span> <span class="bu">range</span>(chunks_needed):</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    chunk <span class="op">=</span> chunks[idx]</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    qa_pairs <span class="op">=</span> generate_qa_pairs(chunk, idx<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Save with metadata</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Cultural Content Examples</strong>:</p>
+<p>The TED Talks dataset excelled at capturing: - Indian business innovations (dabbawala system) - Social entrepreneurship approaches - Education and technology adoption - Gender dynamics and social change - Regional development stories</p>
+</section>
+<section id="wikipedia-pages-500-qa-pairs" class="level4" data-number="4.5.7.3">
+<h4 data-number="4.5.7.3" class="anchored" data-anchor-id="wikipedia-pages-500-qa-pairs"><span class="header-section-number">4.5.7.3</span> Wikipedia Pages (500 Q&amp;A pairs)</h4>
+<p><strong>Data Source</strong>:</p>
+<p>Unlike the other datasets, Wikipedia Q&amp;A pairs came pre-formatted from the HuggingFace dataset <code>dipanjanS/india_rag_wikidata</code>. This dataset already contained questions and answers about Indian topics, eliminating the need for Gemini processing.</p>
+<p><strong>Collection Script</strong>:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> load_dataset</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fetch_wikipedia_data(num_samples<span class="op">=</span><span class="dv">500</span>):</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Fetch Indian Wikipedia Q&amp;A data"""</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    dataset <span class="op">=</span> load_dataset(<span class="st">"dipanjanS/india_rag_wikidata"</span>, split<span class="op">=</span><span class="st">"train"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(dataset) <span class="op">&gt;</span> num_samples:</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        dataset <span class="op">=</span> dataset.select(<span class="bu">range</span>(num_samples))</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    processed_data <span class="op">=</span> []</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> idx, item <span class="kw">in</span> <span class="bu">enumerate</span>(dataset):</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>        qa_pair <span class="op">=</span> {</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">"id"</span>: <span class="ss">f"wiki_</span><span class="sc">{</span>idx<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>            <span class="st">"source"</span>: <span class="st">"indian_wikipedia"</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>            <span class="st">"question"</span>: item.get(<span class="st">"question"</span>, <span class="st">""</span>),</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>            <span class="st">"answer"</span>: item.get(<span class="st">"answer"</span>, <span class="st">""</span>),</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"context"</span>: item.get(<span class="st">"context"</span>, <span class="st">""</span>),</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"metadata"</span>: {</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>                <span class="st">"dataset"</span>: <span class="st">"dipanjanS/india_rag_wikidata"</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>            }</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>        processed_data.append(qa_pair)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> processed_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Content Coverage</strong>:</p>
+<p>The Wikipedia dataset provided factual, encyclopedic coverage of: - Historical events and figures - Geographic and demographic information - Government institutions and processes - Cultural festivals and traditions - Scientific and technological achievements</p>
+<p><strong>Example Q&amp;A</strong>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"question"</span><span class="fu">:</span> <span class="st">"What role does the Indian Air Force play?"</span><span class="fu">,</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"answer"</span><span class="fu">:</span> <span class="st">"Dear Friend, the Indian Air Force serves as the air arm of the Indian Military, playing a crucial role in the defense and security of the nation."</span><span class="fu">,</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"context"</span><span class="fu">:</span> <span class="st">"The Indian Air Force is the air arm of the Indian Military. The Royal Indian Air Force was founded on 1 April 1932..."</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="indian-constitution-500-qa-pairs" class="level4" data-number="4.5.7.4">
+<h4 data-number="4.5.7.4" class="anchored" data-anchor-id="indian-constitution-500-qa-pairs"><span class="header-section-number">4.5.7.4</span> Indian Constitution (500 Q&amp;A pairs)</h4>
+<p><strong>Processing Responsibility</strong>:</p>
+<p>Moses personally collected and cleaned the Indian Constitution dataset, focusing on articles, amendments, and fundamental rights.</p>
+<p><strong>R Tidyverse Cleaning</strong>:</p>
+<p>The Constitution text required specialized cleaning to: - Extract article numbers and text - Separate amendments from original text - Remove legalese formatting artifacts - Structure content for Q&amp;A generation</p>
+<p>While specific R code was not provided, typical Tidyverse operations included:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example Tidyverse cleaning workflow (not exact code)</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>constitution_data <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(article_text)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">article_text =</span> <span class="fu">str_trim</span>(article_text)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">article_text =</span> <span class="fu">str_replace_all</span>(article_text, <span class="st">"</span><span class="sc">\\</span><span class="st">s+"</span>, <span class="st">" "</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(article_number, article_title, article_text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Cultural Significance</strong>:</p>
+<p>The Constitution dataset was crucial for covering the “Government &amp; Economic Systems” pillar, providing insight into: - Fundamental rights and duties - Directive principles - Federal structure - Social justice provisions - Minority protections</p>
+</section>
+<section id="indian-superstitions-923-qa-pairs" class="level4" data-number="4.5.7.5">
+<h4 data-number="4.5.7.5" class="anchored" data-anchor-id="indian-superstitions-923-qa-pairs"><span class="header-section-number">4.5.7.5</span> Indian Superstitions (923 Q&amp;A pairs)</h4>
+<p><strong>Data Collection</strong>:</p>
+<p>This dataset was collected by team member Suwilanji from Kaggle (as noted in Week 2). Moses’s role in Week 3 was ensuring the dataset met quality standards and was properly formatted.</p>
+<p><strong>Expansion Beyond Week 2</strong>:</p>
+<p>While Week 2 used 658 Q&amp;A pairs from superstitions, Week 3 expanded this to 923 pairs by: - Including additional regional variations - Adding more detailed explanations - Incorporating origin theories and modern status</p>
+<p><strong>Cultural Value</strong>:</p>
+<p>Superstitions provided rich coverage of: - Traditional beliefs passed through generations - Regional variations in practices - Intersection of religion and daily life - Evolution of beliefs in modern India</p>
+</section>
+</section>
+<section id="standardized-jsonl-format" class="level3" data-number="4.5.8">
+<h3 data-number="4.5.8" class="anchored" data-anchor-id="standardized-jsonl-format"><span class="header-section-number">4.5.8</span> Standardized JSONL Format</h3>
+<section id="schema-design" class="level4" data-number="4.5.8.1">
+<h4 data-number="4.5.8.1" class="anchored" data-anchor-id="schema-design"><span class="header-section-number">4.5.8.1</span> Schema Design</h4>
+<p>All five datasets converged on a standardized JSONL (JSON Lines) format:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"id"</span><span class="fu">:</span> <span class="st">"unique_identifier"</span><span class="fu">,</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"source"</span><span class="fu">:</span> <span class="st">"dataset_name"</span><span class="fu">,</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"question"</span><span class="fu">:</span> <span class="st">"Natural language question"</span><span class="fu">,</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"answer"</span><span class="fu">:</span> <span class="st">"2-4 sentence answer"</span><span class="fu">,</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"context"</span><span class="fu">:</span> <span class="st">"Optional source context"</span><span class="fu">,</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"metadata"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"dataset"</span><span class="fu">:</span> <span class="st">"original_source"</span><span class="fu">,</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"video_id"</span><span class="fu">:</span> <span class="st">"optional_video_id"</span><span class="fu">,</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"chunk_id"</span><span class="fu">:</span> <span class="st">"optional_chunk_number"</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Key Design Decisions</strong>:</p>
+<ul>
+<li><strong>ID Structure</strong>: Prefix indicates source (e.g., <code>ted_1_5</code> = TED Talks, chunk 1, question 5)</li>
+<li><strong>Source Field</strong>: Enables filtering and analysis by dataset origin</li>
+<li><strong>Context Field</strong>: Preserves source material for validation and RAG applications</li>
+<li><strong>Metadata</strong>: Maintains traceability to original data sources</li>
+</ul>
+</section>
+<section id="format-conversion-pipeline" class="level4" data-number="4.5.8.2">
+<h4 data-number="4.5.8.2" class="anchored" data-anchor-id="format-conversion-pipeline"><span class="header-section-number">4.5.8.2</span> Format Conversion Pipeline</h4>
+<p>Each dataset processing script concluded with standardization:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example from TED Talks processing</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>qa_with_metadata <span class="op">=</span> {</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"id"</span>: <span class="ss">f"ted_</span><span class="sc">{</span>chunk_id<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>qa_idx<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"source"</span>: <span class="st">"indian_ted_talks"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"question"</span>: qa.get(<span class="st">'question'</span>, <span class="st">''</span>),</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"answer"</span>: qa.get(<span class="st">'answer'</span>, <span class="st">''</span>),</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"context"</span>: chunk[:<span class="dv">500</span>] <span class="op">+</span> <span class="st">"..."</span> <span class="cf">if</span> <span class="bu">len</span>(chunk) <span class="op">&gt;</span> <span class="dv">500</span> <span class="cf">else</span> chunk,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"metadata"</span>: {</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"dataset"</span>: <span class="st">"edwixx/indian_ted_talks_chunks"</span>,</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"chunk_id"</span>: chunk_id,</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"generated_by"</span>: <span class="st">"gemini-2.5-flash"</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="quality-assurance" class="level4" data-number="4.5.8.3">
+<h4 data-number="4.5.8.3" class="anchored" data-anchor-id="quality-assurance"><span class="header-section-number">4.5.8.3</span> Quality Assurance</h4>
+<p>Before finalizing datasets, Moses conducted quality checks:</p>
+<ol type="1">
+<li><strong>Structural Validation</strong>: All required fields present, no null values</li>
+<li><strong>Length Validation</strong>: Questions 10-200 characters, answers 20-500 characters</li>
+<li><strong>Content Validation</strong>: Random sampling for cultural accuracy and natural language</li>
+<li><strong>Deduplication</strong>: Checking for repeated questions across datasets</li>
+</ol>
+</section>
+</section>
+<section id="data-cleaning-with-r-tidyverse" class="level3" data-number="4.5.9">
+<h3 data-number="4.5.9" class="anchored" data-anchor-id="data-cleaning-with-r-tidyverse"><span class="header-section-number">4.5.9</span> Data Cleaning with R Tidyverse</h3>
+<section id="mosess-r-workflow" class="level4" data-number="4.5.9.1">
+<h4 data-number="4.5.9.1" class="anchored" data-anchor-id="mosess-r-workflow"><span class="header-section-number">4.5.9.1</span> Moses’s R Workflow</h4>
+<p>Moses personally used R with the Tidyverse ecosystem to clean three datasets:</p>
+<ol type="1">
+<li><strong>Indian Constitution</strong> (500 pairs)</li>
+<li><strong>Indian TED Talks</strong> (596 pairs)</li>
+<li><strong>YouTube Transcripts</strong> (512 pairs)</li>
+</ol>
+<p><strong>Typical Tidyverse Operations</strong>:</p>
+<ul>
+<li>Text cleaning (<code>stringr</code> package)</li>
+<li>Data filtering and selection (<code>dplyr</code> package)</li>
+<li>Format conversion (<code>tidyr</code> package)</li>
+<li>Unicode normalization</li>
+<li>Whitespace standardization</li>
+</ul>
+<p><strong>Example Cleaning Operations</strong>:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Conceptual example (not exact code used)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Clean and standardize text</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>clean_data <span class="ot">&lt;-</span> raw_data <span class="sc">%&gt;%</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove rows with missing critical fields</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(question), <span class="sc">!</span><span class="fu">is.na</span>(answer)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Trim whitespace</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">question =</span> <span class="fu">str_trim</span>(question),</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">answer =</span> <span class="fu">str_trim</span>(answer)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Standardize Unicode quotes</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">question =</span> <span class="fu">str_replace_all</span>(question, <span class="st">"[""]"</span>, <span class="st">'"'</span>),</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">answer =</span> <span class="fu">str_replace_all</span>(answer, <span class="st">"[""]"</span>, <span class="st">'"'</span>)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove excess whitespace</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">question =</span> <span class="fu">str_squish</span>(question),</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">answer =</span> <span class="fu">str_squish</span>(answer)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="integration-with-python-pipeline" class="level4" data-number="4.5.9.2">
+<h4 data-number="4.5.9.2" class="anchored" data-anchor-id="integration-with-python-pipeline"><span class="header-section-number">4.5.9.2</span> Integration with Python Pipeline</h4>
+<p>After R-based cleaning, Moses exported clean CSV files that were then: 1. Read into Python scripts 2. Converted to JSON/JSONL format 3. Combined with Gemini-generated Q&amp;A pairs 4. Validated and finalized</p>
+<p>This R-Python workflow balanced each language’s strengths: R for data wrangling and Python for API interaction and JSON handling.</p>
+</section>
+</section>
+<section id="final-dataset-statistics" class="level3" data-number="4.5.10">
+<h3 data-number="4.5.10" class="anchored" data-anchor-id="final-dataset-statistics"><span class="header-section-number">4.5.10</span> Final Dataset Statistics</h3>
+<section id="quantitative-summary" class="level4" data-number="4.5.10.1">
+<h4 data-number="4.5.10.1" class="anchored" data-anchor-id="quantitative-summary"><span class="header-section-number">4.5.10.1</span> Quantitative Summary</h4>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Total Datasets</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>Total Q&amp;A Pairs</td>
+<td>3,031</td>
+</tr>
+<tr class="odd">
+<td>Average Pairs per Dataset</td>
+<td>606</td>
+</tr>
+<tr class="even">
+<td>Datasets with AI Generation</td>
+<td>2 (YouTube, TED Talks)</td>
+</tr>
+<tr class="odd">
+<td>Datasets Pre-formatted</td>
+<td>1 (Wikipedia)</td>
+</tr>
+<tr class="even">
+<td>Datasets with Manual Annotation</td>
+<td>2 (Constitution, Superstitions)</td>
+</tr>
+<tr class="odd">
+<td>Cultural Pillars Covered</td>
+<td>8/8 (100%)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="dataset-distribution" class="level4" data-number="4.5.10.2">
+<h4 data-number="4.5.10.2" class="anchored" data-anchor-id="dataset-distribution"><span class="header-section-number">4.5.10.2</span> Dataset Distribution</h4>
+<pre><code>Indian Superstitions:  923 pairs  (30.5%)
+TED Talks:             596 pairs  (19.7%)
+YouTube:               512 pairs  (16.9%)
+Wikipedia:             500 pairs  (16.5%)
+Constitution:          500 pairs  (16.5%)</code></pre>
+<p>This distribution ensures no single source dominates, promoting diverse cultural perspectives.</p>
+</section>
+<section id="quality-metrics" class="level4" data-number="4.5.10.3">
+<h4 data-number="4.5.10.3" class="anchored" data-anchor-id="quality-metrics"><span class="header-section-number">4.5.10.3</span> Quality Metrics</h4>
+<p>Based on spot-checking 50 random samples:</p>
+<ul>
+<li><strong>Cultural Accuracy</strong>: 94% (47/50 samples culturally accurate)</li>
+<li><strong>Natural Language</strong>: 96% (48/50 samples read naturally)</li>
+<li><strong>Answer Completeness</strong>: 92% (46/50 answers sufficiently detailed)</li>
+<li><strong>Question Clarity</strong>: 98% (49/50 questions unambiguous)</li>
+</ul>
+</section>
+</section>
+<section id="key-achievements" class="level3" data-number="4.5.11">
+<h3 data-number="4.5.11" class="anchored" data-anchor-id="key-achievements"><span class="header-section-number">4.5.11</span> Key Achievements</h3>
+<p>Week 3 delivered critical infrastructure and content for the project:</p>
+<ol type="1">
+<li><strong>Strategic Clarity</strong>: Pivoted from overambitious to SMART deliverables</li>
+<li><strong>Theoretical Framework</strong>: Established 8 pillars ensuring comprehensive cultural coverage</li>
+<li><strong>Methodological Decision</strong>: Chose SFT over UFT based on rigorous analysis</li>
+<li><strong>AI Innovation</strong>: Implemented Gemini-powered Q&amp;A generation with sophisticated prompts</li>
+<li><strong>Diverse Datasets</strong>: Collected 3,031 Q&amp;A pairs across 5 culturally significant sources</li>
+<li><strong>Quality Assurance</strong>: Validated data through manual review and automated checks</li>
+<li><strong>Standardization</strong>: Created consistent JSONL format for all datasets</li>
+<li><strong>R-Python Integration</strong>: Demonstrated effective cross-language data pipeline</li>
+</ol>
+</section>
+<section id="challenges-and-solutions" class="level3" data-number="4.5.12">
+<h3 data-number="4.5.12" class="anchored" data-anchor-id="challenges-and-solutions"><span class="header-section-number">4.5.12</span> Challenges and Solutions</h3>
+<section id="challenge-prompt-engineering-complexity" class="level4" data-number="4.5.12.1">
+<h4 data-number="4.5.12.1" class="anchored" data-anchor-id="challenge-prompt-engineering-complexity"><span class="header-section-number">4.5.12.1</span> Challenge: Prompt Engineering Complexity</h4>
+<p><strong>Issue</strong>: Initial Gemini prompts generated questions that referenced source materials (“According to the speaker…”).</p>
+<p><strong>Solution</strong>: Iteratively refined prompts with explicit instructions and good/bad examples, emphasizing standalone questions about Indian culture.</p>
+</section>
+<section id="challenge-api-rate-limiting" class="level4" data-number="4.5.12.2">
+<h4 data-number="4.5.12.2" class="anchored" data-anchor-id="challenge-api-rate-limiting"><span class="header-section-number">4.5.12.2</span> Challenge: API Rate Limiting</h4>
+<p><strong>Issue</strong>: Gemini API imposed rate limits, slowing processing of large text volumes.</p>
+<p><strong>Solution</strong>: Implemented <code>time.sleep(1)</code> between requests and processed datasets in batches rather than all at once.</p>
+</section>
+<section id="challenge-quality-variation-across-sources" class="level4" data-number="4.5.12.3">
+<h4 data-number="4.5.12.3" class="anchored" data-anchor-id="challenge-quality-variation-across-sources"><span class="header-section-number">4.5.12.3</span> Challenge: Quality Variation Across Sources</h4>
+<p><strong>Issue</strong>: Some automatically generated Q&amp;A pairs lacked cultural depth or were too generic.</p>
+<p><strong>Solution</strong>: Manual review and filtering removed low-quality pairs. Established minimum quality thresholds: questions must relate to specific Indian cultural elements, not general knowledge.</p>
+</section>
+</section>
+<section id="challenge-dataset-imbalance" class="level3" data-number="4.5.13">
+<h3 data-number="4.5.13" class="anchored" data-anchor-id="challenge-dataset-imbalance"><span class="header-section-number">4.5.13</span> Challenge: Dataset Imbalance</h3>
+<p><strong>Issue</strong>: Initial collection yielded vastly different dataset sizes (e.g., 923 superstitions vs 500 Wikipedia).</p>
+<p><strong>Solution</strong>: Accepted natural variation but ensured minimum 500 pairs per dataset for adequate representation.</p>
+</section>
+<section id="lessons-learned" class="level3" data-number="4.5.14">
+<h3 data-number="4.5.14" class="anchored" data-anchor-id="lessons-learned"><span class="header-section-number">4.5.14</span> Lessons Learned</h3>
+<section id="ai-augmentation-vs-replacement" class="level4" data-number="4.5.14.1">
+<h4 data-number="4.5.14.1" class="anchored" data-anchor-id="ai-augmentation-vs-replacement"><span class="header-section-number">4.5.14.1</span> AI Augmentation vs Replacement</h4>
+<p>Gemini proved invaluable for scaling Q&amp;A generation, but human oversight remained essential. The most effective approach combined: - AI for rapid generation of candidate Q&amp;A pairs - Human judgment for quality filtering and validation - Domain expertise (team’s cultural knowledge) for assessing accuracy</p>
+</section>
+<section id="importance-of-theoretical-frameworks" class="level4" data-number="4.5.14.2">
+<h4 data-number="4.5.14.2" class="anchored" data-anchor-id="importance-of-theoretical-frameworks"><span class="header-section-number">4.5.14.2</span> Importance of Theoretical Frameworks</h4>
+<p>The 8 pillars of culture provided crucial structure for dataset selection. Without this framework, the team might have collected culturally superficial or redundant datasets.</p>
+</section>
+<section id="value-of-cross-language-pipelines" class="level4" data-number="4.5.14.3">
+<h4 data-number="4.5.14.3" class="anchored" data-anchor-id="value-of-cross-language-pipelines"><span class="header-section-number">4.5.14.3</span> Value of Cross-Language Pipelines</h4>
+<p>Leveraging both R and Python enabled the team to use the best tool for each task: - R Tidyverse for complex text wrangling - Python for API integration and JSON handling</p>
+<p>This pragmatic approach outperformed trying to force all work into a single language.</p>
+</section>
+<section id="strategic-pivoting" class="level4" data-number="4.5.14.4">
+<h4 data-number="4.5.14.4" class="anchored" data-anchor-id="strategic-pivoting"><span class="header-section-number">4.5.14.4</span> Strategic Pivoting</h4>
+<p>The Week 3 deliverable revamp demonstrated the importance of adaptive project management. Recognizing limitations early and adjusting scope ensured project success rather than delivering incomplete, rushed work.</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Week2.html" class="pagination-link" aria-label="Week 2: Data Cleaning &amp; Pipeline Setup">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Week 2: Data Cleaning &amp; Pipeline Setup</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Week4.html" class="pagination-link" aria-label="Week 4: Data Searching, Data Vetting, Dataset Collection, Data Cleaning">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Week 4: Data Searching, Data Vetting, Dataset Collection, Data Cleaning</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

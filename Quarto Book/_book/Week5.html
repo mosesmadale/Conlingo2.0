@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Week 5: Compare Fine-tuned model with RAG implementation and ChatGPT-5 &amp; Research Paper – ConLingo Quarto Book</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Future_Improvments.html" rel="next">
+<link href="./Week4.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-485d01fc63b59abcd3ee1bf1e8e2748d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Week5.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Week 5: Compare Fine-tuned model with RAG implementation and ChatGPT-5 &amp; Research Paper</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">ConLingo Quarto Book</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">ConLingo 2.0</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Week 1: Foundations &amp; Data Collection</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Week 2: Data Cleaning &amp; Pipeline Setup</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Week 3: Data Searching, Data Vetting, Dataset Collection, Data Cleaning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Week 4: Data Searching, Data Vetting, Dataset Collection, Data Cleaning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week5.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Week 5: Compare Fine-tuned model with RAG implementation and ChatGPT-5 &amp; Research Paper</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Future_Improvments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Future Improvements</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">6.1</span> Overview</a></li>
+  <li><a href="#rohan-aby-deliverables" id="toc-rohan-aby-deliverables" class="nav-link" data-scroll-target="#rohan-aby-deliverables"><span class="header-section-number">6.2</span> Rohan Aby Deliverables</a></li>
+  <li><a href="#william-richards-deliverables" id="toc-william-richards-deliverables" class="nav-link" data-scroll-target="#william-richards-deliverables"><span class="header-section-number">6.3</span> William Richards Deliverables</a></li>
+  <li><a href="#moses-madale-deliverables" id="toc-moses-madale-deliverables" class="nav-link" data-scroll-target="#moses-madale-deliverables"><span class="header-section-number">6.4</span> Moses Madale Deliverables</a>
+  <ul class="collapse">
+  <li><a href="#human-evaluation-and-comparative-analysis" id="toc-human-evaluation-and-comparative-analysis" class="nav-link" data-scroll-target="#human-evaluation-and-comparative-analysis"><span class="header-section-number">6.4.1</span> Human Evaluation and Comparative Analysis</a></li>
+  <li><a href="#prompt-engineering-for-fair-comparison" id="toc-prompt-engineering-for-fair-comparison" class="nav-link" data-scroll-target="#prompt-engineering-for-fair-comparison"><span class="header-section-number">6.4.2</span> Prompt Engineering for Fair Comparison</a></li>
+  <li><a href="#survey-design-and-implementation" id="toc-survey-design-and-implementation" class="nav-link" data-scroll-target="#survey-design-and-implementation"><span class="header-section-number">6.4.3</span> Survey Design and Implementation</a></li>
+  <li><a href="#design-challenges-and-solutions" id="toc-design-challenges-and-solutions" class="nav-link" data-scroll-target="#design-challenges-and-solutions"><span class="header-section-number">6.4.4</span> Design Challenges and Solutions</a></li>
+  <li><a href="#data-collection-and-demographics" id="toc-data-collection-and-demographics" class="nav-link" data-scroll-target="#data-collection-and-demographics"><span class="header-section-number">6.4.5</span> Data Collection and Demographics</a></li>
+  <li><a href="#data-encoding-and-analysis-methodology" id="toc-data-encoding-and-analysis-methodology" class="nav-link" data-scroll-target="#data-encoding-and-analysis-methodology"><span class="header-section-number">6.4.6</span> Data Encoding and Analysis Methodology</a></li>
+  <li><a href="#results-and-findings" id="toc-results-and-findings" class="nav-link" data-scroll-target="#results-and-findings"><span class="header-section-number">6.4.7</span> Results and Findings</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion"><span class="header-section-number">6.4.8</span> Conclusion</a></li>
+  </ul></li>
+  <li><a href="#suwilanji-mwaanza-deliverables" id="toc-suwilanji-mwaanza-deliverables" class="nav-link" data-scroll-target="#suwilanji-mwaanza-deliverables"><span class="header-section-number">6.5</span> Suwilanji Mwaanza Deliverables</a>
+  <ul class="collapse">
+  <li><a href="#overview-of-the-week-5-deliverable" id="toc-overview-of-the-week-5-deliverable" class="nav-link" data-scroll-target="#overview-of-the-week-5-deliverable"><span class="header-section-number">6.5.1</span> Overview of the Week 5 Deliverable</a></li>
+  <li><a href="#week-5-deliverables" id="toc-week-5-deliverables" class="nav-link" data-scroll-target="#week-5-deliverables"><span class="header-section-number">6.5.2</span> Week 5 Deliverables:</a></li>
+  <li><a href="#what-was-accomplished" id="toc-what-was-accomplished" class="nav-link" data-scroll-target="#what-was-accomplished"><span class="header-section-number">6.5.3</span> What Was Accomplished:</a></li>
+  <li><a href="#widening-our-evaluation" id="toc-widening-our-evaluation" class="nav-link" data-scroll-target="#widening-our-evaluation"><span class="header-section-number">6.5.4</span> 1. Widening our evaluation</a></li>
+  <li><a href="#adding-deliverables-to-the-draft" id="toc-adding-deliverables-to-the-draft" class="nav-link" data-scroll-target="#adding-deliverables-to-the-draft"><span class="header-section-number">6.5.5</span> 2. Adding deliverables to the draft</a></li>
+  <li><a href="#why-rag-outperforms-sft-in-cultural-alignment-bonus" id="toc-why-rag-outperforms-sft-in-cultural-alignment-bonus" class="nav-link" data-scroll-target="#why-rag-outperforms-sft-in-cultural-alignment-bonus"><span class="header-section-number">6.5.6</span> 3. Why RAG Outperforms SFT in Cultural Alignment <strong>(Bonus)</strong></a></li>
+  <li><a href="#the-case-for-context-why-rag-outperforms-sft-in-cultural-alignment" id="toc-the-case-for-context-why-rag-outperforms-sft-in-cultural-alignment" class="nav-link" data-scroll-target="#the-case-for-context-why-rag-outperforms-sft-in-cultural-alignment"><span class="header-section-number">6.5.7</span> The Case for Context: Why RAG Outperforms SFT in Cultural Alignment</a></li>
+  <li><a href="#static-vs.-dynamic-cultural-representation" id="toc-static-vs.-dynamic-cultural-representation" class="nav-link" data-scroll-target="#static-vs.-dynamic-cultural-representation"><span class="header-section-number">6.5.8</span> 1. Static vs.&nbsp;Dynamic Cultural Representation</a></li>
+  <li><a href="#the-power-of-interaction-structure-and-reasoning" id="toc-the-power-of-interaction-structure-and-reasoning" class="nav-link" data-scroll-target="#the-power-of-interaction-structure-and-reasoning"><span class="header-section-number">6.5.9</span> 2. The Power of “Interaction Structure” and Reasoning</a></li>
+  <li><a href="#bidirectional-alignment-vs.-imposed-values" id="toc-bidirectional-alignment-vs.-imposed-values" class="nav-link" data-scroll-target="#bidirectional-alignment-vs.-imposed-values"><span class="header-section-number">6.5.10</span> 3. Bidirectional Alignment vs.&nbsp;Imposed Values</a></li>
+  <li><a href="#limitations-of-the-research" id="toc-limitations-of-the-research" class="nav-link" data-scroll-target="#limitations-of-the-research"><span class="header-section-number">6.5.11</span> Limitations of the Research</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">6.5.12</span> Summary</a></li>
+  <li><a href="#ai-assistance" id="toc-ai-assistance" class="nav-link" data-scroll-target="#ai-assistance"><span class="header-section-number">6.5.13</span> AI assistance:</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Week 5: Compare Fine-tuned model with RAG implementation and ChatGPT-5 &amp; Research Paper</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">6.1</span> Overview</h2>
+<p>In Week 5, the team focused on comparing the fine-tuned models with the RAG implementation and ChatGPT-5, including running a Turing test to evaluate whether the AI responses were indistinguishable from those of a Native Indian Expert. Rohan conducted the survey and integrated deliverables into the research paper, Moses fine-tuned the model using RAG data and prepared for testing, Suwilanji drafted the initial paper and organized participants for the Turing test, and William edited and finalized the research paper.</p>
+</section>
+<section id="rohan-aby-deliverables" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="rohan-aby-deliverables"><span class="header-section-number">6.2</span> Rohan Aby Deliverables</h2>
+<p>Rohan worked on recuriting multiple to do the longer survey that dealt with the extensive grading proecss. Only his mother completed the task. Then he recruited multiple people from churches in Tulsa, Kuwait and India to fill out the survey that Moses and William designed.</p>
+<p>Rohan then worked on the research paper and this qurto book.</p>
+</section>
+<section id="william-richards-deliverables" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="william-richards-deliverables"><span class="header-section-number">6.3</span> William Richards Deliverables</h2>
+<p>This quarto document will be quite short given me and Moses worked on this together and Will was more focused on reaching out to others.</p>
+<p>Our deliverable this week was to form the grading process into a yin and yang, where Rohan’s grading would be individualistic and personal, while ours would be clustered and technical.</p>
+<p>We chose 3 different models and a short set of questions (courtesy of Rohan) and Moses implemented them into a google form for us to send out to anyone from India. A final grading process that emphasizes and utilizes the cultural diversity of ORU, Wills job was to get this to as many people as possible.</p>
+<p>The google form requires one to have been an Indian citizen and decently knowledgeable of Indian culture, teseting to see which model Q/A pairs the community at large (via polling) decided was most accurate.</p>
+<p>Between:</p>
+<ul>
+<li><p>ConLingo Base Model (RAG Implementation)</p></li>
+<li><p><strong>ConLingo 2.0 Model</strong></p></li>
+<li><p>ChatGPT 5.1</p></li>
+</ul>
+<p>Will used his position on Student Association, he was able to send this survey out to as many people as possible. Along with Moses’, Suwilanji’s, and Rohan’s massive help, we were able to receive 50 responses in 24 hours!</p>
+<p>After analyzing it appears that many decided the RAG Implementation was just barely better than ConLingo 2.0 and ChatGPT 5.1. However despite the fact our project might not have been as impactful as we hoped, the journey itself is a fantastic groundwork with a new way to approach improving model’s such as these. By interviewing and surveying more personally and emotionally than simply grading with another AI model.</p>
+</section>
+<section id="moses-madale-deliverables" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="moses-madale-deliverables"><span class="header-section-number">6.4</span> Moses Madale Deliverables</h2>
+<p><strong>AI assistance: Claude Sonnet 4.5 was used to help me restructure the prompt to the AI Llama model which I originally developed myself based on the prompt that was given to the Conlingo RAG model so that it is more LLM friendly. ChatGPT 5.1 Was used to suggest the formula to derive the curved AI model scores from the survey of 50 Indian students from ORU (accessed Nov, 2025).</strong></p>
+<section id="human-evaluation-and-comparative-analysis" class="level3" data-number="6.4.1">
+<h3 data-number="6.4.1" class="anchored" data-anchor-id="human-evaluation-and-comparative-analysis"><span class="header-section-number">6.4.1</span> Human Evaluation and Comparative Analysis</h3>
+<section id="overview-1" class="level4" data-number="6.4.1.1">
+<h4 data-number="6.4.1.1" class="anchored" data-anchor-id="overview-1"><span class="header-section-number">6.4.1.1</span> Overview</h4>
+<p>Week 5 represented the culmination of the ConLingo 2.0 project: training the final combined model on all five datasets, designing a rigorous human evaluation survey, and determining whether supervised fine-tuning could surpass the existing RAG implementation and state-of-the-art models like ChatGPT 5.1 in capturing Indian cultural nuance. This week required not only technical execution but also careful experimental design to ensure valid, bias-minimized results from human evaluators with authentic Indian cultural expertise.</p>
+<p><strong>Primary Objectives</strong>:</p>
+<ol type="1">
+<li>Train Conlingo 2.0 (combined model with all 3,031 Q&amp;A pairs)</li>
+<li>Engineer culturally appropriate prompts for fair model comparison</li>
+<li>Design and deploy a Google Forms survey minimizing bias</li>
+<li>Recruit qualified participants with Indian cultural background</li>
+<li>Analyze results using both raw and weighted scoring methods</li>
+<li>Draw conclusions about fine-tuning effectiveness for cultural awareness</li>
+</ol>
+</section>
+<section id="conlingo-2.0-training-the-combined-model" class="level4" data-number="6.4.1.2">
+<h4 data-number="6.4.1.2" class="anchored" data-anchor-id="conlingo-2.0-training-the-combined-model"><span class="header-section-number">6.4.1.2</span> Conlingo 2.0: Training the Combined Model</h4>
+<section id="dataset-integration-strategy" class="level5" data-number="6.4.1.2.1">
+<h5 data-number="6.4.1.2.1" class="anchored" data-anchor-id="dataset-integration-strategy"><span class="header-section-number">6.4.1.2.1</span> Dataset Integration Strategy</h5>
+<p>Conlingo 2.0 represented the team’s hypothesis that combining diverse Indian cultural data sources would produce a model with comprehensive cultural awareness. The model integrated all five approved datasets from Week 3:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 17%">
+<col style="width: 21%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dataset</th>
+<th>Examples</th>
+<th>Percentage</th>
+<th>Cultural Pillars Covered</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Superstitions</strong></td>
+<td>923</td>
+<td>30.5%</td>
+<td>Values &amp; beliefs, norms &amp; customs</td>
+</tr>
+<tr class="even">
+<td><strong>TED Talks</strong></td>
+<td>596</td>
+<td>19.7%</td>
+<td>Arts &amp; literature, social organization</td>
+</tr>
+<tr class="odd">
+<td><strong>YouTube Transcripts</strong></td>
+<td>512</td>
+<td>16.9%</td>
+<td>Language, contemporary culture</td>
+</tr>
+<tr class="even">
+<td><strong>Wikipedia</strong></td>
+<td>500</td>
+<td>16.5%</td>
+<td>Government, artifacts &amp; technology</td>
+</tr>
+<tr class="odd">
+<td><strong>Constitution</strong></td>
+<td>500</td>
+<td>16.5%</td>
+<td>Government, social organization</td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td>3,031</td>
+<td>100%</td>
+<td>All 8 pillars</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rationale for Balanced Representation</strong>:</p>
+<p>The distribution was not artificially balanced but reflected the natural availability of quality data: - Superstitions (30.5%) provided the richest source of everyday cultural beliefs - TED Talks and YouTube captured contemporary Indian voices and Hinglish usage - Wikipedia and Constitution grounded the model in factual, institutional knowledge</p>
+</section>
+<section id="training-configuration" class="level5" data-number="6.4.1.2.2">
+<h5 data-number="6.4.1.2.2" class="anchored" data-anchor-id="training-configuration"><span class="header-section-number">6.4.1.2.2</span> Training Configuration</h5>
+<p>Conlingo 2.0 used identical LoRA hyperparameters to Week 4’s individual models for consistency:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env python3</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">LoRA Fine-Tuning with ALL Indian Cultural Data</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">Combines: YouTube, TED Talks, Wikipedia, Constitution, Superstitions</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> (</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    AutoTokenizer,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    AutoModelForCausalLM,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    TrainingArguments,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    Trainer,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    DataCollatorForLanguageModeling</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> peft <span class="im">import</span> LoraConfig, get_peft_model</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> Dataset</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span><span class="op">*</span><span class="dv">60</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Combined All-Data LoRA Fine-Tuning Pipeline"</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span><span class="op">*</span><span class="dv">60</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Paths</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>DATA_PATHS <span class="op">=</span> {</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"youtube"</span>: <span class="st">"/home/mmadale/CSC463/conlingo/youtube_data/data/final_youtube_transcript_data.jsonl"</span>,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ted_talks"</span>: <span class="st">"/home/mmadale/CSC463/conlingo/huggingface_data/indian_ted_talks/data/ted_talks_qa.jsonl"</span>,</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"wikipedia"</span>: <span class="st">"/home/mmadale/CSC463/conlingo/huggingface_data/indian_wikipedia/data/wikipedia_qa.jsonl"</span>,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"constitution"</span>: <span class="st">"/home/mmadale/CSC463/conlingo/huggingface_data/indian_constitution/data/constitution_qa.jsonl"</span>,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"superstitions"</span>: <span class="st">"/home/mmadale/CSC463/conlingo/superstition_data/data/superstition_qa.jsonl"</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>OUTPUT_DIR <span class="op">=</span> <span class="st">"/home/mmadale/CSC463/conlingo/models/combined-all-data"</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>MODEL_NAME <span class="op">=</span> <span class="st">"meta-llama/Meta-Llama-3-8B-Instruct"</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>os.makedirs(OUTPUT_DIR, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">1. Loading and combining all datasets..."</span>)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>all_examples <span class="op">=</span> []</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>dataset_stats <span class="op">=</span> {}</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dataset_name, data_path <span class="kw">in</span> DATA_PATHS.items():</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  Loading </span><span class="sc">{</span>dataset_name<span class="sc">}</span><span class="ss">..."</span>)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(data_path, <span class="st">'r'</span>, encoding<span class="op">=</span><span class="st">'utf-8'</span>) <span class="im">as</span> f:</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>        data <span class="op">=</span> [json.loads(line) <span class="cf">for</span> line <span class="kw">in</span> f]</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> data:</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Normalize to question/answer format</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="st">"instruction"</span> <span class="kw">in</span> item <span class="kw">and</span> <span class="st">"response"</span> <span class="kw">in</span> item:</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>            question <span class="op">=</span> item[<span class="st">"instruction"</span>]</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>            answer <span class="op">=</span> item[<span class="st">"response"</span>]</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="st">"question"</span> <span class="kw">in</span> item <span class="kw">and</span> <span class="st">"answer"</span> <span class="kw">in</span> item:</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>            question <span class="op">=</span> item[<span class="st">"question"</span>]</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>            answer <span class="op">=</span> item[<span class="st">"answer"</span>]</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>        all_examples.append({</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>            <span class="st">"question"</span>: question,</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>            <span class="st">"answer"</span>: answer,</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>            <span class="st">"source"</span>: dataset_name</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>        })</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>        count <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>    dataset_stats[dataset_name] <span class="op">=</span> count</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"    Loaded </span><span class="sc">{</span>count<span class="sc">}</span><span class="ss"> examples from </span><span class="sc">{</span>dataset_name<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  Dataset Statistics:"</span>)</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dataset_name, count <span class="kw">in</span> dataset_stats.items():</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>    percentage <span class="op">=</span> (count <span class="op">/</span> <span class="bu">len</span>(all_examples)) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"    </span><span class="sc">{</span>dataset_name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>count<span class="sc">}</span><span class="ss"> examples (</span><span class="sc">{</span>percentage<span class="sc">:.1f}</span><span class="ss">%)"</span>)</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  Total combined examples: </span><span class="sc">{</span><span class="bu">len</span>(all_examples)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="co"># Split into train/validation (90/10)</span></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>train_data, val_data <span class="op">=</span> train_test_split(all_examples, test_size<span class="op">=</span><span class="fl">0.1</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">  Training examples: </span><span class="sc">{</span><span class="bu">len</span>(train_data)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Validation examples: </span><span class="sc">{</span><span class="bu">len</span>(val_data)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">2. Loading tokenizer..."</span>)</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(MODEL_NAME)</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>tokenizer.pad_token <span class="op">=</span> tokenizer.eos_token</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>tokenizer.padding_side <span class="op">=</span> <span class="st">"right"</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Tokenizer loaded: </span><span class="sc">{</span>tokenizer<span class="sc">.</span><span class="va">__class__</span><span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">3. Preparing datasets..."</span>)</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> format_instruction(example):</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Format question-answer pair for training"""</span></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="ss">f"### Question:</span><span class="ch">\n</span><span class="sc">{</span>example[<span class="st">'question'</span>]<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">### Answer:</span><span class="ch">\n</span><span class="sc">{</span>example[<span class="st">'answer'</span>]<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tokenize_function(example):</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Tokenize examples with padding and truncation"""</span></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> format_instruction(example)</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>    tokenized <span class="op">=</span> tokenizer(</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>        text,</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>        truncation<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>        max_length<span class="op">=</span><span class="dv">512</span>,</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>        padding<span class="op">=</span><span class="st">"max_length"</span>,</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>        return_tensors<span class="op">=</span><span class="va">None</span></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>    tokenized[<span class="st">"labels"</span>] <span class="op">=</span> tokenized[<span class="st">"input_ids"</span>].copy()</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> tokenized</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to HuggingFace Dataset format</span></span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>train_dataset <span class="op">=</span> Dataset.from_list(train_data)</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>val_dataset <span class="op">=</span> Dataset.from_list(val_data)</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a><span class="co"># Tokenize</span></span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  Tokenizing training data..."</span>)</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>train_dataset <span class="op">=</span> train_dataset.<span class="bu">map</span>(</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>    tokenize_function,</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>    remove_columns<span class="op">=</span>train_dataset.column_names</span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  Tokenizing validation data..."</span>)</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>val_dataset <span class="op">=</span> val_dataset.<span class="bu">map</span>(</span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>    tokenize_function,</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>    remove_columns<span class="op">=</span>val_dataset.column_names</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Training dataset size: </span><span class="sc">{</span><span class="bu">len</span>(train_dataset)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Validation dataset size: </span><span class="sc">{</span><span class="bu">len</span>(val_dataset)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">4. Loading base model..."</span>)</span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForCausalLM.from_pretrained(</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>    MODEL_NAME,</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>    device_map<span class="op">=</span><span class="st">"auto"</span>,</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>    torch_dtype<span class="op">=</span>torch.float16,</span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>    low_cpu_mem_usage<span class="op">=</span><span class="va">True</span></span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>model.gradient_checkpointing_enable()</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Model loaded: </span><span class="sc">{</span>model<span class="sc">.</span><span class="va">__class__</span><span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Model parameters: </span><span class="sc">{</span><span class="bu">sum</span>(p.numel() <span class="cf">for</span> p <span class="kw">in</span> model.parameters())<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">5. Configuring LoRA..."</span>)</span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>lora_config <span class="op">=</span> LoraConfig(</span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>    r<span class="op">=</span><span class="dv">16</span>,</span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>    lora_alpha<span class="op">=</span><span class="dv">32</span>,</span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>    target_modules<span class="op">=</span>[<span class="st">"q_proj"</span>, <span class="st">"v_proj"</span>, <span class="st">"k_proj"</span>, <span class="st">"o_proj"</span>],</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>    lora_dropout<span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>    bias<span class="op">=</span><span class="st">"none"</span>,</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>    task_type<span class="op">=</span><span class="st">"CAUSAL_LM"</span></span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> get_peft_model(model, lora_config)</span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>trainable_params <span class="op">=</span> <span class="bu">sum</span>(p.numel() <span class="cf">for</span> p <span class="kw">in</span> model.parameters() <span class="cf">if</span> p.requires_grad)</span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>total_params <span class="op">=</span> <span class="bu">sum</span>(p.numel() <span class="cf">for</span> p <span class="kw">in</span> model.parameters())</span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  LoRA configured successfully"</span>)</span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Trainable parameters: </span><span class="sc">{</span>trainable_params<span class="sc">:,}</span><span class="ss"> (</span><span class="sc">{</span><span class="dv">100</span><span class="op">*</span>trainable_params<span class="op">/</span>total_params<span class="sc">:.4f}</span><span class="ss">%)"</span>)</span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Total parameters: </span><span class="sc">{</span>total_params<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">6. Setting up training arguments..."</span>)</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>training_args <span class="op">=</span> TrainingArguments(</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span>OUTPUT_DIR,</span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>    num_train_epochs<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>    per_device_train_batch_size<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>    per_device_eval_batch_size<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>    gradient_accumulation_steps<span class="op">=</span><span class="dv">16</span>,</span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>    learning_rate<span class="op">=</span><span class="fl">2e-4</span>,</span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>    lr_scheduler_type<span class="op">=</span><span class="st">"cosine"</span>,</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>    warmup_steps<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>    logging_steps<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>    save_steps<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>    eval_steps<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>    eval_strategy<span class="op">=</span><span class="st">"steps"</span>,</span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>    save_strategy<span class="op">=</span><span class="st">"steps"</span>,</span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>    load_best_model_at_end<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>    metric_for_best_model<span class="op">=</span><span class="st">"eval_loss"</span>,</span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>    greater_is_better<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a>    fp16<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>    report_to<span class="op">=</span><span class="st">"none"</span>,</span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>    save_total_limit<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>    remove_unused_columns<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>    gradient_checkpointing<span class="op">=</span><span class="va">True</span></span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  Training configuration:"</span>)</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"    Epochs: </span><span class="sc">{</span>training_args<span class="sc">.</span>num_train_epochs<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"    Batch size: </span><span class="sc">{</span>training_args<span class="sc">.</span>per_device_train_batch_size<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"    Gradient accumulation: </span><span class="sc">{</span>training_args<span class="sc">.</span>gradient_accumulation_steps<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"    Effective batch size: </span><span class="sc">{</span>training_args<span class="sc">.</span>per_device_train_batch_size <span class="op">*</span> training_args<span class="sc">.</span>gradient_accumulation_steps<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"    Learning rate: </span><span class="sc">{</span>training_args<span class="sc">.</span>learning_rate<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">7. Initializing trainer..."</span>)</span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>data_collator <span class="op">=</span> DataCollatorForLanguageModeling(</span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>    tokenizer<span class="op">=</span>tokenizer,</span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>    mlm<span class="op">=</span><span class="va">False</span></span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>trainer <span class="op">=</span> Trainer(</span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>model,</span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>    args<span class="op">=</span>training_args,</span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>    train_dataset<span class="op">=</span>train_dataset,</span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>    eval_dataset<span class="op">=</span>val_dataset,</span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a>    data_collator<span class="op">=</span>data_collator</span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  Trainer initialized successfully"</span>)</span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">8. Starting training..."</span>)</span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span><span class="op">*</span><span class="dv">60</span>)</span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>trainer.train()</span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span><span class="op">*</span><span class="dv">60</span>)</span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Training complete"</span>)</span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span><span class="op">*</span><span class="dv">60</span>)</span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">9. Saving final model..."</span>)</span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>model.save_pretrained(<span class="ss">f"</span><span class="sc">{</span>OUTPUT_DIR<span class="sc">}</span><span class="ss">/final_model"</span>)</span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>tokenizer.save_pretrained(<span class="ss">f"</span><span class="sc">{</span>OUTPUT_DIR<span class="sc">}</span><span class="ss">/final_model"</span>)</span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  Model saved to: </span><span class="sc">{</span>OUTPUT_DIR<span class="sc">}</span><span class="ss">/final_model"</span>)</span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">10. Final evaluation metrics:"</span>)</span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>eval_results <span class="op">=</span> trainer.evaluate()</span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, value <span class="kw">in</span> eval_results.items():</span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"    </span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>value<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="training-results" class="level4" data-number="6.4.1.3">
+<h4 data-number="6.4.1.3" class="anchored" data-anchor-id="training-results"><span class="header-section-number">6.4.1.3</span> Training Results</h4>
+<p><strong>Training Output</strong>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">============================================================</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Combined</span> All-Data LoRA Fine-Tuning Pipeline</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">============================================================</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ex">1.</span> Loading and combining all datasets...</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Loading</span> youtube...</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Loaded</span> 512 examples from youtube</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Loading</span> ted_talks...</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Loaded</span> 596 examples from ted_talks</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Loading</span> wikipedia...</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Loaded</span> 500 examples from wikipedia</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Loading</span> constitution...</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Loaded</span> 500 examples from constitution</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Loading</span> superstitions...</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Loaded</span> 923 examples from superstitions</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Dataset</span> Statistics:</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="ex">youtube:</span> 512 examples <span class="er">(</span><span class="ex">16.9%</span><span class="kw">)</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="ex">ted_talks:</span> 596 examples <span class="er">(</span><span class="ex">19.7%</span><span class="kw">)</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="ex">wikipedia:</span> 500 examples <span class="er">(</span><span class="ex">16.5%</span><span class="kw">)</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="ex">constitution:</span> 500 examples <span class="er">(</span><span class="ex">16.5%</span><span class="kw">)</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="ex">superstitions:</span> 923 examples <span class="er">(</span><span class="ex">30.5%</span><span class="kw">)</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Total</span> combined examples: 3031</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Training</span> examples: 2727</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Validation</span> examples: 304</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="ex">2.</span> Loading tokenizer...</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Tokenizer</span> loaded: PreTrainedTokenizerFast</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="ex">3.</span> Preparing datasets...</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Tokenizing</span> training data...</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Tokenizing</span> validation data...</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Training</span> dataset size: 2727</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Validation</span> dataset size: 304</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="ex">4.</span> Loading base model...</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Model</span> loaded: LlamaForCausalLM</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Model</span> parameters: 8,030,261,248</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="ex">5.</span> Configuring LoRA...</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>  <span class="ex">LoRA</span> configured successfully</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Trainable</span> parameters: 13,631,488 <span class="er">(</span><span class="ex">0.1695%</span><span class="kw">)</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Total</span> parameters: 8,043,892,736</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="ex">6.</span> Setting up training arguments...</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Training</span> configuration:</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Epochs:</span> 3</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Batch</span> size: 2</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Gradient</span> accumulation: 16</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Effective</span> batch size: 32</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Learning</span> rate: 0.0002</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Total</span> training steps: ~255</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="ex">7.</span> Initializing trainer...</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Trainer</span> initialized successfully</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="ex">8.</span> Starting training...</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="ex">============================================================</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 2.7157, <span class="st">'grad_norm'</span>: 1.824, <span class="st">'learning_rate'</span>: 1.8e-05, <span class="st">'epoch'</span>: 0.12}</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 2.5419, <span class="st">'grad_norm'</span>: 1.431, <span class="st">'learning_rate'</span>: 3.8e-05, <span class="st">'epoch'</span>: 0.23}</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 2.2675, <span class="st">'grad_norm'</span>: 1.163, <span class="st">'learning_rate'</span>: 5.8e-05, <span class="st">'epoch'</span>: 0.35}</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.9553, <span class="st">'grad_norm'</span>: 1.023, <span class="st">'learning_rate'</span>: 7.8e-05, <span class="st">'epoch'</span>: 0.47}</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.7885, <span class="st">'grad_norm'</span>: 1.113, <span class="st">'learning_rate'</span>: 9.8e-05, <span class="st">'epoch'</span>: 0.59}</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.7141, <span class="st">'grad_norm'</span>: 0.752, <span class="st">'learning_rate'</span>: 0.000118, <span class="st">'epoch'</span>: 0.7}</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.6481, <span class="st">'grad_norm'</span>: 0.876, <span class="st">'learning_rate'</span>: 0.000138, <span class="st">'epoch'</span>: 0.82}</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.6455, <span class="st">'grad_norm'</span>: 0.952, <span class="st">'learning_rate'</span>: 0.000158, <span class="st">'epoch'</span>: 0.94}</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.5384, <span class="st">'grad_norm'</span>: 0.901, <span class="st">'learning_rate'</span>: 0.000178, <span class="st">'epoch'</span>: 1.05}</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.5825, <span class="st">'grad_norm'</span>: 0.930, <span class="st">'learning_rate'</span>: 0.000198, <span class="st">'epoch'</span>: 1.16}</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'eval_loss'</span><span class="ex">:</span> 1.6958, <span class="st">'eval_runtime'</span>: 35.534, <span class="st">'epoch'</span>: 1.16}</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.4987, <span class="st">'grad_norm'</span>: 0.943, <span class="st">'learning_rate'</span>: 0.000198, <span class="st">'epoch'</span>: 1.28}</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.4778, <span class="st">'grad_norm'</span>: 0.916, <span class="st">'learning_rate'</span>: 0.000193, <span class="st">'epoch'</span>: 1.4}</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.524, <span class="st">'grad_norm'</span>: 0.899, <span class="st">'learning_rate'</span>: 0.000184, <span class="st">'epoch'</span>: 1.52}</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.5028, <span class="st">'grad_norm'</span>: 0.906, <span class="st">'learning_rate'</span>: 0.000171, <span class="st">'epoch'</span>: 1.63}</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.4994, <span class="st">'grad_norm'</span>: 0.891, <span class="st">'learning_rate'</span>: 0.000156, <span class="st">'epoch'</span>: 1.75}</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.4162, <span class="st">'grad_norm'</span>: 0.891, <span class="st">'learning_rate'</span>: 0.000139, <span class="st">'epoch'</span>: 1.87}</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.4549, <span class="st">'grad_norm'</span>: 0.922, <span class="st">'learning_rate'</span>: 0.00012, <span class="st">'epoch'</span>: 1.99}</span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.3555, <span class="st">'grad_norm'</span>: 0.972, <span class="st">'learning_rate'</span>: 0.0001, <span class="st">'epoch'</span>: 2.09}</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.324, <span class="st">'grad_norm'</span>: 1.070, <span class="st">'learning_rate'</span>: 8.02e-05, <span class="st">'epoch'</span>: 2.21}</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.3459, <span class="st">'grad_norm'</span>: 1.062, <span class="st">'learning_rate'</span>: 6.13e-05, <span class="st">'epoch'</span>: 2.33}</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'eval_loss'</span><span class="ex">:</span> 1.6180, <span class="st">'eval_runtime'</span>: 35.519, <span class="st">'epoch'</span>: 2.33}</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.2716, <span class="st">'grad_norm'</span>: 1.051, <span class="st">'learning_rate'</span>: 4.38e-05, <span class="st">'epoch'</span>: 2.45}</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.2532, <span class="st">'grad_norm'</span>: 1.110, <span class="st">'learning_rate'</span>: 2.86e-05, <span class="st">'epoch'</span>: 2.56}</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.275, <span class="st">'grad_norm'</span>: 1.073, <span class="st">'learning_rate'</span>: 1.62e-05, <span class="st">'epoch'</span>: 2.68}</span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.2469, <span class="st">'grad_norm'</span>: 1.084, <span class="st">'learning_rate'</span>: 7.05e-06, <span class="st">'epoch'</span>: 2.8}</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'loss'</span><span class="ex">:</span> 1.313, <span class="st">'grad_norm'</span>: 1.075, <span class="st">'learning_rate'</span>: 1.6e-06, <span class="st">'epoch'</span>: 2.91}</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a><span class="ex">{</span><span class="st">'train_runtime'</span><span class="ex">:</span> 3055.3466, <span class="st">'train_samples_per_second'</span>: 2.678, </span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a> <span class="st">'train_steps_per_second'</span><span class="ex">:</span> 0.084, <span class="st">'train_loss'</span>: 1.5971, <span class="st">'epoch'</span>: 3.0}</span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a><span class="ex">============================================================</span></span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a><span class="ex">Training</span> complete</span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a><span class="ex">============================================================</span></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a><span class="ex">9.</span> Saving final model...</span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>  <span class="ex">Model</span> saved to: /home/mmadale/CSC463/conlingo/models/combined-all-data/final_model</span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a><span class="ex">10.</span> Final evaluation metrics:</span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>    <span class="ex">eval_loss:</span> 1.6180</span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>    <span class="ex">eval_runtime:</span> 35.5426</span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>    <span class="ex">eval_samples_per_second:</span> 8.5530</span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>    <span class="ex">eval_steps_per_second:</span> 4.2770</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>    <span class="ex">epoch:</span> 3.0000</span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a><span class="ex">============================================================</span></span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a><span class="ex">Fine-tuning</span> pipeline complete</span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a><span class="ex">============================================================</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>SLURM Job Statistics</strong>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">JobID</span>        JobName       State      Elapsed</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">141035</span>       combined_+    COMPLETED  00:51:47</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">141035.batch</span> batch         COMPLETED  00:51:47</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Performance Analysis</strong>:</p>
+<p>Conlingo 2.0 achieved strong training metrics: - <strong>Loss reduction</strong>: 2.7157 → 1.313 (52% reduction) - <strong>Final evaluation loss</strong>: 1.6180 - <strong>Training duration</strong>: 51 minutes 47 seconds - <strong>Trainable parameters</strong>: 13,631,488 (0.17% of total) - <strong>Dataset scale</strong>: 6x larger than individual models (3,031 vs ~500 examples)</p>
+<p>The evaluation loss of 1.6180 fell between Wikipedia’s excellent 1.2456 and YouTube’s higher 2.2825, suggesting successful integration of diverse content styles. The model learned patterns across encyclopedic facts, conversational transcripts, narrative presentations, legal documents, and cultural beliefs.</p>
+</section>
+</section>
+<section id="prompt-engineering-for-fair-comparison" class="level3" data-number="6.4.2">
+<h3 data-number="6.4.2" class="anchored" data-anchor-id="prompt-engineering-for-fair-comparison"><span class="header-section-number">6.4.2</span> Prompt Engineering for Fair Comparison</h3>
+<section id="studying-the-rag-implementation" class="level4" data-number="6.4.2.1">
+<h4 data-number="6.4.2.1" class="anchored" data-anchor-id="studying-the-rag-implementation"><span class="header-section-number">6.4.2.1</span> Studying the RAG Implementation</h4>
+<p>Before generating model responses, Moses studied the RAG implementation’s system prompt to understand what made it effective at cultural contextualization. Key insights:</p>
+<ul>
+<li><strong>Expertise framing</strong>: Positioned the model as a cultural anthropologist</li>
+<li><strong>Specific knowledge domains</strong>: Listed explicit areas of competence</li>
+<li><strong>Regional awareness</strong>: Emphasized North/South/East/West variations</li>
+<li><strong>Interfaith sensitivity</strong>: Balanced Hindu and Christian perspectives</li>
+<li><strong>Practical orientation</strong>: Focused on actionable, real-world insights</li>
+</ul>
+</section>
+<section id="engineered-system-prompt" class="level4" data-number="6.4.2.2">
+<h4 data-number="6.4.2.2" class="anchored" data-anchor-id="engineered-system-prompt"><span class="header-section-number">6.4.2.2</span> Engineered System Prompt</h4>
+<p>Moses designed a comprehensive system prompt that would be supplied identically to both Conlingo 2.0 and ChatGPT 5.1:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>CULTURAL_SYSTEM_PROMPT <span class="op">=</span> <span class="st">"""You are a cultural anthropologist and contextual researcher with deep experience studying values, beliefs, customs, and worldview formation across diverse Indian communities.</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="st">Your expertise includes:</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="st">- Core cultural values and virtues across Indian regions</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="st">- Family and social structures in Indian society</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="st">- Spiritual and religious norms (Hinduism, Christianity, Islam, Sikhism)</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="st">- Cultural symbols, celebrations, and identity markers</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="st">- Regional variations (North/South/East/West India)</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="st">- Traditional vs modern worldview tensions</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="st">- Caste dynamics and social hierarchies</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="st">- Hindu-Christian dialogue and interfaith relations</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="st">When answering questions about Indian culture and Christianity in India:</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="st">1. Draw from your deep knowledge of Indian regional diversity, historical contexts, and contemporary practices</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="st">2. Include specific examples from everyday life showing how values and beliefs manifest</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="st">3. Acknowledge regional, religious, and generational variations</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="st">4. Demonstrate sensitivity to both Hindu and Christian perspectives</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="st">5. Focus on worldview - why people believe what they do, not just what they do</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="st">6. Provide practical, actionable insights that show cultural logic</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="st">Response Guidelines:</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="st">- Length: Approximately 100 words</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="st">- Tone: Expert yet conversational, like explaining to someone unfamiliar with the region</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="st">- Structure: Clear and well-organized with natural flow</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="st">- Content: Highly specific to Indian cultural context with real examples</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="st">- Avoid: Generic statements, Western-centric views, oversimplifications</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="st">- Include: Regional nuances, historical context, modern tensions, specific practices</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Design Rationale</strong>:</p>
+<ol type="1">
+<li><strong>Anthropologist Framing</strong>: Positions the responder as having studied Indian communities systematically</li>
+<li><strong>Eight Expertise Areas</strong>: Covers the cultural pillars identified in Week 3</li>
+<li><strong>Six Response Principles</strong>: Guides the model toward nuanced, practical answers</li>
+<li><strong>Explicit Response Guidelines</strong>: Constrains length (~100 words) for survey readability</li>
+<li><strong>Avoidance List</strong>: Prevents generic, Western-centric, or oversimplified responses</li>
+</ol>
+</section>
+<section id="question-selection" class="level4" data-number="6.4.2.3">
+<h4 data-number="6.4.2.3" class="anchored" data-anchor-id="question-selection"><span class="header-section-number">6.4.2.3</span> Question Selection</h4>
+<p>Three questions were chosen from Rohan’s Week 4 evaluation set based on cultural coverage and sensitivity:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>QUESTIONS <span class="op">=</span> [</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"What sensitivities should pastors consider when mentioning Hindu deities in Christmas homilies?"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"How can churches ensure caste-neutral seating and participation during worship?"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Why might some Christians still use caste surnames, and how should this be discussed?"</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Question Characteristics</strong>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 52%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Cultural Pillars Tested</th>
+<th>Why Chosen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Q1: Hindu deities in homilies</strong></td>
+<td>Values &amp; beliefs, norms &amp; customs, language, religion &amp; spirituality</td>
+<td>Tests interfaith sensitivity and theological boundaries</td>
+</tr>
+<tr class="even">
+<td><strong>Q2: Caste-neutral worship</strong></td>
+<td>Norms &amp; customs, values &amp; beliefs, social organization, religion &amp; spirituality</td>
+<td>Tests practical implementation of equity principles</td>
+</tr>
+<tr class="odd">
+<td><strong>Q3: Caste surnames discussion</strong></td>
+<td>Social organization, values &amp; beliefs, norms &amp; customs, language</td>
+<td>Tests nuanced understanding of identity and heritage</td>
+</tr>
+</tbody>
+</table>
+<p>All three questions required: - Deep cultural knowledge beyond surface-level facts - Awareness of historical context and modern tensions - Practical wisdom for navigating sensitive topics - Regional and community-specific variations</p>
+</section>
+<section id="model-response-generation" class="level4" data-number="6.4.2.4">
+<h4 data-number="6.4.2.4" class="anchored" data-anchor-id="model-response-generation"><span class="header-section-number">6.4.2.4</span> Model Response Generation</h4>
+<p><strong>Process</strong>:</p>
+<p>All model responses were generated in a single session to ensure consistency:</p>
+<ol type="1">
+<li><strong>RAG Implementation</strong>: Already deployed system used by the original ConLingo team</li>
+<li><strong>Conlingo 2.0</strong>: Loaded from <code>/home/mmadale/CSC463/conlingo/models/combined-all-data/final_model</code> using the same inference parameters as Week 4 (temperature=0.7, max_new_tokens=150)</li>
+<li><strong>ChatGPT 5.1</strong>: Accessed via web interface at chat.openai.com, with the system prompt provided in the user interface</li>
+</ol>
+<p>Each model received: - The identical system prompt - The identical three questions - No additional context or examples</p>
+<p>This ensured the <strong>model itself was the only independent variable</strong> in the experiment.</p>
+</section>
+</section>
+<section id="survey-design-and-implementation" class="level3" data-number="6.4.3">
+<h3 data-number="6.4.3" class="anchored" data-anchor-id="survey-design-and-implementation"><span class="header-section-number">6.4.3</span> Survey Design and Implementation</h3>
+<section id="design-objectives" class="level4" data-number="6.4.3.1">
+<h4 data-number="6.4.3.1" class="anchored" data-anchor-id="design-objectives"><span class="header-section-number">6.4.3.1</span> Design Objectives</h4>
+<p>The survey needed to:</p>
+<ol type="1">
+<li><strong>Minimize Bias</strong>: Prevent respondents from developing preferences for specific positions (Model A/B/C)</li>
+<li><strong>Ensure Quality Participants</strong>: Filter for respondents with authentic Indian cultural expertise</li>
+<li><strong>Balance Rigor and Accessibility</strong>: Collect sufficient data without exhausting participants</li>
+<li><strong>Enable Weighted Scoring</strong>: Gather demographic data for exposure-based weighting</li>
+</ol>
+</section>
+<section id="survey-structure" class="level4" data-number="6.4.3.2">
+<h4 data-number="6.4.3.2" class="anchored" data-anchor-id="survey-structure"><span class="header-section-number">6.4.3.2</span> Survey Structure</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./Appendix/MosesMadale/img/5_1.png" class="img-fluid figure-img"></p>
+<figcaption>Survey design process showing model anonymization and data flow</figcaption>
+</figure>
+</div>
+<p><strong>Section 1: Participant Quality Assurance</strong></p>
+<p>Four screening questions characterized respondent expertise:</p>
+<ol type="1">
+<li><strong>Are you an Indian citizen?</strong> (Yes/No)</li>
+<li><strong>How many years have you lived in India?</strong> (Numeric input)</li>
+<li><strong>Which levels of your education did you complete in India?</strong> (Multi-select: Early education, High school, College/University, None)</li>
+<li><strong>How familiar are you with Christian traditions and interfaith relationships in India?</strong> (4-point scale: Not familiar, Slightly familiar, Somewhat familiar, Very familiar)</li>
+</ol>
+<p><strong>Rationale</strong>: These questions proxy for cultural exposure and competence to judge cultural nuance in responses. Someone who lived in India for 20 years, completed all education there, and is very familiar with interfaith dynamics is better positioned to evaluate cultural sensitivity than someone with limited exposure.</p>
+<p><strong>Section 2: Model Evaluation</strong></p>
+<p>For each of the three questions, respondents saw: - The question text - Three anonymized responses labeled “Model A”, “Model B”, “Model C” - A single-choice question: “Which response reflects Indian cultural nuance more effectively?”</p>
+</section>
+<section id="reducing-positional-bias" class="level4" data-number="6.4.3.3">
+<h4 data-number="6.4.3.3" class="anchored" data-anchor-id="reducing-positional-bias"><span class="header-section-number">6.4.3.3</span> Reducing Positional Bias</h4>
+<p>A critical design challenge was preventing respondents from unconsciously favoring a specific position (e.g., always choosing Model A or gravitating toward the middle option).</p>
+<p><strong>Solution: Model Mapping Rotation</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./Appendix/MosesMadale/img/5_3.png" class="img-fluid figure-img"></p>
+<figcaption>Model mapping strategy showing different assignments per question</figcaption>
+</figure>
+</div>
+<p>The internal mapping between “Model A/B/C” labels and actual models was rotated across questions:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Model A →</th>
+<th>Model B →</th>
+<th>Model C →</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Q1: Hindu deities in homilies</strong></td>
+<td>RAG Implementation</td>
+<td>Conlingo 2.0</td>
+<td>ChatGPT 5.1</td>
+</tr>
+<tr class="even">
+<td><strong>Q2: Caste-neutral worship</strong></td>
+<td>Conlingo 2.0</td>
+<td>ChatGPT 5.1</td>
+<td>RAG Implementation</td>
+</tr>
+<tr class="odd">
+<td><strong>Q3: Caste surnames</strong></td>
+<td>ChatGPT 5.1</td>
+<td>RAG Implementation</td>
+<td>Conlingo 2.0</td>
+</tr>
+</tbody>
+</table>
+<p>This mapping was invisible to respondents but known to the analysis team. As a result: - A vote for “Model A” on Q1 counted toward RAG - A vote for “Model A” on Q2 counted toward Conlingo 2.0 - A vote for “Model A” on Q3 counted toward ChatGPT 5.1</p>
+<p><strong>Benefit</strong>: If a respondent unconsciously preferred the first option, that preference would be distributed equally across all three models rather than systematically favoring one.</p>
+</section>
+</section>
+<section id="design-challenges-and-solutions" class="level3" data-number="6.4.4">
+<h3 data-number="6.4.4" class="anchored" data-anchor-id="design-challenges-and-solutions"><span class="header-section-number">6.4.4</span> Design Challenges and Solutions</h3>
+<p><strong>Challenge 1: Form Length</strong></p>
+<p>Participants have limited time and attention. How to collect necessary data without creating survey fatigue?</p>
+<p><strong>Solution</strong>: - Limited to 3 evaluation questions (not 20) - Combined screening questions (4 items capturing citizenship, years, education, familiarity) - Estimated completion time: 5-7 minutes</p>
+<p><strong>Challenge 2: Recruitment</strong></p>
+<p>How to reach authentic Indian cultural experts, especially those familiar with Indian Christian contexts?</p>
+<p><strong>Solution</strong>: - Leveraged Oral Roberts University’s cultural diversity - Personal outreach to Indian students and staff - Posted in student groups and community channels - Asked friends at work to share the link - Direct recruitment when meeting Indian students on campus</p>
+<p><strong>Result</strong>: 52 responses in 48 hours, with 86.5% Indian citizens.</p>
+</section>
+<section id="data-collection-and-demographics" class="level3" data-number="6.4.5">
+<h3 data-number="6.4.5" class="anchored" data-anchor-id="data-collection-and-demographics"><span class="header-section-number">6.4.5</span> Data Collection and Demographics</h3>
+<section id="survey-deployment" class="level4" data-number="6.4.5.1">
+<h4 data-number="6.4.5.1" class="anchored" data-anchor-id="survey-deployment"><span class="header-section-number">6.4.5.1</span> Survey Deployment</h4>
+<p><strong>Timeline</strong>: - Survey opened: Start of Week 5 evaluation period - Duration: 48 hours - Recruitment strategy: Multi-channel outreach</p>
+<p><strong>Outreach Methods</strong>: 1. Personal contacts: Indian students and colleagues Moses knew directly 2. Student groups: Posted survey link in ORU student organizations 3. Social media: Shared in relevant online communities 4. Workplace connections: Asked friends to share with their networks 5. Campus encounters: Direct asks when meeting Indian students</p>
+</section>
+<section id="response-summary" class="level4" data-number="6.4.5.2">
+<h4 data-number="6.4.5.2" class="anchored" data-anchor-id="response-summary"><span class="header-section-number">6.4.5.2</span> Response Summary</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./Appendix/MosesMadale/img/5_2.png" class="img-fluid figure-img"></p>
+<figcaption>Google Forms response summary showing 52 total responses</figcaption>
+</figure>
+</div>
+<p><strong>Total Responses</strong>: 52</p>
+<p><strong>Citizenship Status</strong>: - Indian citizens: 86.5% (45 respondents) - Non-citizens: 13.5% (7 respondents)</p>
+<p><strong>Years Lived in India</strong>: - Distribution varied from 0 to 25+ years - Median and mean values indicated substantial Indian exposure among respondents</p>
+<p><strong>Education Levels Completed in India</strong>: - Early education (Primary/Elementary) - High school - College/University - Many respondents checked multiple levels</p>
+<p><strong>Familiarity with Christian Traditions and Interfaith Relationships</strong>: - Very familiar: Highest proportion - Somewhat familiar: Second-highest - Slightly familiar: Present - Not familiar: Minimal</p>
+<p><strong>Implications</strong>:</p>
+<p>The participant pool represented a highly qualified evaluation cohort: - Over 86% held Indian citizenship - Most completed multiple education levels in India - Strong familiarity with Indian Christian and interfaith contexts</p>
+<p>This demographic profile increased confidence that votes reflected authentic cultural expertise rather than uninformed guesses.</p>
+</section>
+</section>
+<section id="data-encoding-and-analysis-methodology" class="level3" data-number="6.4.6">
+<h3 data-number="6.4.6" class="anchored" data-anchor-id="data-encoding-and-analysis-methodology"><span class="header-section-number">6.4.6</span> Data Encoding and Analysis Methodology</h3>
+<section id="raw-data-transformation" class="level4" data-number="6.4.6.1">
+<h4 data-number="6.4.6.1" class="anchored" data-anchor-id="raw-data-transformation"><span class="header-section-number">6.4.6.1</span> Raw Data Transformation</h4>
+<p>The exported Google Forms CSV contained mixed data types (Yes/No strings, numeric text, multi-select responses, model letter choices). Before analysis, Moses transformed this into a numeric-friendly format.</p>
+<p><strong>Key Transformations</strong>:</p>
+<ol type="1">
+<li><strong>Citizenship</strong>: “Yes” → 1, “No” → 0</li>
+<li><strong>Years in India</strong>: String → float (e.g., “20.0” → 20.0)</li>
+<li><strong>Education Count</strong>: Semi-colon separated text → integer count (e.g., “Early education;High School;College” → 3)</li>
+<li><strong>Familiarity Score</strong>: Text → numeric scale
+<ul>
+<li>“Not familiar” → 1</li>
+<li>“Slightly familiar” → 2</li>
+<li>“Somewhat familiar” → 3</li>
+<li>“Very familiar” → 4</li>
+</ul></li>
+<li><strong>Model Choice</strong>: Letter → model ID using the mapping table
+<ul>
+<li>“Model A” on Q1 → 1 (RAG)</li>
+<li>“Model B” on Q1 → 2 (Conlingo 2.0)</li>
+<li>“Model C” on Q1 → 3 (ChatGPT 5.1)</li>
+<li>(Rotated for Q2 and Q3)</li>
+</ul></li>
+</ol>
+<p><strong>Output</strong>: <code>data_transformed.csv</code> with columns: - <code>citizen_numeric</code> - <code>years_in_india</code> - <code>education_count</code> - <code>familiarity_score</code> - <code>q1_model_id</code>, <code>q2_model_id</code>, <code>q3_model_id</code></p>
+</section>
+<section id="raw-vote-counting" class="level4" data-number="6.4.6.2">
+<h4 data-number="6.4.6.2" class="anchored" data-anchor-id="raw-vote-counting"><span class="header-section-number">6.4.6.2</span> Raw Vote Counting</h4>
+<p><strong>Methodology</strong>:</p>
+<p>For each question and each model, count how many respondents selected that model:</p>
+<pre><code>raw_votes[Q1][RAG] = number of respondents who selected Model A on Q1
+raw_votes[Q1][Conlingo 2.0] = number who selected Model B on Q1
+raw_votes[Q1][ChatGPT 5.1] = number who selected Model C on Q1</code></pre>
+<p>Sum across all three questions to get total raw votes per model.</p>
+</section>
+<section id="weighted-scoring-formula" class="level4" data-number="6.4.6.3">
+<h4 data-number="6.4.6.3" class="anchored" data-anchor-id="weighted-scoring-formula"><span class="header-section-number">6.4.6.3</span> Weighted Scoring Formula</h4>
+<p><strong>Rationale</strong>:</p>
+<p>Not all votes should count equally. A respondent who is an Indian citizen, lived in India for 20 years, completed all education there, and is very familiar with Indian Christian contexts has deeper cultural expertise than someone with minimal exposure. The weighted scoring formula gives more influence to highly qualified respondents.</p>
+<p><strong>Weight Computation</strong>:</p>
+<p>For each respondent:</p>
+<ol type="1">
+<li><strong>Normalize components</strong> (scale 0 to 1):
+<ul>
+<li><code>years_norm = min(years_in_india, 25) / 25</code> (cap at 25 to prevent extreme leverage)</li>
+<li><code>education_norm = education_count / 3</code> (up to 3 levels)</li>
+<li><code>familiarity_norm = familiarity_score / 4</code> (scores 1-4 → 0.25-1.0)</li>
+</ul></li>
+<li><strong>Combine into core exposure score</strong>:
+<ul>
+<li><code>core = 0.4 * years_norm + 0.3 * education_norm + 0.3 * familiarity_norm</code></li>
+<li>This weights years most heavily (40%), with education and familiarity each at 30%</li>
+</ul></li>
+<li><strong>Apply citizenship boost</strong>:
+<ul>
+<li><code>citizen_factor = 1.2</code> if Indian citizen, else <code>1.0</code></li>
+<li>Citizens receive a 20% boost</li>
+</ul></li>
+<li><strong>Calculate final weight</strong>:
+<ul>
+<li><code>weight = citizen_factor * (0.2 + 0.8 * core)</code></li>
+<li>The 0.2 base term ensures even low-exposure respondents contribute somewhat</li>
+<li>The 0.8 scalar scales influence by exposure level</li>
+</ul></li>
+</ol>
+<p><strong>Weight Range</strong>: - <strong>Minimum</strong> (non-citizen, no exposure): 0.2 - <strong>Maximum</strong> (citizen, 25+ years, all education, very familiar): 1.2</p>
+<p><strong>Curved Score Calculation</strong>:</p>
+<p>For each model, sum the weights of all respondents who voted for that model across all three questions:</p>
+<pre><code>curved_score[RAG] = sum of weights of all votes for RAG on Q1, Q2, Q3
+curved_score[Conlingo 2.0] = sum of weights of all votes for Conlingo 2.0 on Q1, Q2, Q3
+curved_score[ChatGPT 5.1] = sum of weights of all votes for ChatGPT 5.1 on Q1, Q2, Q3</code></pre>
+</section>
+<section id="analysis-script" class="level4" data-number="6.4.6.4">
+<h4 data-number="6.4.6.4" class="anchored" data-anchor-id="analysis-script"><span class="header-section-number">6.4.6.4</span> Analysis Script</h4>
+<p>The complete analysis was performed by <code>analyze_votes.py</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>INPUT_FILE <span class="op">=</span> <span class="st">"data_transformed.csv"</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Column names</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>EDU_TEXT_COL <span class="op">=</span> <span class="st">"Which levels of your education did you complete in India? (Select all that apply)"</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>CITIZEN_COL <span class="op">=</span> <span class="st">"citizen_numeric"</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>YEARS_COL <span class="op">=</span> <span class="st">"years_in_india"</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>FAM_COL <span class="op">=</span> <span class="st">"familiarity_score"</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>Q1_COL <span class="op">=</span> <span class="st">"q1_model_id"</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>Q2_COL <span class="op">=</span> <span class="st">"q2_model_id"</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>Q3_COL <span class="op">=</span> <span class="st">"q3_model_id"</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Model mapping</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>MODEL_NAMES <span class="op">=</span> {</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>: <span class="st">"RAG implementation"</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="dv">2</span>: <span class="st">"Conlingo 2.0"</span>,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="dv">3</span>: <span class="st">"GPT 5.1"</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_weight(row):</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co">    Compute voter weight based on:</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co">    - citizenship</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co">    - years lived in India</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co">    - education levels completed in India</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="co">    - familiarity with Christian/interfaith context</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    citizen <span class="op">=</span> row.get(CITIZEN_COL, np.nan)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    years <span class="op">=</span> row.get(YEARS_COL, np.nan)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    edu_raw <span class="op">=</span> row.get(EDU_TEXT_COL, <span class="st">""</span>)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    fam <span class="op">=</span> row.get(FAM_COL, np.nan)</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Education: count selected levels</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    edu_count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(edu_raw, <span class="bu">str</span>) <span class="kw">and</span> edu_raw.strip():</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>        text <span class="op">=</span> edu_raw.replace(<span class="st">","</span>, <span class="st">";"</span>)</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>        parts <span class="op">=</span> [p.strip() <span class="cf">for</span> p <span class="kw">in</span> text.split(<span class="st">";"</span>) <span class="cf">if</span> p.strip()]</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>        edu_count <span class="op">=</span> <span class="bu">len</span>(parts)</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Normalize components</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> pd.isna(years):</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>        years_norm <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>        years_norm <span class="op">=</span> <span class="bu">max</span>(<span class="fl">0.0</span>, <span class="bu">min</span>(<span class="bu">float</span>(years), <span class="fl">25.0</span>)) <span class="op">/</span> <span class="fl">25.0</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> edu_count <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>        education_norm <span class="op">=</span> edu_count <span class="op">/</span> <span class="fl">3.0</span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>        education_norm <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> pd.isna(fam):</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>        familiarity_norm <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>        familiarity_norm <span class="op">=</span> <span class="bu">float</span>(fam) <span class="op">/</span> <span class="fl">4.0</span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>    core <span class="op">=</span> <span class="fl">0.4</span> <span class="op">*</span> years_norm <span class="op">+</span> <span class="fl">0.3</span> <span class="op">*</span> education_norm <span class="op">+</span> <span class="fl">0.3</span> <span class="op">*</span> familiarity_norm</span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>    citizen_factor <span class="op">=</span> <span class="fl">1.2</span> <span class="cf">if</span> citizen <span class="op">==</span> <span class="dv">1</span> <span class="cf">else</span> <span class="fl">1.0</span></span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add base term for low-exposure participants</span></span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>    weight <span class="op">=</span> citizen_factor <span class="op">*</span> (<span class="fl">0.2</span> <span class="op">+</span> <span class="fl">0.8</span> <span class="op">*</span> core)</span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weight</span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> main():</span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(INPUT_FILE)</span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute per-respondent weight</span></span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"weight"</span>] <span class="op">=</span> df.<span class="bu">apply</span>(compute_weight, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Raw counts per model per question</span></span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>    questions <span class="op">=</span> [Q1_COL, Q2_COL, Q3_COL]</span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a>    raw_per_question <span class="op">=</span> {q: {m: <span class="dv">0</span> <span class="cf">for</span> m <span class="kw">in</span> MODEL_NAMES.keys()} <span class="cf">for</span> q <span class="kw">in</span> questions}</span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a>    raw_total <span class="op">=</span> {m: <span class="dv">0</span> <span class="cf">for</span> m <span class="kw">in</span> MODEL_NAMES.keys()}</span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _, row <span class="kw">in</span> df.iterrows():</span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> q <span class="kw">in</span> questions:</span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a>            model_id <span class="op">=</span> row[q]</span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> model_id <span class="kw">in</span> raw_per_question[q]:</span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a>                raw_per_question[q][model_id] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>                raw_total[model_id] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Curved scores per model</span></span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a>    curved_total <span class="op">=</span> {m: <span class="fl">0.0</span> <span class="cf">for</span> m <span class="kw">in</span> MODEL_NAMES.keys()}</span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _, row <span class="kw">in</span> df.iterrows():</span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a>        w <span class="op">=</span> row[<span class="st">"weight"</span>]</span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> q <span class="kw">in</span> questions:</span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a>            model_id <span class="op">=</span> row[q]</span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> model_id <span class="kw">in</span> curved_total:</span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a>                curved_total[model_id] <span class="op">+=</span> w</span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Print raw vote summary per question</span></span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Raw vote counts per question"</span>)</span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">40</span>)</span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> q <span class="kw">in</span> questions:</span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>q<span class="sc">}</span><span class="ss">:"</span>)</span>
+<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">sorted</span>(MODEL_NAMES.keys()):</span>
+<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  Model </span><span class="sc">{</span>m<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>MODEL_NAMES[m]<span class="sc">}</span><span class="ss">): </span><span class="sc">{</span>raw_per_question[q][m]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>()</span>
+<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Print overall summary table</span></span>
+<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Overall model performance (all questions combined)"</span>)</span>
+<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">60</span>)</span>
+<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a>    header <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span><span class="st">'Model ID'</span><span class="sc">:&lt;8}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'Model Name'</span><span class="sc">:&lt;22}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'Raw Votes'</span><span class="sc">:&gt;10}</span><span class="ss">  </span><span class="sc">{</span><span class="st">'Curved Score'</span><span class="sc">:&gt;13}</span><span class="ss">"</span></span>
+<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(header)</span>
+<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">60</span>)</span>
+<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">sorted</span>(MODEL_NAMES.keys()):</span>
+<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a>        raw <span class="op">=</span> raw_total[m]</span>
+<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a>        curved <span class="op">=</span> curved_total[m]</span>
+<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a>        line <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>m<span class="sc">:&lt;8}</span><span class="ss">  </span><span class="sc">{</span>MODEL_NAMES[m]<span class="sc">:&lt;22}</span><span class="ss">  </span><span class="sc">{</span>raw<span class="sc">:&gt;10d}</span><span class="ss">  </span><span class="sc">{</span>curved<span class="sc">:&gt;13.2f}</span><span class="ss">"</span></span>
+<span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(line)</span>
+<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a>    main()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="results-and-findings" class="level3" data-number="6.4.7">
+<h3 data-number="6.4.7" class="anchored" data-anchor-id="results-and-findings"><span class="header-section-number">6.4.7</span> Results and Findings</h3>
+<section id="raw-vote-results" class="level4" data-number="6.4.7.1">
+<h4 data-number="6.4.7.1" class="anchored" data-anchor-id="raw-vote-results"><span class="header-section-number">6.4.7.1</span> Raw Vote Results</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./Appendix/MosesMadale/img/5_4.png" class="img-fluid figure-img"></p>
+<figcaption>Raw popularity showing vote counts and percentages</figcaption>
+</figure>
+</div>
+<p><strong>Total Raw Votes</strong> (52 respondents × 3 questions = 156 total votes):</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Raw Votes</th>
+<th>Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>RAG Implementation</strong></td>
+<td>69</td>
+<td>46.00%</td>
+</tr>
+<tr class="even">
+<td><strong>ChatGPT 5.1</strong></td>
+<td>43</td>
+<td>28.67%</td>
+</tr>
+<tr class="odd">
+<td><strong>Conlingo 2.0</strong></td>
+<td>38</td>
+<td>25.33%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interpretation</strong>:</p>
+<p>Even with equal weighting of all votes, the RAG implementation emerged as the clear leader, capturing nearly half of all votes. ChatGPT 5.1 secured second place, while Conlingo 2.0 came in third with just over one-quarter of votes.</p>
+<p><strong>Vote Distribution Pattern</strong>: - RAG received 81% more votes than Conlingo 2.0 - ChatGPT 5.1 received 13% more votes than Conlingo 2.0 - RAG received 60% more votes than ChatGPT 5.1</p>
+<p>This raw result suggested that supervised fine-tuning on 3,031 Indian cultural Q&amp;A pairs was <strong>insufficient to surpass either the RAG implementation or a state-of-the-art general-purpose model</strong> in human evaluators’ judgment of cultural nuance.</p>
+</section>
+<section id="weighted-curved-scores" class="level4" data-number="6.4.7.2">
+<h4 data-number="6.4.7.2" class="anchored" data-anchor-id="weighted-curved-scores"><span class="header-section-number">6.4.7.2</span> Weighted Curved Scores</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./Appendix/MosesMadale/img/5_5.png" class="img-fluid figure-img"></p>
+<figcaption>Curved popularity showing weighted scores accounting for participant expertise</figcaption>
+</figure>
+</div>
+<p><strong>Overall Model Performance</strong> (all questions combined):</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Model ID</th>
+<th>Model Name</th>
+<th>Raw Votes</th>
+<th>Curved Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>1</strong></td>
+<td><strong>RAG implementation</strong></td>
+<td>69</td>
+<td><strong>61.14</strong></td>
+</tr>
+<tr class="even">
+<td><strong>3</strong></td>
+<td><strong>GPT 5.1</strong></td>
+<td>43</td>
+<td><strong>37.03</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>2</strong></td>
+<td><strong>Conlingo 2.0</strong></td>
+<td>38</td>
+<td><strong>33.13</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interpretation</strong>:</p>
+<p>Weighting votes by participant cultural expertise <strong>strengthened the RAG implementation’s lead</strong> while maintaining the same ranking. The gap between RAG and both competitors widened in the curved scoring:</p>
+<p><strong>Curved Score Comparisons</strong>: - RAG scored 84% higher than Conlingo 2.0 (vs 81% higher in raw votes) - ChatGPT 5.1 scored 12% higher than Conlingo 2.0 (vs 13% higher in raw votes) - RAG scored 65% higher than ChatGPT 5.1 (vs 60% higher in raw votes)</p>
+<p><strong>Key Finding</strong>: The most culturally qualified respondents—those with the highest years in India, most education there, strongest familiarity with interfaith contexts, and Indian citizenship—disproportionately preferred the RAG implementation. This validated that RAG’s superiority was not due to random chance or low-expertise voters but reflected genuine cultural depth recognized by expert evaluators.</p>
+</section>
+<section id="comparative-analysis" class="level4" data-number="6.4.7.3">
+<h4 data-number="6.4.7.3" class="anchored" data-anchor-id="comparative-analysis"><span class="header-section-number">6.4.7.3</span> Comparative Analysis</h4>
+<p><strong>Why RAG Won</strong>:</p>
+<p>The RAG (Retrieval-Augmented Generation) implementation likely succeeded because:</p>
+<ol type="1">
+<li><strong>Dynamic Knowledge Access</strong>: RAG retrieves relevant cultural documents at query time, ensuring responses draw from authentic source material</li>
+<li><strong>Verbatim Cultural Terminology</strong>: Can quote or paraphrase exact phrasing from cultural texts</li>
+<li><strong>Breadth of Sources</strong>: Access to larger corpus than the 3,031 fine-tuning examples</li>
+<li><strong>Reduced Hallucination</strong>: Grounded in retrieved passages rather than model memory</li>
+<li><strong>Maintained Base Model Fluency</strong>: Leveraged GPT-4’s strong instruction-following while augmenting with cultural knowledge</li>
+</ol>
+<p><strong>Why ChatGPT 5.1 Outperformed Conlingo 2.0</strong>:</p>
+<p>Despite having no specialized Indian cultural training, ChatGPT 5.1 scored higher than the fine-tuned model:</p>
+<ol type="1">
+<li><strong>Larger Base Model</strong>: GPT-5.1 likely has significantly more parameters than LLaMA-3 8B</li>
+<li><strong>Extensive Pre-training</strong>: Exposed to massive amounts of text including Indian content</li>
+<li><strong>Superior Instruction Following</strong>: Better at interpreting and responding to the cultural system prompt</li>
+<li><strong>General Cultural Knowledge</strong>: Pre-training captured substantial Indian cultural information</li>
+<li><strong>Prompt Engineering Advantage</strong>: The carefully designed system prompt may have activated latent knowledge effectively</li>
+</ol>
+<p><strong>Why Conlingo 2.0 Underperformed</strong>:</p>
+<p>Several factors likely contributed to the fine-tuned model’s third-place finish:</p>
+<ol type="1">
+<li><strong>Limited Training Data</strong>: 3,031 examples, while substantial for SFT, may be insufficient for deep cultural nuance</li>
+<li><strong>Data Quality Variation</strong>: Gemini-generated Q&amp;A pairs may have lacked the authenticity of human-authored cultural commentary</li>
+<li><strong>Model Size Constraints</strong>: LLaMA-3 8B’s capacity may be too limited compared to much larger models</li>
+<li><strong>LoRA Limitations</strong>: Training only 0.17% of parameters may not sufficiently embed cultural knowledge</li>
+<li><strong>Overfitting Risk</strong>: Possible memorization of training examples without generalizable cultural reasoning</li>
+</ol>
+</section>
+</section>
+<section id="conclusion" class="level3" data-number="6.4.8">
+<h3 data-number="6.4.8" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">6.4.8</span> Conclusion</h3>
+<p>Week 5 brought the ConLingo 2.0 project to a rigorous, well-designed conclusion. While the team’s hypothesis—that supervised fine-tuning on 3,031 culturally specific examples would surpass the RAG implementation—proved incorrect, the project delivered valuable scientific insights and technical achievements.</p>
+<p><strong>Final Results</strong>: - RAG implementation: 61.14 (winner) - ChatGPT 5.1: 37.03 (second place) - Conlingo 2.0: 33.13 (third place)</p>
+<p><strong>Key Contributions</strong>: 1. Demonstrated RAG’s superiority over even frontier models for cultural nuance 2. Identified limitations of supervised fine-tuning for cultural knowledge 3. Developed rigorous evaluation methodology for cultural AI 4. Trained and deployed multiple models spanning diverse Indian cultural content 5. Generated 3,000+ Q&amp;A pairs covering 8 cultural pillars</p>
+<p><strong>Most Important Finding</strong>:</p>
+<p>The RAG implementation’s 65% performance advantage over ChatGPT 5.1 validated the original ConLingo team’s architectural choice and provided strong evidence for continuing RAG-based development. While Conlingo 2.0 did not beat RAG, the project strengthened confidence in RAG as the right approach for cultural contextualization.</p>
+<p>Moses’s technical expertese throughout the project—from model selection and environment setup through dataset collection, AI-powered processing, model training, prompt engineering, and human evaluation—demonstrated the full lifecycle of applied AI research. The project’s scientific rigor, even in the face of negative results, exemplified best practices for evaluating cultural AI systems.</p>
+</section>
+</section>
+<section id="suwilanji-mwaanza-deliverables" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="suwilanji-mwaanza-deliverables"><span class="header-section-number">6.5</span> Suwilanji Mwaanza Deliverables</h2>
+<section id="overview-of-the-week-5-deliverable" class="level3" data-number="6.5.1">
+<h3 data-number="6.5.1" class="anchored" data-anchor-id="overview-of-the-week-5-deliverable"><span class="header-section-number">6.5.1</span> Overview of the Week 5 Deliverable</h3>
+<p>This week, my deliverable was to help distribute the survey to as many Indians as possible, with the goal of 50, so that we can obtain a less biased evaluation of our three models. Additionally, we are drafting our research project. Another aspect I investigated was why the RAG implementation seemed to perform better, as the survey responses indicated that the RAG implementation was in the lead.</p>
+</section>
+<section id="week-5-deliverables" class="level3" data-number="6.5.2">
+<h3 data-number="6.5.2" class="anchored" data-anchor-id="week-5-deliverables"><span class="header-section-number">6.5.2</span> Week 5 Deliverables:</h3>
+<ul>
+<li><p>Widen our evaluation to avoid bias.</p>
+<ul>
+<li>Conduct a survey to gather people’s opinions and compare the results of multiple models.</li>
+</ul></li>
+<li><p>Add deliverables 1-4 to the research paper.</p></li>
+<li><p>Write the initial first draft of the Arixv Paper using the findings and visualizations that were carried out in Week 4</p></li>
+<li><p><strong>(Bonus)</strong> Examine related work for RAG and identify why it outperforms the other models.</p></li>
+</ul>
+</section>
+<section id="what-was-accomplished" class="level3" data-number="6.5.3">
+<h3 data-number="6.5.3" class="anchored" data-anchor-id="what-was-accomplished"><span class="header-section-number">6.5.3</span> What Was Accomplished:</h3>
+</section>
+<section id="widening-our-evaluation" class="level3" data-number="6.5.4">
+<h3 data-number="6.5.4" class="anchored" data-anchor-id="widening-our-evaluation"><span class="header-section-number">6.5.4</span> 1. Widening our evaluation</h3>
+<p>To ensure we are not introducing bias, Moses and Will were tasked with creating a survey that would be distributed to many Indians to solicit their feedback on the model’s responses.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/week_5_2.png" class="img-fluid figure-img"></p>
+<figcaption>Titan GPU environment setup confirmation</figcaption>
+</figure>
+</div>
+</section>
+<section id="adding-deliverables-to-the-draft" class="level3" data-number="6.5.5">
+<h3 data-number="6.5.5" class="anchored" data-anchor-id="adding-deliverables-to-the-draft"><span class="header-section-number">6.5.5</span> 2. Adding deliverables to the draft</h3>
+<p>Additionally, I worked on adding my deliverables 1 through 4 to the QMD files.</p>
+</section>
+<section id="why-rag-outperforms-sft-in-cultural-alignment-bonus" class="level3" data-number="6.5.6">
+<h3 data-number="6.5.6" class="anchored" data-anchor-id="why-rag-outperforms-sft-in-cultural-alignment-bonus"><span class="header-section-number">6.5.6</span> 3. Why RAG Outperforms SFT in Cultural Alignment <strong>(Bonus)</strong></h3>
+<p>As the results began to come in regarding the survey, the RAG implementation had already seemed to be the model with the higher results. I decided to investigate similar research on culture in LLMs and whether their results could explain why the original model performed better than our supervised model.</p>
+<p>Based on the paper <strong>“Rethinking AI cultural alignment”</strong> by Bravansky, Trhlik, and Barez (2025), a detailed summary and analysis of the project is provided. I examined this project from the perspective of trying to understand why the RAG (Retrieval-Augmented Generation) model likely outperformed the SFT (Supervised Fine-Tuned) models in the context of Indian culture, followed by the necessary limitations that the paper states.</p>
+</section>
+<section id="the-case-for-context-why-rag-outperforms-sft-in-cultural-alignment" class="level3" data-number="6.5.7">
+<h3 data-number="6.5.7" class="anchored" data-anchor-id="the-case-for-context-why-rag-outperforms-sft-in-cultural-alignment"><span class="header-section-number">6.5.7</span> The Case for Context: Why RAG Outperforms SFT in Cultural Alignment</h3>
+<p>The RAG model outperformed the SFT model in our human evaluation, which aligns with the theoretical framework proposed in this paper. While the paper focuses on interaction structures, its core thesis—that cultural alignment is dynamic and context-dependent, rather than static, is a starting point.</p>
+</section>
+<section id="static-vs.-dynamic-cultural-representation" class="level3" data-number="6.5.8">
+<h3 data-number="6.5.8" class="anchored" data-anchor-id="static-vs.-dynamic-cultural-representation"><span class="header-section-number">6.5.8</span> 1. Static vs.&nbsp;Dynamic Cultural Representation</h3>
+<p>The authors critique the prevailing method of cultural alignment, which relies on “embedding predefined cultural values” from standardized surveys (like the World Values Survey) into models. In ConLingo 2.0, the SFT models likely represent this “embedding” approach. By fine-tuning weights on specific Indian cultural datasets, the SFT models attempt to “freeze” cultural knowledge into the model’s parameters.</p>
+<p>However, the paper argues that culture is not a fixed repository of facts but a fluid system where values are “enacted in very different ways depending on outside context.”</p>
+<ul>
+<li><p><strong>The SFT Weakness:</strong> SFT models risk treating Indian culture—which is highly pluralistic and diverse—as a monolith or statically. If the model encounters a query that deviates slightly from its training distribution, it relies on static, compressed weights that may produce stereotyped or generic responses.</p></li>
+<li><p><strong>The RAG Advantage:</strong> RAG inherently treats knowledge in a more dynamic manner. By retrieving relevant context at inference time, the RAG model mimics the paper’s call for a <strong>“context-sensitive”</strong> approach. It allows the AI to “align” to the specific nuances of a query by accessing fresh, granular information rather than relying on a generalized “average” of Indian culture baked into its weights.</p></li>
+</ul>
+<p>In this paper, the researchers did not necessarily implement the RAG or SFT methods; instead, they focused on <strong>interaction design</strong> and <strong>prompting strategies</strong> to test cultural alignment. Specifically, they used a case study with <strong>GPT-4o</strong> using three distinct interaction types:</p>
+<ul>
+<li><p><strong>Direct Classification:</strong> Asking the model to classify a response directly.</p></li>
+<li><p><strong>Chain-of-Thought (CoT):</strong> Asking the model to provide reasoning before offering an answer.</p></li>
+<li><p><strong>Open-Ended Scenarios:</strong> Asking the model to write content (e.g., a news article or script) based on a specific prompt.</p></li>
+</ul>
+<p>The reason I thought this paper was applicable was because of the cultural alignment theme throughout the paper, and the fact that they tested their processes on a GPT-4o model, which is exactly the model the RAG implementation uses, except the mini version for cost purposes, and lastly, the idea of cultural alignment being a bidirectional process for stronger results. The original ConLingo model implements this as it has a corpus of data to be accessed, and it is also heavily prompt-engineered.</p>
+<p>Their core argument is that cultural alignment should be viewed as a <strong>“bidirectional process”</strong> shaped by how humans interact with the system, rather than just “embedding predefined cultural values” (which is what a retrieval or fine-tuning approach might rely on).</p>
+</section>
+<section id="the-power-of-interaction-structure-and-reasoning" class="level3" data-number="6.5.9">
+<h3 data-number="6.5.9" class="anchored" data-anchor-id="the-power-of-interaction-structure-and-reasoning"><span class="header-section-number">6.5.9</span> 2. The Power of “Interaction Structure” and Reasoning</h3>
+<p><strong>The paper demonstrates <em>how</em> a model is prompted significantly changes its cultural alignment.</strong> Through their case study using GPT-4o, the authors found that <strong>Chain-of-Thought (CoT)</strong> prompting yielded <em>significantly higher alignment scores</em> (measured via Wasserstein Similarity) compared to direct classification.</p>
+<p>This is crucial for explaining the RAG model’s success:</p>
+<ul>
+<li><p><strong>RAG as a form of CoT:</strong> RAG systems fundamentally alter the interaction structure. They force the model to process retrieved evidence before generating an answer. This “retrieval <span class="math inline">\(\rightarrow\)</span> synthesis <span class="math inline">\(\rightarrow\)</span> generation” pipeline acts as a structural proxy for Chain-of-Thought reasoning.</p></li>
+<li><p><strong>Evidence from the Paper (Table 1):</strong> The paper’s data specifically highlights India. In the <strong>Direct Classification</strong> setting, alignment with Indian values was relatively low (0.58). However, when the interaction structure changed to <strong>Chain-of-Thought (CoT)</strong>, the alignment score improved to <strong>0.63</strong>.</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/week_5.png" class="img-fluid figure-img"></p>
+<figcaption>Titan GPU environment setup confirmation</figcaption>
+</figure>
+</div>
+<ul>
+<li><strong>Implication:</strong> Our RAG model likely outperformed SFT because the retrieval mechanism forced the model to “reason” through specific cultural evidence rather than reacting reflexively (which SFT models often do). The paper demonstrates that providing the model “space” to process context (which RAG does by design) enhances cultural mimicry.</li>
+</ul>
+</section>
+<section id="bidirectional-alignment-vs.-imposed-values" class="level3" data-number="6.5.10">
+<h3 data-number="6.5.10" class="anchored" data-anchor-id="bidirectional-alignment-vs.-imposed-values"><span class="header-section-number">6.5.10</span> 3. Bidirectional Alignment vs.&nbsp;Imposed Values</h3>
+<p>The authors propose reframing alignment as a <strong>“bidirectional process.”</strong> They argue that we should not merely impose standardized values on AIs (which SFT does), but rather query values relevant to specific systems through interaction.</p>
+<p>The RAG model likely succeeded because it operates closer to this bidirectional ideal. When a user asks a question about Indian culture, the RAG system retrieves context-specific information for <em>that</em> interaction. It constructs a cultural framework ad hoc for that specific query. In contrast, the SFT model attempts to force the query to fit into its pre-learned map of Indian culture. As the paper notes, “values that appear nominally identical may be enacted in very different ways depending on outside context”—RAG captures this context; SFT may struggle to.</p>
+</section>
+<section id="limitations-of-the-research" class="level3" data-number="6.5.11">
+<h3 data-number="6.5.11" class="anchored" data-anchor-id="limitations-of-the-research"><span class="header-section-number">6.5.11</span> Limitations of the Research</h3>
+<p>While this paper provides a strong theoretical basis for our results, it is essential to acknowledge the limitations explicitly stated by the authors, which may affect the extent to which we can apply their findings to our specific RAG architecture.</p>
+<ol type="1">
+<li><p><strong>Scope of Cultural Theory:</strong> The paper acknowledges that it focuses on a “single cultural theory” and relies on specific datasets (GlobalOpinionQA) that privilege binary choices and specific survey-style questions. Indian culture is high-context and often non-binary; the paper’s reliance on quantifiable “distance” metrics (Wasserstein scores) might miss the qualitative nuance that our human evaluators picked up on in the SFT survey.</p></li>
+<li><p><strong>Model Specificity:</strong> The case study was conducted solely using <strong>GPT-4o</strong>. The authors admit their work is constrained by this focus. Our SFT models are based on a smaller open-source model (Llama 3); the specific “interaction effects” observed in GPT-4o might not scale linearly. Smaller models might struggle more with the “reasoning” that CoT or RAG requires compared to a frontier model like GPT-4o.</p></li>
+<li><p><strong>Task Limitation:</strong> The paper experimented with three specific interaction types: classification, CoT, and scenario writing. They did not explicitly test RAG architectures. While we can infer that RAG aligns with their “context-sensitive” conclusions, the paper does not provide empirical data directly comparing Retrieval-based methods against Fine-tuning methods.</p></li>
+<li><p><strong>The “Unclassifiable” Problem:</strong> The paper notes that as interaction complexity increases (e.g., in “Scenarios”), the percentage of “unclassifiable outputs” rises significantly (up to <strong>32.27% for India</strong>, as seen in Table 1). This suggests that while complex interactions (like RAG) can provide better alignment, they also introduce higher variance and potential instability in the output, which simplistic metrics might fail to capture but human evaluators would notice.</p></li>
+</ol>
+</section>
+<section id="summary" class="level3" data-number="6.5.12">
+<h3 data-number="6.5.12" class="anchored" data-anchor-id="summary"><span class="header-section-number">6.5.12</span> Summary</h3>
+<p>The paper supports the conclusion that your RAG model won because it treats Indian culture as a <strong>context-dependent, reasoning-heavy task</strong> rather than a <strong>static knowledge-recall task</strong>. By avoiding the “imperfect proxies” of baked-in weights (SFT), your RAG system aligned better with the paper’s definition of culture as a fluid, bidirectional phenomenon.</p>
+</section>
+<section id="ai-assistance" class="level3" data-number="6.5.13">
+<h3 data-number="6.5.13" class="anchored" data-anchor-id="ai-assistance"><span class="header-section-number">6.5.13</span> AI assistance:</h3>
+<ul>
+<li>“AI assistance: Copilot was used to summarize the arXiv paper and provide the summary in key insights for the ‘Cultural Alignment’ bonus section.”</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Week4.html" class="pagination-link" aria-label="Week 4: Data Searching, Data Vetting, Dataset Collection, Data Cleaning">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Week 4: Data Searching, Data Vetting, Dataset Collection, Data Cleaning</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Future_Improvments.html" class="pagination-link" aria-label="Future Improvements">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Future Improvements</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

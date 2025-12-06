@@ -1,0 +1,107 @@
+---
+title: "ConLingo Week 5"
+author: "Suwilanji Mwanza"
+format: html
+---
+
+# ConLingo Project 2.0
+
+# Overview of the Week 5 Deliverable
+
+This week, my deliverable was to help distribute the survey to as many Indians as possible, with the goal of 50, so that we can obtain a less biased evaluation of our three models. Additionally, we are drafting our research project. Another aspect I investigated was why the RAG implementation seemed to perform better, as the survey responses indicated that the RAG implementation was in the lead.
+
+# Week 5 Deliverables:
+
+-   Widen our evaluation to avoid bias.
+
+    -   Conduct a survey to gather people's opinions and compare the results of multiple models.
+
+-   Add deliverables 1-4 to the research paper.
+
+-   Write the initial first draft of the Arixv Paper using the findings and visualizations that were carried out in Week 4
+
+-   **(Bonus)** Examine related work for RAG and identify why it outperforms the other models.
+
+# What Was Accomplished:
+
+## 1. Widening our evaluation
+
+To ensure we are not introducing bias, Moses and Will were tasked with creating a survey that would be distributed to many Indians to solicit their feedback on the model's responses.
+
+![Titan GPU environment setup confirmation](img/week_5_2.png)
+
+## 2. Adding deliverables to the draft
+
+Additionally, I worked on adding my deliverables 1 through 4 to the QMD files.
+
+## 3. Why RAG Outperforms SFT in Cultural Alignment **(Bonus)**
+
+As the results began to come in regarding the survey, the RAG implementation had already seemed to be the model with the higher results. I decided to investigate similar research on culture in LLMs and whether their results could explain why the original model performed better than our supervised model.
+
+Based on the paper **"Rethinking AI cultural alignment"** by Bravansky, Trhlik, and Barez (2025), a detailed summary and analysis of the project is provided. I examined this project from the perspective of trying to understand why the RAG (Retrieval-Augmented Generation) model likely outperformed the SFT (Supervised Fine-Tuned) models in the context of Indian culture, followed by the necessary limitations that the paper states.
+
+### The Case for Context: Why RAG Outperforms SFT in Cultural Alignment
+
+The RAG model outperformed the SFT model in our human evaluation, which aligns with the theoretical framework proposed in this paper. While the paper focuses on interaction structures, its core thesis—that cultural alignment is dynamic and context-dependent, rather than static, is a starting point.
+
+### 1. Static vs. Dynamic Cultural Representation
+
+The authors critique the prevailing method of cultural alignment, which relies on "embedding predefined cultural values" from standardized surveys (like the World Values Survey) into models. In ConLingo 2.0, the SFT models likely represent this "embedding" approach. By fine-tuning weights on specific Indian cultural datasets, the SFT models attempt to "freeze" cultural knowledge into the model's parameters.
+
+However, the paper argues that culture is not a fixed repository of facts but a fluid system where values are "enacted in very different ways depending on outside context."
+
+-   **The SFT Weakness:** SFT models risk treating Indian culture—which is highly pluralistic and diverse—as a monolith or statically. If the model encounters a query that deviates slightly from its training distribution, it relies on static, compressed weights that may produce stereotyped or generic responses.
+
+-   **The RAG Advantage:** RAG inherently treats knowledge in a more dynamic manner. By retrieving relevant context at inference time, the RAG model mimics the paper’s call for a **"context-sensitive"** approach. It allows the AI to "align" to the specific nuances of a query by accessing fresh, granular information rather than relying on a generalized "average" of Indian culture baked into its weights.
+
+In this paper, the researchers did not necessarily implement the RAG or SFT methods; instead, they focused on **interaction design** and **prompting strategies** to test cultural alignment. Specifically, they used a case study with **GPT-4o** using three distinct interaction types:
+
+-   **Direct Classification:** Asking the model to classify a response directly.
+
+-   **Chain-of-Thought (CoT):** Asking the model to provide reasoning before offering an answer.
+
+-   **Open-Ended Scenarios:** Asking the model to write content (e.g., a news article or script) based on a specific prompt.
+
+The reason I thought this paper was applicable was because of the cultural alignment theme throughout the paper, and the fact that they tested their processes on a GPT-4o model, which is exactly the model the RAG implementation uses, except the mini version for cost purposes, and lastly, the idea of cultural alignment being a bidirectional process for stronger results. The original ConLingo model implements this as it has a corpus of data to be accessed, and it is also heavily prompt-engineered.
+
+Their core argument is that cultural alignment should be viewed as a **"bidirectional process"** shaped by how humans interact with the system, rather than just "embedding predefined cultural values" (which is what a retrieval or fine-tuning approach might rely on).
+
+### 2. The Power of "Interaction Structure" and Reasoning
+
+**The paper demonstrates *how* a model is prompted significantly changes its cultural alignment.** Through their case study using GPT-4o, the authors found that **Chain-of-Thought (CoT)** prompting yielded *significantly higher alignment scores* (measured via Wasserstein Similarity) compared to direct classification.
+
+This is crucial for explaining the RAG model's success:
+
+-   **RAG as a form of CoT:** RAG systems fundamentally alter the interaction structure. They force the model to process retrieved evidence before generating an answer. This "retrieval $\rightarrow$ synthesis $\rightarrow$ generation" pipeline acts as a structural proxy for Chain-of-Thought reasoning.
+
+-   **Evidence from the Paper (Table 1):** The paper’s data specifically highlights India. In the **Direct Classification** setting, alignment with Indian values was relatively low (0.58). However, when the interaction structure changed to **Chain-of-Thought (CoT)**, the alignment score improved to **0.63**.
+
+![Titan GPU environment setup confirmation](img/week_5.png)
+
+-   **Implication:** Our RAG model likely outperformed SFT because the retrieval mechanism forced the model to "reason" through specific cultural evidence rather than reacting reflexively (which SFT models often do). The paper demonstrates that providing the model "space" to process context (which RAG does by design) enhances cultural mimicry.
+
+### 3. Bidirectional Alignment vs. Imposed Values
+
+The authors propose reframing alignment as a **"bidirectional process."** They argue that we should not merely impose standardized values on AIs (which SFT does), but rather query values relevant to specific systems through interaction.
+
+The RAG model likely succeeded because it operates closer to this bidirectional ideal. When a user asks a question about Indian culture, the RAG system retrieves context-specific information for *that* interaction. It constructs a cultural framework ad hoc for that specific query. In contrast, the SFT model attempts to force the query to fit into its pre-learned map of Indian culture. As the paper notes, "values that appear nominally identical may be enacted in very different ways depending on outside context"—RAG captures this context; SFT may struggle to.
+
+### Limitations of the Research
+
+While this paper provides a strong theoretical basis for our results, it is essential to acknowledge the limitations explicitly stated by the authors, which may affect the extent to which we can apply their findings to our specific RAG architecture.
+
+1.  **Scope of Cultural Theory:** The paper acknowledges that it focuses on a "single cultural theory" and relies on specific datasets (GlobalOpinionQA) that privilege binary choices and specific survey-style questions. Indian culture is high-context and often non-binary; the paper's reliance on quantifiable "distance" metrics (Wasserstein scores) might miss the qualitative nuance that our human evaluators picked up on in the SFT survey.
+
+2.  **Model Specificity:** The case study was conducted solely using **GPT-4o**. The authors admit their work is constrained by this focus. Our SFT models are based on a smaller open-source model (Llama 3); the specific "interaction effects" observed in GPT-4o might not scale linearly. Smaller models might struggle more with the "reasoning" that CoT or RAG requires compared to a frontier model like GPT-4o.
+
+3.  **Task Limitation:** The paper experimented with three specific interaction types: classification, CoT, and scenario writing. They did not explicitly test RAG architectures. While we can infer that RAG aligns with their "context-sensitive" conclusions, the paper does not provide empirical data directly comparing Retrieval-based methods against Fine-tuning methods.
+
+4.  **The "Unclassifiable" Problem:** The paper notes that as interaction complexity increases (e.g., in "Scenarios"), the percentage of "unclassifiable outputs" rises significantly (up to **32.27% for India**, as seen in Table 1). This suggests that while complex interactions (like RAG) can provide better alignment, they also introduce higher variance and potential instability in the output, which simplistic metrics might fail to capture but human evaluators would notice.
+
+### Summary
+
+The paper supports the conclusion that your RAG model won because it treats Indian culture as a **context-dependent, reasoning-heavy task** rather than a **static knowledge-recall task**. By avoiding the "imperfect proxies" of baked-in weights (SFT), your RAG system aligned better with the paper’s definition of culture as a fluid, bidirectional phenomenon.
+
+# References:
+
+-   “AI assistance: Copilot was used to summarize the arXiv paper and provide the summary in key insights for the 'Cultural Alignment' bonus section."

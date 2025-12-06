@@ -1,0 +1,33 @@
+project:
+  type: book
+
+execute:
+  eval: false
+jupyter: false
+
+book:
+  title: "ConLingo Quarto Book"
+  author: "Rohan Aby, Moses Madale, Suwilanji Mwanza, William Richards"
+  date: "11/24/2025"
+  chapters:
+    - index.qmd
+    - Week1.qmd
+    - Week2.qmd
+    - Week3.qmd
+    - Week4.qmd
+    - Week5.qmd
+    - Future_Improvments.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+  pdf:
+    documentclass: scrreprt
+
+
+

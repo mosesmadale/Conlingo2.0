@@ -1,0 +1,755 @@
+---
+title: "Week 4: Model Training and Evaluation"
+author: "Moses Madale"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    code-fold: false
+---
+
+# 4 Week 4: Model Training and Evaluation
+
+## 4.1 Overview
+
+Week 4 transformed the datasets collected in Week 3 into trained models ready for evaluation. The primary focus was training three distinct fine-tuned models—one each for YouTube Transcripts, Wikipedia, and TED Talks datasets—testing them on 20 culturally nuanced questions, and preparing results for comprehensive analysis. This week demonstrated that different cultural data sources produce models with varying capabilities, setting the stage for Week 5's comparative evaluation against baseline and state-of-the-art models.
+
+## 4.2 Training Infrastructure and Workflow
+
+### 4.2.1 Fine-Tuning Pipeline Architecture
+
+Building on Week 2's pipeline, Week 4 established a standardized workflow for training multiple models systematically:
+
+![Fine-tuning pipeline for multiple datasets](img/4_1.png)
+
+**Pipeline Stages**:
+
+1. **Dataset Loading**: Read JSONL file with Q&A pairs
+2. **Train/Validation Split**: 90/10 split with random seed for reproducibility
+3. **Tokenization**: Convert text to model-compatible format with padding
+4. **Base Model Loading**: Load LLaMA-3 8B Instruct with half-precision
+5. **LoRA Configuration**: Add trainable adapters to attention layers
+6. **Training**: Run supervised fine-tuning with gradient accumulation
+7. **Evaluation**: Assess performance on validation set
+8. **Model Saving**: Store LoRA adapters for inference
+
+### 4.2.2 Standardized Training Configuration
+
+All three models used identical hyperparameters to ensure fair comparison:
+
+| Hyperparameter | Value | Purpose |
+|----------------|-------|---------|
+| **Epochs** | 3 | Sufficient for convergence without overfitting |
+| **Batch Size** | 2 | Maximum fitting in 24 GB VRAM |
+| **Gradient Accumulation** | 16 | Effective batch size of 32 |
+| **Learning Rate** | 2e-4 | Standard for LoRA fine-tuning |
+| **LR Scheduler** | Cosine | Gradual learning rate decay |
+| **Warmup Steps** | 50 | Prevents early training instability |
+| **Max Sequence Length** | 512 tokens | Accommodates most Q&A pairs |
+| **LoRA Rank (r)** | 16 | Balance between capacity and efficiency |
+| **LoRA Alpha** | 32 | Scaling factor for adapter outputs |
+
+**LoRA Target Modules**:
+- `q_proj` (Query projection)
+- `v_proj` (Value projection)
+- `k_proj` (Key projection)
+- `o_proj` (Output projection)
+
+These attention mechanism components were selected because they capture the most information during text generation while keeping trainable parameters to just 0.17% of the total model.
+
+### 4.2.3 Training Script Structure
+
+Each fine-tuning script followed a consistent 10-step process. Here is the complete Wikipedia training script as an example:
+
+```{python}
+#| eval: false
+
+#!/usr/bin/env python3
+"""
+LoRA Fine-Tuning for Wikipedia Data
+Fine-tunes LLaMA-3 8B on Indian Wikipedia Q&A pairs
+"""
+
+import torch
+import json
+from transformers import (
+    AutoTokenizer,
+    AutoModelForCausalLM,
+    TrainingArguments,
+    Trainer,
+    DataCollatorForLanguageModeling
+)
+from peft import LoraConfig, get_peft_model
+from datasets import Dataset
+import os
+from sklearn.model_selection import train_test_split
+
+print("="*60)
+print("Wikipedia LoRA Fine-Tuning Pipeline")
+print("="*60)
+
+# Paths
+DATA_PATH = "/home/mmadale/CSC463/conlingo/huggingface_data/indian_wikipedia/data/wikipedia_qa.jsonl"
+OUTPUT_DIR = "/home/mmadale/CSC463/conlingo/models/wikipedia"
+MODEL_NAME = "meta-llama/Meta-Llama-3-8B-Instruct"
+
+# Create output directory
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+print(f"\n1. Loading data from: {DATA_PATH}")
+
+# Load JSONL data
+data = []
+with open(DATA_PATH, 'r', encoding='utf-8') as f:
+    for line in f:
+        data.append(json.loads(line))
+
+print(f"Total examples: {len(data)}")
+
+# Extract question-answer pairs
+examples = []
+for item in data:
+    examples.append({
+        "question": item["question"],
+        "answer": item["answer"]
+    })
+
+# Split into train/validation (90/10)
+train_data, val_data = train_test_split(examples, test_size=0.1, random_state=42)
+
+print(f"Training examples: {len(train_data)}")
+print(f"Validation examples: {len(val_data)}")
+
+print(f"\n2. Loading tokenizer...")
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+tokenizer.pad_token = tokenizer.eos_token
+tokenizer.padding_side = "right"
+
+print(f"Tokenizer loaded: {tokenizer.__class__.__name__}")
+
+print(f"\n3. Preparing datasets...")
+
+def format_instruction(example):
+    """Format question-answer pair for training"""
+    text = f"### Question:\n{example['question']}\n\n### Answer:\n{example['answer']}"
+    return text
+
+def tokenize_function(example):
+    """Tokenize examples with padding and truncation"""
+    text = format_instruction(example)
+    
+    tokenized = tokenizer(
+        text,
+        truncation=True,
+        max_length=512,
+        padding="max_length",
+        return_tensors=None
+    )
+    
+    tokenized["labels"] = tokenized["input_ids"].copy()
+    return tokenized
+
+# Convert to HuggingFace Dataset format
+train_dataset = Dataset.from_list(train_data)
+val_dataset = Dataset.from_list(val_data)
+
+# Tokenize
+print("Tokenizing training data...")
+train_dataset = train_dataset.map(
+    tokenize_function,
+    remove_columns=train_dataset.column_names
+)
+
+print("Tokenizing validation data...")
+val_dataset = val_dataset.map(
+    tokenize_function,
+    remove_columns=val_dataset.column_names
+)
+
+print(f"Training dataset size: {len(train_dataset)}")
+print(f"Validation dataset size: {len(val_dataset)}")
+
+print(f"\n4. Loading base model...")
+model = AutoModelForCausalLM.from_pretrained(
+    MODEL_NAME,
+    device_map="auto",
+    torch_dtype=torch.float16,
+    low_cpu_mem_usage=True
+)
+
+model.gradient_checkpointing_enable()
+
+print(f"Model loaded: {model.__class__.__name__}")
+print(f"Model parameters: {sum(p.numel() for p in model.parameters()):,}")
+
+print(f"\n5. Configuring LoRA...")
+lora_config = LoraConfig(
+    r=16,
+    lora_alpha=32,
+    target_modules=["q_proj", "v_proj", "k_proj", "o_proj"],
+    lora_dropout=0.05,
+    bias="none",
+    task_type="CAUSAL_LM"
+)
+
+model = get_peft_model(model, lora_config)
+
+trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+total_params = sum(p.numel() for p in model.parameters())
+
+print(f"LoRA configured successfully")
+print(f"Trainable parameters: {trainable_params:,} ({100*trainable_params/total_params:.4f}%)")
+print(f"Total parameters: {total_params:,}")
+
+print(f"\n6. Setting up training arguments...")
+
+training_args = TrainingArguments(
+    output_dir=OUTPUT_DIR,
+    num_train_epochs=3,
+    per_device_train_batch_size=2,
+    per_device_eval_batch_size=2,
+    gradient_accumulation_steps=16,
+    learning_rate=2e-4,
+    lr_scheduler_type="cosine",
+    warmup_steps=50,
+    logging_steps=10,
+    save_steps=50,
+    eval_steps=50,
+    eval_strategy="steps",
+    save_strategy="steps",
+    load_best_model_at_end=True,
+    metric_for_best_model="eval_loss",
+    greater_is_better=False,
+    fp16=True,
+    report_to="none",
+    save_total_limit=2,
+    remove_unused_columns=False,
+    gradient_checkpointing=True
+)
+
+print("Training configuration:")
+print(f"  Epochs: {training_args.num_train_epochs}")
+print(f"  Batch size: {training_args.per_device_train_batch_size}")
+print(f"  Gradient accumulation: {training_args.gradient_accumulation_steps}")
+print(f"  Effective batch size: {training_args.per_device_train_batch_size * training_args.gradient_accumulation_steps}")
+print(f"  Learning rate: {training_args.learning_rate}")
+
+print(f"\n7. Initializing trainer...")
+
+data_collator = DataCollatorForLanguageModeling(
+    tokenizer=tokenizer,
+    mlm=False
+)
+
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=train_dataset,
+    eval_dataset=val_dataset,
+    data_collator=data_collator
+)
+
+print("Trainer initialized successfully!")
+
+print(f"\n8. Starting training...")
+print("="*60)
+
+trainer.train()
+
+print("\n" + "="*60)
+print("Training complete!")
+print("="*60)
+
+print(f"\n9. Saving final model...")
+model.save_pretrained(f"{OUTPUT_DIR}/final_model")
+tokenizer.save_pretrained(f"{OUTPUT_DIR}/final_model")
+
+print(f"Model saved to: {OUTPUT_DIR}/final_model")
+
+print(f"\n10. Final evaluation metrics:")
+eval_results = trainer.evaluate()
+for key, value in eval_results.items():
+    print(f"  {key}: {value:.4f}")
+
+print("\n" + "="*60)
+print("Fine-tuning pipeline complete!")
+print("="*60)
+```
+
+The same script structure was adapted for TED Talks and YouTube Transcripts by simply changing the `DATA_PATH` and `OUTPUT_DIR` variables. This standardization enabled rapid iteration and consistent results across different datasets.
+
+## 4.3 Model Training Results
+
+### 4.3.1 Wikipedia Model Training
+
+**Dataset Statistics**:
+- Total examples: 500
+- Training set: 450 (90%)
+- Validation set: 50 (10%)
+- Training duration: 8 minutes 29 seconds
+
+**Training Progress**:
+
+```
+============================================================
+Wikipedia LoRA Fine-Tuning Pipeline
+============================================================
+
+1. Loading data from: .../indian_wikipedia/data/wikipedia_qa.jsonl
+Total examples: 500
+Training examples: 450
+Validation examples: 50
+
+2. Loading tokenizer...
+Tokenizer loaded: PreTrainedTokenizerFast
+
+3. Preparing datasets...
+Training dataset size: 450
+Validation dataset size: 50
+
+4. Loading base model...
+Model loaded: LlamaForCausalLM
+Model parameters: 8,030,261,248
+
+5. Configuring LoRA...
+LoRA configured successfully
+Trainable parameters: 13,631,488 (0.1695%)
+Total parameters: 8,043,892,736
+
+6. Setting up training arguments...
+Training configuration:
+  Epochs: 3
+  Batch size: 2
+  Gradient accumulation: 16
+  Effective batch size: 32
+  Learning rate: 0.0002
+
+8. Starting training...
+============================================================
+{'loss': 2.433, 'grad_norm': 1.730, 'learning_rate': 3.6e-05, 'epoch': 0.71}
+{'loss': 1.945, 'grad_norm': 2.509, 'learning_rate': 7.6e-05, 'epoch': 1.36}
+{'loss': 1.468, 'grad_norm': 4.694, 'learning_rate': 0.000116, 'epoch': 2.0}
+{'loss': 1.281, 'grad_norm': 0.774, 'learning_rate': 0.000156, 'epoch': 2.71}
+
+============================================================
+Training complete!
+============================================================
+
+10. Final evaluation metrics:
+  eval_loss: 1.2456
+  eval_runtime: 5.8086
+  epoch: 3.0000
+```
+
+**Performance Analysis**:
+
+The Wikipedia model achieved the **lowest final loss (1.2456)** among all three models, indicating:
+- Excellent convergence on encyclopedic content
+- Strong pattern recognition for factual Q&A
+- Effective learning from well-structured Wikipedia articles
+
+The loss decreased from 2.433 → 1.281 (47% reduction), demonstrating substantial learning without overfitting (validation loss 1.2456 close to final training loss 1.281).
+
+### 4.3.2 YouTube Transcripts Model Training
+
+**Dataset Statistics**:
+- Total examples: 512
+- Training set: 460 (90%)
+- Validation set: 52 (10%)
+- Training duration: 8 minutes 46 seconds
+
+**Training Progress**:
+
+```
+============================================================
+YouTube Transcripts LoRA Fine-Tuning Pipeline
+============================================================
+
+1. Loading data from: .../youtube_data/data/final_youtube_transcript_data.jsonl
+Total examples: 512
+Training examples: 460
+Validation examples: 52
+
+5. Configuring LoRA...
+Trainable parameters: 13,631,488 (0.1695%)
+Total parameters: 8,043,892,736
+
+8. Starting training...
+============================================================
+{'loss': 3.935, 'grad_norm': 1.849, 'learning_rate': 3.6e-05, 'epoch': 0.7}
+{'loss': 3.363, 'grad_norm': 2.377, 'learning_rate': 7.6e-05, 'epoch': 1.35}
+{'loss': 2.618, 'grad_norm': 2.411, 'learning_rate': 0.000116, 'epoch': 2.0}
+{'loss': 2.324, 'grad_norm': 1.130, 'learning_rate': 0.000156, 'epoch': 2.7}
+
+============================================================
+Training complete!
+============================================================
+
+10. Final evaluation metrics:
+  eval_loss: 2.2825
+  eval_runtime: 6.0515
+  epoch: 3.0000
+```
+
+**Performance Analysis**:
+
+The YouTube model exhibited the **highest loss (2.2825)** among the three models, suggesting:
+- Greater complexity in conversational, informal content
+- Diverse speaking styles and code-mixing (Hinglish) challenging to model
+- Richer linguistic variation compared to encyclopedic content
+
+Despite higher loss, the model achieved 41% loss reduction (3.935 → 2.324), indicating successful learning of conversational patterns and cultural idioms prevalent in YouTube content.
+
+### 4.3.3 TED Talks Model Training
+
+**Dataset Statistics**:
+- Total examples: 596
+- Training set: 536 (90%)
+- Validation set: 60 (10%)
+- Training duration: 10 minutes 45 seconds (longest due to largest dataset)
+
+**Training Progress**:
+
+```
+============================================================
+TED Talks LoRA Fine-Tuning Pipeline
+============================================================
+
+1. Loading data from: .../indian_ted_talks/data/ted_talks_qa.jsonl
+Total examples: 596
+Training examples: 536
+Validation examples: 60
+
+5. Configuring LoRA...
+Trainable parameters: 13,631,488 (0.1695%)
+Total parameters: 8,043,892,736
+
+8. Starting training...
+============================================================
+{'loss': 3.451, 'grad_norm': 1.911, 'learning_rate': 3.6e-05, 'epoch': 0.6}
+{'loss': 3.063, 'grad_norm': 1.472, 'learning_rate': 7.6e-05, 'epoch': 1.18}
+{'loss': 2.506, 'grad_norm': 1.670, 'learning_rate': 0.000116, 'epoch': 1.78}
+{'loss': 2.175, 'grad_norm': 0.983, 'learning_rate': 0.000156, 'epoch': 2.36}
+{'loss': 2.022, 'grad_norm': 1.266, 'learning_rate': 0.000196, 'epoch': 2.96}
+
+============================================================
+Training complete!
+============================================================
+
+10. Final evaluation metrics:
+  eval_loss: 2.0647
+  eval_runtime: 7.0019
+  epoch: 3.0000
+```
+
+**Performance Analysis**:
+
+The TED Talks model achieved **intermediate loss (2.0647)**, positioned between Wikipedia's factual clarity and YouTube's conversational complexity. This reflects:
+- Structured presentation style (more formal than YouTube)
+- Substantive content (less dry than Wikipedia)
+- Blend of storytelling and information delivery
+
+Loss reduction of 41% (3.451 → 2.022) matched YouTube's learning rate, suggesting comparable learning difficulty despite different content styles.
+
+### 4.3.4 Comparative Training Analysis
+
+| Model | Train/Val Split | Training Time | Final Eval Loss | Loss Reduction |
+|-------|----------------|---------------|-----------------|----------------|
+| **Wikipedia** | 450/50 | 8:29 | 1.2456 | 47% (2.433→1.281) |
+| **TED Talks** | 536/60 | 10:45 | 2.0647 | 41% (3.451→2.022) |
+| **YouTube** | 460/52 | 8:46 | 2.2825 | 41% (3.935→2.324) |
+
+**Key Observations**:
+
+1. **Wikipedia's superiority in loss metrics**: The encyclopedic, structured nature of Wikipedia articles enabled tighter convergence
+2. **Dataset size correlation**: TED Talks (596 examples) took longest to train, but more data didn't necessarily yield lowest loss
+3. **Consistent learning rates**: All models showed 40-47% loss reduction, indicating the training regimen was effective across content types
+4. **Validation alignment**: Small gaps between final training loss and validation loss across all models indicate minimal overfitting
+
+## 4.4 Prompt Engineering for Inference
+
+### 4.4.1 System Prompt Design
+
+To ensure culturally aware responses during testing, Moses designed a comprehensive system prompt that would be used consistently across all model evaluations:
+
+![Prompt engineering code for culturally aware responses](img/4_2.png)
+
+**Prompt Structure**:
+
+```python
+SYSTEM_PROMPT = """You are a culturally aware guide with deep knowledge of 
+Indian traditions, Christianity in India, and the beautiful intersections 
+between faith and culture. When answering questions, draw from your 
+understanding of Indian regional diversity, historical contexts, contemporary 
+practices, and lived experiences. Provide comprehensive, thoughtful responses 
+(150-200 words each) that would be valuable for someone doing serious research. 
+Include specific examples, acknowledge regional variations, and demonstrate 
+sensitivity to both Hindu and Christian perspectives. Be conversational yet 
+substantive – imagine you're having a meaningful conversation with someone 
+genuinely curious about these topics."""
+```
+
+**Design Rationale**:
+
+The prompt was carefully crafted to:
+- **Establish Cultural Expertise**: "Deep knowledge of Indian traditions" sets expectations for nuanced answers
+- **Define Scope**: "Christianity in India" and "faith-culture intersections" focus the domain
+- **Specify Response Style**: "Comprehensive, thoughtful responses (150-200 words)" prevents overly brief answers
+- **Encourage Specificity**: "Include specific examples, acknowledge regional variations" promotes detailed responses
+- **Balance Tone**: "Conversational yet substantive" avoids academic dryness while maintaining seriousness
+
+### 4.4.2 Question Formatting
+
+Each test question was formatted using the same structure established during training:
+
+```python
+def format_question(question):
+    prompt = f"### Question:\n{question}\n\n### Answer:\n"
+    return prompt
+```
+
+This consistency between training and inference formats is critical for optimal model performance. The `### Question:` and `### Answer:` delimiters were familiar to the model from fine-tuning, enabling it to recognize when to start generating responses.
+
+### 4.4.3 Generation Parameters
+
+Inference used carefully tuned generation parameters:
+
+| Parameter | Value | Purpose |
+|-----------|-------|---------|
+| `max_new_tokens` | 150 | Sufficient for detailed answers without rambling |
+| `temperature` | 0.7 | Balanced creativity and coherence |
+| `do_sample` | True | Enable probabilistic sampling |
+| `top_p` | 0.9 | Nucleus sampling for quality control |
+| `pad_token_id` | `eos_token_id` | Proper sequence termination |
+
+**Temperature Selection**:
+
+The temperature of 0.7 was chosen after preliminary testing:
+- **0.5**: Too conservative, repetitive answers
+- **0.7**: Balanced creativity with accuracy
+- **1.0**: Occasional incoherence, overly creative
+
+## 4.5 Test Question Design and Evaluation Process
+
+### 4.5.1 Rohan's 20-Question Framework
+
+Team member Rohan designed 20 questions spanning multiple cultural dimensions and pillars. These questions were strategically crafted to test:
+
+- **Interfaith Understanding**: Hindu-Christian intersections
+- **Cultural Sensitivity**: Handling religious diversity in institutional settings
+- **Practical Application**: Real-world scenarios for Indian Christians
+- **Theological Integration**: Biblical concepts in Indian cultural context
+
+**Example Questions**:
+
+1. "How can Diwali and Christmas both symbolize the victory of light over darkness in their respective traditions?"
+   - **Tests**: Values & beliefs, religion & spirituality, comparative understanding
+
+2. "What themes of renewal in Diwali resonate with the idea of rebirth in Christian theology?"
+   - **Tests**: Theological integration, cultural awareness, abstract reasoning
+
+3. "How might Indian Christians use Diwali to express biblical messages of hope?"
+   - **Tests**: Practical application, contextualization, creativity
+
+4. "How can Christian schools acknowledge Diwali without compromising faith boundaries?"
+   - **Tests**: Institutional sensitivity, balance, practical wisdom
+
+5. "What sensitivities should pastors consider when mentioning Hindu deities in Christmas homilies?"
+   - **Tests**: Cultural sensitivity, religious boundaries, contextual awareness
+
+6. "How can Christian youth groups create shared Diwali–Christmas community service projects?"
+   - **Tests**: Interfaith collaboration, practical implementation, social organization
+
+These questions deliberately avoid simple factual recall, instead requiring:
+- Cultural nuance and sensitivity
+- Integration of multiple perspectives
+- Practical wisdom
+- Awareness of regional and social variations
+
+### 4.5.2 Testing Workflow
+
+Moses implemented a systematic testing process:
+
+**Step 1: Model Loading**
+```python
+# Load base model
+base_model = AutoModelForCausalLM.from_pretrained(
+    "meta-llama/Meta-Llama-3-8B-Instruct",
+    device_map="auto",
+    torch_dtype=torch.float16
+)
+
+# Load fine-tuned LoRA adapters
+model = PeftModel.from_pretrained(base_model, FINETUNED_MODEL_PATH)
+```
+
+**Step 2: Question Iteration**
+```python
+for question in test_questions:
+    prompt = f"### Question:\n{question}\n\n### Answer:\n"
+    inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+    
+    outputs = model.generate(
+        **inputs,
+        max_new_tokens=150,
+        temperature=0.7,
+        do_sample=True,
+        top_p=0.9,
+        pad_token_id=tokenizer.eos_token_id
+    )
+    
+    response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    answer = response.split("### Answer:")[-1].strip()
+```
+
+**Step 3: Response Logging**
+
+Responses were saved to structured text files:
+
+```
+================================================================================
+Fine-tuned: YouTube Transcripts
+Test Date: 2025-11-13 22:41:08
+================================================================================
+
+1. How can Diwali and Christmas both symbolize the victory of light over 
+darkness in their respective traditions?
+
+The victory of light over darkness is what I think is very deeply rooted 
+across religious traditions here. The most obvious example is Diwali and 
+its celebration of light defeating the forces of darkness, which is 
+associated with this concept of the divine that's been worshipped in many 
+parts of India for thousands of years. At the same time, if you look at 
+the significance of Christmas, there's no doubt that it has an element of 
+symbolism around the victory of good over evil as well, because we celebrate 
+the birth of Jesus Christ who's associated with bringing light and hope to 
+humanity...
+```
+
+### 4.5.3 Response Organization for Analysis
+
+Moses delivered results to Rohan in a standardized format:
+
+**File Structure**:
+```
+responses/
+├── youtube_model_responses.txt
+├── wikipedia_model_responses.txt
+├── ted_talks_model_responses.txt
+└── baseline_model_responses.txt
+```
+
+Each file contained:
+- Model identifier
+- Test date/time
+- All 20 questions
+- Complete model responses
+- Consistent formatting for comparison
+
+This organization enabled Rohan to:
+- Directly compare responses across models
+- Track which model excelled at which questions
+- Identify patterns in cultural awareness
+- Score models on standardized rubrics
+
+## 4.6 Baseline Model Testing
+
+### 4.6.1 Control Variable Rationale
+
+To establish whether fine-tuning actually improved cultural awareness, Moses tested the **unfine-tuned LLaMA-3 8B Instruct** model on the same 20 questions. This baseline served as a control variable, representing the model's cultural knowledge "out of the box" without any Indian cultural training.
+
+**Testing Approach**:
+
+```python
+# Load base model WITHOUT LoRA adapters
+baseline_model = AutoModelForCausalLM.from_pretrained(
+    "meta-llama/Meta-Llama-3-8B-Instruct",
+    device_map="auto",
+    torch_dtype=torch.float16
+)
+
+# Use same generation parameters as fine-tuned models
+# Same prompt format, same questions
+```
+
+### 4.6.2 Expected Baseline Characteristics
+
+The baseline model was expected to exhibit:
+
+1. **Generic Cultural Knowledge**: Broad understanding of Diwali and Christianity from pre-training
+2. **Lack of Specificity**: Missing regional variations, specific Indian Christian practices
+3. **Western Bias**: Potential Anglo-centric perspectives on Christianity
+4. **Surface-Level Connections**: Obvious parallels without deep cultural integration
+
+**Hypothesis**: Fine-tuned models would demonstrate superior:
+- Use of Indian terminology and concepts
+- Awareness of regional variations
+- Integration of Hindu-Christian contexts
+- Practical, lived-experience insights
+
+### 4.6.3 Baseline Integration into Evaluation
+
+The baseline model responses joined the fine-tuned models in Rohan's analysis framework, creating a **4-model comparison** for Week 4:
+
+1. Baseline (unfine-tuned LLaMA-3 8B)
+2. Wikipedia fine-tuned
+3. TED Talks fine-tuned
+4. YouTube Transcripts fine-tuned
+
+This comparison would reveal whether fine-tuning provided measurable improvements over the base model's existing capabilities.
+
+## 4.7 Combined Model Strategy and Deferral
+
+### 4.7.1 Original Plan: Two Combined Models
+
+Week 4 initially planned to create two ensemble models:
+
+1. **Top 3 Datasets Model**: Combine the three best-performing datasets based on evaluation results
+2. **All 5 Datasets Model**: Combine all datasets (Superstitions, Constitution, Wikipedia, TED Talks, YouTube)
+
+**Intended Workflow**:
+```
+Week 4 Model Evaluation
+    ↓
+Identify Top 3 Performers
+    ↓
+Train Combined Model (Top 3)
+    ↓
+Train Combined Model (All 5)
+    ↓
+Compare Combined vs Individual Models
+```
+
+### 4.7.2 Time Constraint Reality
+
+As Week 4 progressed, the team encountered a critical timeline issue:
+
+**Challenge**: Evaluating four models (baseline + 3 fine-tuned) required:
+- Rohan analyzing 80 total responses (20 questions × 4 models)
+- Developing scoring rubrics
+- Conducting qualitative analysis
+- Presenting findings to team
+
+This evaluation process extended into the final days of Week 4, leaving insufficient time to:
+1. Complete evaluation
+2. Identify top 3 datasets
+3. Prepare combined training data
+4. Train combined model
+5. Test combined model
+
+**Decision**: Defer combined model training to Week 5
+
+### 4.7.3 Strategic Pivot to Week 5
+
+The team made a strategic decision to prioritize quality over rushing:
+
+**Week 4 Deliverable**: Complete individual model training and testing
+**Week 5 Deliverable**: Train "Conlingo 2.0" (combined all 5 datasets) as the flagship model for final comparison
+
+**Rationale**:
+- Individual model results provided valuable insights regardless
+- Combined model training (~10-15 minutes) could fit in Week 5
+- Allowed proper evaluation of individual models first
+- Ensured combined model incorporated lessons learned
+
+**Conlingo 2.0 Definition**: The final combined model trained on all 5 approved datasets (3,031 Q&A pairs total), representing the team's comprehensive approach to Indian cultural awareness training.

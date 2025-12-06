@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Week 2: Data Cleaning &amp; Pipeline Setup – ConLingo Quarto Book</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Week3.html" rel="next">
+<link href="./Week1.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-485d01fc63b59abcd3ee1bf1e8e2748d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Week2.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Week 2: Data Cleaning &amp; Pipeline Setup</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">ConLingo Quarto Book</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">ConLingo 2.0</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Week 1: Foundations &amp; Data Collection</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week2.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Week 2: Data Cleaning &amp; Pipeline Setup</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Week 3: Data Searching, Data Vetting, Dataset Collection, Data Cleaning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Week 4: Data Searching, Data Vetting, Dataset Collection, Data Cleaning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Week 5: Compare Fine-tuned model with RAG implementation and ChatGPT-5 &amp; Research Paper</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Future_Improvments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Future Improvements</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">3.1</span> Overview</a></li>
+  <li><a href="#rohan-aby-deliverables" id="toc-rohan-aby-deliverables" class="nav-link" data-scroll-target="#rohan-aby-deliverables"><span class="header-section-number">3.2</span> Rohan Aby Deliverables</a>
+  <ul class="collapse">
+  <li><a href="#question-comprehensive-test-dataset" id="toc-question-comprehensive-test-dataset" class="nav-link" data-scroll-target="#question-comprehensive-test-dataset"><span class="header-section-number">3.2.1</span> 200-question comprehensive test dataset</a></li>
+  <li><a href="#rag-baseline-evaluation-complete-csi-scoring" id="toc-rag-baseline-evaluation-complete-csi-scoring" class="nav-link" data-scroll-target="#rag-baseline-evaluation-complete-csi-scoring"><span class="header-section-number">3.2.2</span> RAG baseline evaluation complete (CSI scoring)</a></li>
+  </ul></li>
+  <li><a href="#william-richards-deliverables" id="toc-william-richards-deliverables" class="nav-link" data-scroll-target="#william-richards-deliverables"><span class="header-section-number">3.3</span> William Richards Deliverables</a></li>
+  <li><a href="#suwilanji-mwanza-deliverables" id="toc-suwilanji-mwanza-deliverables" class="nav-link" data-scroll-target="#suwilanji-mwanza-deliverables"><span class="header-section-number">3.4</span> Suwilanji Mwanza Deliverables</a>
+  <ul class="collapse">
+  <li><a href="#overview-of-the-week-2-deliverable" id="toc-overview-of-the-week-2-deliverable" class="nav-link" data-scroll-target="#overview-of-the-week-2-deliverable"><span class="header-section-number">3.4.1</span> Overview of the Week 2 Deliverable</a></li>
+  <li><a href="#week-2-deliverables" id="toc-week-2-deliverables" class="nav-link" data-scroll-target="#week-2-deliverables"><span class="header-section-number">3.4.2</span> Week 2 Deliverables:</a></li>
+  <li><a href="#what-was-accomplished" id="toc-what-was-accomplished" class="nav-link" data-scroll-target="#what-was-accomplished"><span class="header-section-number">3.4.3</span> What was Accomplished:</a></li>
+  <li><a href="#reaching-out-to-the-reddit-api" id="toc-reaching-out-to-the-reddit-api" class="nav-link" data-scroll-target="#reaching-out-to-the-reddit-api"><span class="header-section-number">3.4.4</span> 1. Reaching out to the Reddit API</a></li>
+  <li><a href="#finalize-data-sources" id="toc-finalize-data-sources" class="nav-link" data-scroll-target="#finalize-data-sources"><span class="header-section-number">3.4.5</span> 2. Finalize Data Sources</a></li>
+  <li><a href="#distribution-of-data" id="toc-distribution-of-data" class="nav-link" data-scroll-target="#distribution-of-data"><span class="header-section-number">3.4.6</span> 3. Distribution of Data</a></li>
+  <li><a href="#cleaning-script" id="toc-cleaning-script" class="nav-link" data-scroll-target="#cleaning-script"><span class="header-section-number">3.4.7</span> 4. Cleaning Script</a></li>
+  <li><a href="#ai-assistance" id="toc-ai-assistance" class="nav-link" data-scroll-target="#ai-assistance"><span class="header-section-number">3.4.8</span> AI assistance:</a></li>
+  </ul></li>
+  <li><a href="#moses-mandale-deliverables" id="toc-moses-mandale-deliverables" class="nav-link" data-scroll-target="#moses-mandale-deliverables"><span class="header-section-number">3.5</span> Moses Mandale Deliverables</a>
+  <ul class="collapse">
+  <li><a href="#overview-1" id="toc-overview-1" class="nav-link" data-scroll-target="#overview-1"><span class="header-section-number">3.5.1</span> Overview</a></li>
+  <li><a href="#fine-tuning-pipeline-architecture" id="toc-fine-tuning-pipeline-architecture" class="nav-link" data-scroll-target="#fine-tuning-pipeline-architecture"><span class="header-section-number">3.5.2</span> Fine-Tuning Pipeline Architecture</a></li>
+  <li><a href="#data-flow" id="toc-data-flow" class="nav-link" data-scroll-target="#data-flow"><span class="header-section-number">3.5.3</span> Data Flow</a></li>
+  <li><a href="#data-preprocessing" id="toc-data-preprocessing" class="nav-link" data-scroll-target="#data-preprocessing"><span class="header-section-number">3.5.4</span> Data Preprocessing</a></li>
+  <li><a href="#fine-tuning-implementation" id="toc-fine-tuning-implementation" class="nav-link" data-scroll-target="#fine-tuning-implementation"><span class="header-section-number">3.5.5</span> Fine-Tuning Implementation</a></li>
+  <li><a href="#model-architecture" id="toc-model-architecture" class="nav-link" data-scroll-target="#model-architecture"><span class="header-section-number">3.5.6</span> Model Architecture</a></li>
+  <li><a href="#training-process-and-results" id="toc-training-process-and-results" class="nav-link" data-scroll-target="#training-process-and-results"><span class="header-section-number">3.5.7</span> Training Process and Results</a></li>
+  <li><a href="#code-implementation-highlights" id="toc-code-implementation-highlights" class="nav-link" data-scroll-target="#code-implementation-highlights"><span class="header-section-number">3.5.8</span> Code Implementation Highlights</a></li>
+  <li><a href="#technical-challenges-and-solutions" id="toc-technical-challenges-and-solutions" class="nav-link" data-scroll-target="#technical-challenges-and-solutions"><span class="header-section-number">3.5.9</span> Technical Challenges and Solutions</a></li>
+  <li><a href="#validation-and-quality-assurance" id="toc-validation-and-quality-assurance" class="nav-link" data-scroll-target="#validation-and-quality-assurance"><span class="header-section-number">3.5.10</span> Validation and Quality Assurance</a></li>
+  <li><a href="#key-achievements" id="toc-key-achievements" class="nav-link" data-scroll-target="#key-achievements"><span class="header-section-number">3.5.11</span> Key Achievements</a></li>
+  <li><a href="#lessons-learned" id="toc-lessons-learned" class="nav-link" data-scroll-target="#lessons-learned"><span class="header-section-number">3.5.12</span> Lessons Learned</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Week 2: Data Cleaning &amp; Pipeline Setup</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">3.1</span> Overview</h2>
+<p>The team expanded the dataset, finalized the fine-tuning pipeline, completed baseline and human evaluation preparations, and built initial tools and documentation to support quality checks and research development.</p>
+</section>
+<section id="rohan-aby-deliverables" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="rohan-aby-deliverables"><span class="header-section-number">3.2</span> Rohan Aby Deliverables</h2>
+<p><strong>AI assistance: ChatGPT was used to develop the 200-question comprehensive test dataset (accessed Nov, 2025).</strong></p>
+<section id="question-comprehensive-test-dataset" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="question-comprehensive-test-dataset"><span class="header-section-number">3.2.1</span> 200-question comprehensive test dataset</h3>
+<p>The dataset was expanded to 100 more questions using AI. The questions were divided into qusetions on biblical contextualization (25 questions), Cultural Sensitivity (25 questions), Controversial Topics (i.e.&nbsp;cow slaughter, forced conversion) (25 Questions), Regional Variations (25 Questions)</p>
+</section>
+<section id="rag-baseline-evaluation-complete-csi-scoring" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="rag-baseline-evaluation-complete-csi-scoring"><span class="header-section-number">3.2.2</span> RAG baseline evaluation complete (CSI scoring)</h3>
+<p>Rohan selected 20 questions from the list and scored the responses based on the CSI frameowork. He scored the original model (<a href="../Appendix/RohanAby/Conlingo_20_question_answers.pdf">Download the results of original model’s responses</a>) vs the fine tuned model (<a href="../Appendix/RohanAby/20_Answers_to_Will's_Questions_Moses.pdf">Download the results of fine tuned responses</a>). The result was that the orignal model performed better than the fine tuned model as can be seen in the image below. The original model had a score of 99.2 while the fine tuned model scored 85.55. The responses from the original model was more detailed and contained more information while the fine tuned model was short and did not contain much information. The scoring of the models can be seen below. <img src="Appendix/RohanAby/CSIScore_result.png" class="img-fluid" alt="CSI Score Result"> Fig. 1: CSI Score visualization</p>
+</section>
+</section>
+<section id="william-richards-deliverables" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="william-richards-deliverables"><span class="header-section-number">3.3</span> William Richards Deliverables</h2>
+<p>Williams task was to validate the data by creating visualizations for each set of criteria to ensure the data aligned with them for fine-tuning. These criteria included Cultural Accuracy, Biases or Stereotyping, and Tone or Respect. This was the most time-intensive deliverable, as he reviewed each dataset manually to determine which entries were suitable. After completing his review, he ran the data through the then-new ChatGPT 5.1, which confirmed 95% of his validations.</p>
+<p>In addition, he worked on establishing the future direction for the project by creating a simple outline for the research paper that would ultimately serve as the final report.</p>
+<p>Data Quality Validation</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstudioapi)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>data_path <span class="ot">&lt;-</span> <span class="st">"Appendix/WilliamRichards/data/conlingo_week2_200_labeled.csv"</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>tb_plots <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(data_path)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(tb_plots)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Cultural Accuracy Plot: How accurate is the data to the respective culture?</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   Scaling: 0 = Not at all</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#            1 = Simple references</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#            2 = Highly relevant</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tb_plots, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">"Cultural Accuracy"</span>, <span class="at">y =</span> cultural_accuracy, <span class="at">color =</span> keep)) <span class="sc">+</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">2.1</span>)) <span class="sc">+</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Cultural Accuracy (0–2)"</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Score"</span>,</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Keep"</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Bias / Stereotype Plot: Is than an element of bias or blatant stereotyping?</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">#   Scaling: 0 = No</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">#            1 = Yes</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>stereo_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(tb_plots, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">"Stereotype"</span>, <span class="at">y =</span> stereotype, <span class="at">color =</span> keep)) <span class="sc">+</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">1.1</span>)) <span class="sc">+</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Bias / Stereotype Flag (0–1)"</span>,</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Flag"</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>stereo_plot</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Tone / Respect Plot: Does the data present itself respectfully?</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co">#   Scaling: 0 = Disrespectful</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co">#            1 = Neutral</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co">#            2 = Highly respectful</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>tone_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(tb_plots, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">"Tone"</span>, <span class="at">y =</span> tone, <span class="at">color =</span> keep)) <span class="sc">+</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.15</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">2.1</span>)) <span class="sc">+</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Tone / Respect (0–2)"</span>,</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">""</span>,</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Score"</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>tone_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Cultural Accuracy Visualization: <img src="Appendix/WilliamRichards/Cultural_Plot.png" class="img-fluid quarto-figure quarto-figure-center" alt="Cultural Accuracy Visualization:"></p>
+<p>Bias / Stereotype Visualization:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Appendix/WilliamRichards/Stereotype_Plot.png" class="img-fluid figure-img"></p>
+<figcaption>Bias / Stereotype Visualization</figcaption>
+</figure>
+</div>
+<p>Tone / Respect Visualization: <img src="Appendix/WilliamRichards/Tone_Plot.png" class="img-fluid quarto-figure quarto-figure-center" alt="Tone / Respect Visualization"></p>
+<p>Research Paper Outline</p>
+<p>I. Introduction A. Problem: Cultural contextualization for biblical content B. Thesis</p>
+<ol start="2" type="I">
+<li><p>Related Work A. RAG Systems B. Fine-tuning for Cultural tasks C. Indian NLP</p></li>
+<li><p>Methodologies</p></li>
+</ol>
+<p>A. Data Collection B. Model Architecture C. Evaluation</p>
+<ol start="4" type="I">
+<li>Results A. Comparison Introduction B. RAG vs.&nbsp;Fine-tuned</li>
+</ol>
+<p>V. Discussion A. When to use what approach? B. Post-execution reflection</p>
+<ol start="6" type="I">
+<li>Conclusion A. Thesis Restate B. Recommendations for OneHope</li>
+</ol>
+</section>
+<section id="suwilanji-mwanza-deliverables" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="suwilanji-mwanza-deliverables"><span class="header-section-number">3.4</span> Suwilanji Mwanza Deliverables</h2>
+<section id="overview-of-the-week-2-deliverable" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="overview-of-the-week-2-deliverable"><span class="header-section-number">3.4.1</span> Overview of the Week 2 Deliverable</h3>
+<p>Week 2’s Deliverable was to solidify the training datasets for the fine-tuning process and then begin the cleaning process. In addition, ensuring that any unethical data was removed.</p>
+</section>
+<section id="week-2-deliverables" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="week-2-deliverables"><span class="header-section-number">3.4.2</span> Week 2 Deliverables:</h3>
+<ol type="1">
+<li>2,500 raw examples collected (cumulative with Week 1: 3,000 total)</li>
+<li>Initial cleaning applied</li>
+<li>Source distribution documented</li>
+<li>Bias check on collected data</li>
+</ol>
+</section>
+<section id="what-was-accomplished" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="what-was-accomplished"><span class="header-section-number">3.4.3</span> What was Accomplished:</h3>
+</section>
+<section id="reaching-out-to-the-reddit-api" class="level3" data-number="3.4.4">
+<h3 data-number="3.4.4" class="anchored" data-anchor-id="reaching-out-to-the-reddit-api"><span class="header-section-number">3.4.4</span> 1. Reaching out to the Reddit API</h3>
+<p>This week, I focused on identifying quality data and what it entails. I reached out to Reddit to obtain its API key for more relevant data, as I await its response to see if it would still be possible to use its data. (Filled in a form).</p>
+</section>
+<section id="finalize-data-sources" class="level3" data-number="3.4.5">
+<h3 data-number="3.4.5" class="anchored" data-anchor-id="finalize-data-sources"><span class="header-section-number">3.4.5</span> 2. Finalize Data Sources</h3>
+<p>I collected data from these 7 sources, all of which perform a specific role or fit into the buckets from last week. These data sets were collected primarily from Kaggle and the rest HuggingFace, or webpages.</p>
+<ol type="1">
+<li>IndicQuestionGeneration (hindu) (Source: AI4Bharat HuggingFace)</li>
+<li>Regional Indian Superstitions &amp; Beliefs (Source: Kaggle)</li>
+<li>World Values Survey India (Source: WVS website)</li>
+<li>Top Spotify Podcast Episodes (Updated Daily) India (Source: Kaggle)</li>
+<li>Pew India Survey Dataset (Source: Pew Research Center)</li>
+<li>Hinglish TOP Dataset (Source: Kaggle)</li>
+<li>India News Headlines Dataset (Source: Kaggle)</li>
+</ol>
+<ul>
+<li><p>The <strong>IndicQuestionGeneration</strong> dataset has 1,078,297 rows. It is part of the IndicNLG Benchmark that consists of one of AI4Bharat’s models. It is a large multilingual collection designed for Natural Language Generation (NLG) tasks and is in 11 Indic languages. It is formatted in Question Generation format, which means that when given a context and an answer, it aims to generate a question that leads to that answer. This was derived from the Stanford Question Answering Dataset (SQuAD). There are ~98,000 examples per language, totaling around 1.08 <strong>million examples</strong> across all 11 languages. This dataset would be useful for training and evaluating models that generate comprehension questions in Indian languages. This dataset would be easy to use because it is in a question-answer pair format.</p></li>
+<li><p>The <strong>Regional Indian Superstitions &amp; Beliefs</strong> dataset captures regional superstitions and beliefs from all 28 states and 8 union territories of India, showcasing the fascinating and often lesser-known cultural fabric that shapes daily life across the country. It is split into 500+ training entries and 100+ testing entries, each representing a specific superstition or folk belief. It is a data set for developing AI assistants that understand regional nuances.</p></li>
+<li><p>The <strong>World Values Survey – India, Wave 7 (2017–2022)</strong>, is a nationally representative dataset that captures the evolving social, political, economic, and cultural values of Indian society. Conducted through face-to-face interviews across multiple regions and languages, it surveyed approximately <strong>2,400 respondents</strong> aged 18 and above. The dataset comprises nearly 400 variables, encompassing priorities in life (family, work, religion, and politics), child-rearing values, trust in institutions, gender roles, democracy, corruption, globalization, and religious beliefs.</p></li>
+<li><p>The <strong>Top Spotify Podcast Episodes (Updated Daily)</strong> India contains a daily snapshot of Spotify’s top 200 podcast episodes for every country. It also includes detailed information about podcast episodes and shows from the Spotify API. Daily data collection began on 2025-10-11; additionally, some data is available from 2024-09-02 to 2024-10-23. This dataset will help take a different angle on culture by comparingpodcast popularity to understand cultural influences on podcast consumption. India is one of the regions.</p></li>
+<li><p>The <strong>Pew India Survey Dataset</strong> is the raw data from a large-scale, face-to-face survey of 29,999 Indian adults (ages 18 and older) conducted by the <a href="https://www.pewresearch.org/dataset/india-survey-dataset/">Pew Research Center</a> across 26 states and three union territories between November 17, 2019, and March 23, 2020. Conducted in 17 languages using computer-assisted personal interviews (CAPI), the sample was designed with an oversampling strategy to capture a broad view of religious demographics, including interviews with 22,975 Hindus, 3,336 Muslims, 1,782 Sikhs, 1,011 Christians, 719 Buddhists, and 109 Jains. This dataset provides researchers with detailed information on a wide range of social attitudes and beliefs in India, specifically covering topics such as religious identity, beliefs, practices, nationalism, and tolerance in Indian society.</p></li>
+<li><p>The <strong>Hinglish TOP Dataset</strong> comprises a large (10K) human-annotated code-switched semantic parsing dataset, which contains 10,000 real examples of people speaking in Hinglish commands. Humans have manually labeled or “tagged” the computer-readable meaning for each one. Additionally, the 170K generated utterances using the CST5 augmentation technique introduced in the paper were utilized, which significantly expanded the dataset. To achieve this, researchers employed a special trick called <strong>CST5</strong> to create <strong>170,000 new, synthetic</strong> (computer-generated) Hinglish commands based on the existing data. Queries are derived from TOPv2, a multi-domain task-oriented semantic parsing dataset.</p></li>
+<li><p>The <strong>India News Headlines Dataset</strong> is a comprehensive historical archive of notable events in the Indian subcontinent from 2001 to Q2 2023, recorded in real-time by journalists in India. It contains approximately 3.8 million events published by The Times of India. There are 3,876,557 rows in the CSV. Due to the heavy daily volume (avg. 600 articles) over multiple years, this data offers a deep insight into Indian society, its priorities, events, issues, and talking points, and how they have unfolded over time.</p></li>
+</ul>
+<p>These seven sources will be used to train our data. However, because these sets combined are millions of data points, we will only use 6,000 of them to start. I will also be manually validating them as much as I can for any toxicity.</p>
+<p>In this instance, <strong>toxicity</strong> is defined as data that may be considered harmful or detrimental. Sexual, indecent behaviour, curse words, and the like.</p>
+<p>An <strong>Excel sheet</strong> with the following categories of data was collected and shared with the team.</p>
+</section>
+<section id="distribution-of-data" class="level3" data-number="3.4.6">
+<h3 data-number="3.4.6" class="anchored" data-anchor-id="distribution-of-data"><span class="header-section-number">3.4.6</span> 3. Distribution of Data</h3>
+<p>After deciding on these datasets, due to the large amount of data in each, I had to narrow down the dataset sizes to ensure we have 6,000 high-quality examples to train our model. We can gather these examples by numbering each data point and doing a random sample, with the no. of examples as the goal.</p>
+<p>The breakdown of the datasets and their approximate number of examples are:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Subset</th>
+<th>No.&nbsp;of Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>IndicQuestionGeneration</td>
+<td>1000</td>
+</tr>
+<tr class="even">
+<td>Regional Indian Superstitions &amp; Beliefs</td>
+<td>660</td>
+</tr>
+<tr class="odd">
+<td>World Values Survey India</td>
+<td>1000</td>
+</tr>
+<tr class="even">
+<td>Top Spotify Podcast Episodes (Updated Daily) India</td>
+<td>500</td>
+</tr>
+<tr class="odd">
+<td>Pew India Survey Dataset</td>
+<td>1000</td>
+</tr>
+<tr class="even">
+<td>Hinglish TOP Dataset</td>
+<td>1000</td>
+</tr>
+<tr class="odd">
+<td>India News Headlines Dataset</td>
+<td>840</td>
+</tr>
+<tr class="even">
+<td><strong>Total:</strong></td>
+<td><strong>6,000</strong></td>
+</tr>
+</tbody>
+</table>
+<p>This shows the distribution of our data set piece:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/week_2.png" class="img-fluid figure-img"></p>
+<figcaption>Titan GPU environment setup confirmation</figcaption>
+</figure>
+</div>
+<p>The bottleneck in this process is that the examples must be handpicked.</p>
+</section>
+<section id="cleaning-script" class="level3" data-number="3.4.7">
+<h3 data-number="3.4.7" class="anchored" data-anchor-id="cleaning-script"><span class="header-section-number">3.4.7</span> 4. Cleaning Script</h3>
+<p>The initial cleaning script will be better created. I integrated Claude into its development, so I can understand what automating that part looks like and the different functions. I will then create my own based on the final recommendation from Moses on how he wants the data to be structured.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Fine-Tuning Pipeline for ConLingo 2.0</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu"># 10/30/25</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu"># ETL Pipeline</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu"># Datasets included:</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu"># - India News Headlines Datasets 2001-01-01 ; End Date: 2023-06-30 (for example)</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>"""</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>Data Cleaning &amp; Preprocessing Pipeline for Fine-tuning</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>Steps:</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Load datasets</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Clean text (remove URLs, excessive punctuation, spam)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Deduplicate (cosine similarity &gt; 0.9)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Flag toxic content (Detoxify)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>"""</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>import os</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>import re</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>import string</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>import pandas as pd</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>from sklearn.feature_extraction.text import TfidfVectorizer</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>from sklearn.metrics.pairwise import cosine_similarity</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>from detoxify import Detoxify</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>from tqdm import tqdm</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="fu"># ---------------------------</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="fu"># CONFIGURATION</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="fu"># ---------------------------</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>DATASETS = {</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    "IndicQuestionGeneration_hi": "path/to/IndicQuestionGeneration.csv",</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    "RegionalIndianSuperstitions": "path/to/RegionalIndianSuperstitions.csv",</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    "WorldValuesSurveyIndia": "path/to/WorldValuesSurveyIndia.csv",</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    "TopSpotifyPodcastEpisodes": "path/to/TopSpotifyPodcastEpisodes.csv",</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    "IndiaPewSurvey": "path/to/IndiaPewSurvey.csv",</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    "HinglishTOP": "path/to/HinglishTOP.csv",</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    "IndiaNewsHeadlines": "path/to/IndiaNewsHeadlines.csv"</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>TEXT_COLUMN = "text"   # Change this if your datasets have a different column name</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="fu"># ---------------------------</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="fu"># TEXT CLEANING FUNCTIONS</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="fu"># ---------------------------</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>def clean_text(text: str) -&gt; str:</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    """Remove URLs, excessive punctuation, and obvious spam."""</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    if not isinstance(text, str):</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>        return ""</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    text = re.sub(r"http\S+|www\S+|https\S+", "", text)  # remove URLs</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    text = re.sub(r"\s+", " ", text)  # collapse whitespace</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    text = re.sub(rf"<span class="co">[</span><span class="ot">{re.escape(string.punctuation)}</span><span class="co">]</span>", " ", text)  # remove punctuation</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    text = re.sub(r"\b(buy now|click here|free money|subscribe)\b", "", text, flags=re.I)</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    return text.strip()</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="fu"># ---------------------------</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="fu"># DEDUPLICATION</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="fu"># ---------------------------</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>def deduplicate_texts(df: pd.DataFrame, column: str, threshold=0.9) -&gt; pd.DataFrame:</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    """Remove near-duplicates using cosine similarity."""</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    texts = df<span class="co">[</span><span class="ot">column</span><span class="co">]</span>.fillna("").tolist()</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    vectorizer = TfidfVectorizer().fit_transform(texts)</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    similarity = cosine_similarity(vectorizer)</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    to_drop = set()</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    for i in range(len(texts)):</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>        for j in range(i + 1, len(texts)):</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>            if similarity<span class="co">[</span><span class="ot">i, j</span><span class="co">]</span> &gt; threshold:</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>                to_drop.add(j)</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    return df.drop(df.index<span class="co">[</span><span class="ot">list(to_drop)</span><span class="co">]</span>)</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="fu"># ---------------------------</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="fu"># TOXICITY FLAGGING</span></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="fu"># ---------------------------</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>def flag_toxicity(df: pd.DataFrame, column: str) -&gt; pd.DataFrame:</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    """Add a column with toxicity scores using Detoxify."""</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>    model = Detoxify('original')</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>    toxicity_scores = []</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>    for text in tqdm(df<span class="co">[</span><span class="ot">column</span><span class="co">]</span>, desc="Toxicity Scoring"):</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>        score = model.predict(str(text))</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>        toxicity_scores.append(score<span class="co">[</span><span class="ot">"toxicity"</span><span class="co">]</span>)</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>    df<span class="co">[</span><span class="ot">"toxicity_score"</span><span class="co">]</span> = toxicity_scores</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>    df<span class="co">[</span><span class="ot">"is_toxic_flag"</span><span class="co">]</span> = df<span class="co">[</span><span class="ot">"toxicity_score"</span><span class="co">]</span> &gt; 0.5  # manual review threshold</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>    return df</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a><span class="fu"># ---------------------------</span></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a><span class="fu"># PIPELINE EXECUTION</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a><span class="fu"># ---------------------------</span></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>def process_dataset(name, path):</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>    print(f"\nProcessing {name}...")</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>    df = pd.read_csv(path)</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>    if TEXT_COLUMN not in df.columns:</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>        raise ValueError(f"Column '{TEXT_COLUMN}' not found in {path}")</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a><span class="in">    # Step 1: Clean</span></span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a><span class="in">    df[TEXT_COLUMN] = df[TEXT_COLUMN].apply(clean_text)</span></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a><span class="in">    # Step 2: Deduplicate</span></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a><span class="in">    df = deduplicate_texts(df, TEXT_COLUMN)</span></span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a><span class="in">    # Step 3: Flag toxicity</span></span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a><span class="in">    df = flag_toxicity(df, TEXT_COLUMN)</span></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a><span class="in">    # Save processed version</span></span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a><span class="in">    out_path = f"cleaned_{name}.csv"</span></span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a><span class="in">    df.to_csv(out_path, index=False)</span></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a><span class="in">    print(f"Saved cleaned dataset to {out_path}")</span></span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a><span class="fu"># ---------------------------</span></span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a><span class="fu"># MAIN SCRIPT</span></span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a><span class="fu"># ---------------------------</span></span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>if __name__ == "__main__":</span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>    for name, path in DATASETS.items():</span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a>        if os.path.exists(path):</span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>            process_dataset(name, path)</span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>        else:</span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>            print(f" Skipping {name}: file not found at {path}")</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>This script will aid in Removing URLs, excessive punctuation, and obvious spam. Deduplicate or Near-duplicate detection (cosine similarity &gt; 0.9) and lastly flag any toxic content using Detoxify classifier (which will require additional manual review).</li>
+</ul>
+</section>
+<section id="ai-assistance" class="level3" data-number="3.4.8">
+<h3 data-number="3.4.8" class="anchored" data-anchor-id="ai-assistance"><span class="header-section-number">3.4.8</span> AI assistance:</h3>
+<ul>
+<li><p>“AI assistance: Gemini was used to summarize the data source pages of some of the sources for me to write my paragraphs.”</p></li>
+<li><p>“AI assistance: Claude was used to generate an example script for a very simple backbone pipeline that would be expanded upon.”</p></li>
+</ul>
+</section>
+</section>
+<section id="moses-mandale-deliverables" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="moses-mandale-deliverables"><span class="header-section-number">3.5</span> Moses Mandale Deliverables</h2>
+<p>AI assistance:Claude Sonnet 4.5 was used to optimize the initial finetune_lora.py to use LoRA fine tuning instead of the normal fine tuning to that the fine tuning is more efficient. Claude Sonnet 4.5 was used to troubleshoot “memory exceeded” errors and optimize the training parameters like number of epochs and batch size to fit the 24GB RAM that is available on Titan. This an error that was really troubling me because the script was already optimized with LoRA and was wondering what exactly was missing (accessed Nov, 2025).</p>
+<section id="overview-1" class="level3" data-number="3.5.1">
+<h3 data-number="3.5.1" class="anchored" data-anchor-id="overview-1"><span class="header-section-number">3.5.1</span> Overview</h3>
+<p>Week 2 focused on developing the complete fine-tuning pipeline for the LLaMA-3 8B model. The primary deliverables included creating data preprocessing scripts, implementing the LoRA fine-tuning workflow, training the first model on Indian superstition data, and validating the training process. This week transformed the configured environment from Week 1 into a functional training system.</p>
+</section>
+<section id="fine-tuning-pipeline-architecture" class="level3" data-number="3.5.2">
+<h3 data-number="3.5.2" class="anchored" data-anchor-id="fine-tuning-pipeline-architecture"><span class="header-section-number">3.5.2</span> Fine-Tuning Pipeline Architecture</h3>
+<section id="pipeline-overview" class="level4" data-number="3.5.2.1">
+<h4 data-number="3.5.2.1" class="anchored" data-anchor-id="pipeline-overview"><span class="header-section-number">3.5.2.1</span> Pipeline Overview</h4>
+<p>The fine-tuning pipeline consists of two main stages: data preprocessing and model training. The architecture was designed to be modular, allowing for easy iteration on different datasets while maintaining consistent formatting and training procedures.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Appendix/MosesMadale/img/2_1.png" class="img-fluid figure-img"></p>
+<figcaption>Fine-tuning pipeline architecture</figcaption>
+</figure>
+</div>
+<p><strong>Pipeline Stages</strong>:</p>
+<ol type="1">
+<li><strong>Data Preprocessing</strong> (<code>preprocess_data.py</code>): Converts raw CSV data into instruction-response format suitable for LLaMA-3 fine-tuning</li>
+<li><strong>Model Fine-Tuning</strong> (<code>finetune_lora.py</code>): Trains LoRA adapters on the preprocessed data while keeping base model weights frozen</li>
+</ol>
+</section>
+</section>
+<section id="data-flow" class="level3" data-number="3.5.3">
+<h3 data-number="3.5.3" class="anchored" data-anchor-id="data-flow"><span class="header-section-number">3.5.3</span> Data Flow</h3>
+<pre><code>Raw CSV (Indian Superstitions)
+    ↓
+preprocess_data.py
+    ↓
+JSON instruction-response pairs
+    ↓
+Train/Validation Split (90/10)
+    ↓
+finetune_lora.py
+    ↓
+Fine-tuned Model with LoRA Adapters</code></pre>
+</section>
+<section id="data-preprocessing" class="level3" data-number="3.5.4">
+<h3 data-number="3.5.4" class="anchored" data-anchor-id="data-preprocessing"><span class="header-section-number">3.5.4</span> Data Preprocessing</h3>
+<section id="input-dataset" class="level4" data-number="3.5.4.1">
+<h4 data-number="3.5.4.1" class="anchored" data-anchor-id="input-dataset"><span class="header-section-number">3.5.4.1</span> Input Dataset</h4>
+<p>The preprocessing pipeline began with a dataset of Indian superstitions collected by team member Suwilanji from Kaggle. The raw dataset contained:</p>
+<ul>
+<li><strong>Total Rows</strong>: 660 entries</li>
+<li><strong>Key Columns</strong>: <code>superstition_name</code>, <code>description</code>, <code>region</code>, <code>category</code>, <code>origin_theory</code>, <code>modern_status</code>, <code>is_harmful</code>, <code>source</code>, <code>user_contributed</code></li>
+<li><strong>Format</strong>: CSV file</li>
+</ul>
+</section>
+<section id="preprocessing-script-design" class="level4" data-number="3.5.4.2">
+<h4 data-number="3.5.4.2" class="anchored" data-anchor-id="preprocessing-script-design"><span class="header-section-number">3.5.4.2</span> Preprocessing Script Design</h4>
+<p>The <code>preprocess_data.py</code> script implements a systematic transformation from raw tabular data to instruction-response format suitable for LLM fine-tuning.</p>
+<p><strong>Key Processing Steps</strong>:</p>
+<ol type="1">
+<li><strong>Column Detection</strong>: Automatically identifies name and description columns</li>
+<li><strong>Data Cleaning</strong>: Filters out invalid entries (null values, insufficient length)</li>
+<li><strong>Unicode Normalization</strong>: Converts Unicode quotation marks to ASCII equivalents</li>
+<li><strong>Question Generation</strong>: Transforms superstition names into natural questions</li>
+<li><strong>JSON Structuring</strong>: Creates instruction-response pairs with metadata</li>
+<li><strong>Train/Validation Split</strong>: Implements 90/10 split with random shuffling</li>
+</ol>
+<p><strong>Data Transformation Example</strong>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Input (CSV row)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>superstition_name: <span class="st">"Mirror breaks, 7 years bad luck"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>description: <span class="st">"Believed to bring misfortune if a mirror breaks."</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Output (JSON)</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"instruction"</span>: <span class="st">"What is the cultural significance and meaning of the superstition: 'Mirror breaks, 7 years bad luck'?"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"response"</span>: <span class="st">"Believed to bring misfortune if a mirror breaks."</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"metadata"</span>: {</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"source"</span>: <span class="st">"superstition_dataset"</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"category"</span>: <span class="st">"cultural_beliefs"</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"original_name"</span>: <span class="st">"Mirror breaks, 7 years bad luck"</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Appendix/MosesMadale/img/2_2.png" class="img-fluid figure-img"></p>
+<figcaption>Data preprocessing transformation from CSV to JSON</figcaption>
+</figure>
+</div>
+</section>
+<section id="preprocessing-results" class="level4" data-number="3.5.4.3">
+<h4 data-number="3.5.4.3" class="anchored" data-anchor-id="preprocessing-results"><span class="header-section-number">3.5.4.3</span> Preprocessing Results</h4>
+<p>The preprocessing pipeline successfully transformed the raw dataset:</p>
+<p><strong>Input Statistics</strong>: - Raw CSV entries: 660 - Valid entries after filtering: 658</p>
+<p><strong>Output Statistics</strong>: - Training examples: 592 (90%) - Validation examples: 66 (10%) - Total processed: 658</p>
+<p><strong>Data Quality Measures</strong>: - Filtered entries: 2 (entries with null values or insufficient text length) - Unicode normalization: Applied to all entries for ASCII compatibility - Question format: Consistent across all examples</p>
+</section>
+</section>
+<section id="fine-tuning-implementation" class="level3" data-number="3.5.5">
+<h3 data-number="3.5.5" class="anchored" data-anchor-id="fine-tuning-implementation"><span class="header-section-number">3.5.5</span> Fine-Tuning Implementation</h3>
+<section id="training-configuration" class="level4" data-number="3.5.5.1">
+<h4 data-number="3.5.5.1" class="anchored" data-anchor-id="training-configuration"><span class="header-section-number">3.5.5.1</span> Training Configuration</h4>
+<p>The fine-tuning script (<code>finetune_lora.py</code>) implements LoRA-based parameter-efficient fine-tuning with the following configuration:</p>
+<p><strong>LoRA Hyperparameters</strong>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 25%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Rank (r)</td>
+<td>16</td>
+<td>Dimensionality of adapter matrices</td>
+</tr>
+<tr class="even">
+<td>Alpha</td>
+<td>32</td>
+<td>Scaling factor for adapter outputs</td>
+</tr>
+<tr class="odd">
+<td>Target Modules</td>
+<td>q_proj, v_proj, k_proj, o_proj</td>
+<td>Attention projection layers</td>
+</tr>
+<tr class="even">
+<td>Dropout</td>
+<td>0.05</td>
+<td>Regularization to prevent overfitting</td>
+</tr>
+<tr class="odd">
+<td>Bias</td>
+<td>None</td>
+<td>No additional bias terms in adapters</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Training Hyperparameters</strong>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Epochs</td>
+<td>3</td>
+<td>Number of passes through training data</td>
+</tr>
+<tr class="even">
+<td>Per-device Batch Size</td>
+<td>4</td>
+<td>Examples processed simultaneously</td>
+</tr>
+<tr class="odd">
+<td>Gradient Accumulation Steps</td>
+<td>8</td>
+<td>Effective batch size = 4 × 8 = 32</td>
+</tr>
+<tr class="even">
+<td>Learning Rate</td>
+<td>2e-4</td>
+<td>Step size for weight updates</td>
+</tr>
+<tr class="odd">
+<td>Max Sequence Length</td>
+<td>512</td>
+<td>Maximum tokens per example</td>
+</tr>
+<tr class="even">
+<td>Evaluation Strategy</td>
+<td>Steps</td>
+<td>Evaluate periodically during training</td>
+</tr>
+<tr class="odd">
+<td>Save Steps</td>
+<td>100</td>
+<td>Checkpoint frequency</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Effective Training Configuration</strong>: - Effective batch size: 32 examples per update - Total training steps: ~54 steps (592 examples / 32 batch size × 3 epochs) - Gradient checkpointing: Enabled for memory efficiency</p>
+</section>
+</section>
+<section id="model-architecture" class="level3" data-number="3.5.6">
+<h3 data-number="3.5.6" class="anchored" data-anchor-id="model-architecture"><span class="header-section-number">3.5.6</span> Model Architecture</h3>
+<p>The fine-tuning process adds LoRA adapters to specific layers of the LLaMA-3 8B model:</p>
+<p><strong>Parameter Breakdown</strong>: - Base model parameters (frozen): 8,030,261,248 - LoRA trainable parameters: 13,631,488 - Total parameters: 8,043,892,736 - <strong>Trainable percentage: 0.17%</strong></p>
+<p>This parameter-efficient approach enables training with limited GPU memory while maintaining model quality.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Appendix/MosesMadale/img/2_3.png" class="img-fluid figure-img"></p>
+<figcaption>Training configuration output</figcaption>
+</figure>
+</div>
+<section id="tokenization-and-data-formatting" class="level4" data-number="3.5.6.1">
+<h4 data-number="3.5.6.1" class="anchored" data-anchor-id="tokenization-and-data-formatting"><span class="header-section-number">3.5.6.1</span> Tokenization and Data Formatting</h4>
+<p>The training script implements a custom formatting function to structure data for instruction-following:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> format_instruction(example):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Format question-answer pair for training"""</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="ss">f"### Question:</span><span class="ch">\n</span><span class="sc">{</span>example[<span class="st">'instruction'</span>]<span class="sc">}</span><span class="ch">\n\n</span><span class="ss">### Answer:</span><span class="ch">\n</span><span class="sc">{</span>example[<span class="st">'response'</span>]<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This format provides clear delineation between the instruction (question) and expected response, helping the model learn the question-answering structure.</p>
+</section>
+</section>
+<section id="training-process-and-results" class="level3" data-number="3.5.7">
+<h3 data-number="3.5.7" class="anchored" data-anchor-id="training-process-and-results"><span class="header-section-number">3.5.7</span> Training Process and Results</h3>
+<section id="training-progress" class="level4" data-number="3.5.7.1">
+<h4 data-number="3.5.7.1" class="anchored" data-anchor-id="training-progress"><span class="header-section-number">3.5.7.1</span> Training Progress</h4>
+<p>The model was trained for 3 epochs on the Indian superstition dataset. The training process exhibited expected behavior with decreasing loss values:</p>
+<p><strong>Loss Progression</strong>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Epoch</th>
+<th>Training Loss</th>
+<th>Gradient Norm</th>
+<th>Learning Rate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.6</td>
+<td>3.4506</td>
+<td>1.9107</td>
+<td>3.6e-05</td>
+</tr>
+<tr class="even">
+<td>1.18</td>
+<td>3.0625</td>
+<td>1.4718</td>
+<td>7.6e-05</td>
+</tr>
+<tr class="odd">
+<td>1.78</td>
+<td>2.5055</td>
+<td>1.6695</td>
+<td>1.16e-04</td>
+</tr>
+<tr class="even">
+<td>2.36</td>
+<td>2.1748</td>
+<td>0.9833</td>
+<td>1.56e-04</td>
+</tr>
+<tr class="odd">
+<td>2.96</td>
+<td>2.0223</td>
+<td>1.2655</td>
+<td>1.96e-04</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Final Metrics</strong>: - Training loss: 2.6282 - Validation loss: 2.0647 - Training time: Approximately 10 minutes - GPU memory usage: ~16 GB during training</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Appendix/MosesMadale/img/2_4.png" class="img-fluid figure-img"></p>
+<figcaption>Training progress showing loss decrease over epochs</figcaption>
+</figure>
+</div>
+</section>
+<section id="loss-analysis" class="level4" data-number="3.5.7.2">
+<h4 data-number="3.5.7.2" class="anchored" data-anchor-id="loss-analysis"><span class="header-section-number">3.5.7.2</span> Loss Analysis</h4>
+<p>The training loss decreased from 3.45 to 2.02, indicating successful learning:</p>
+<ul>
+<li><strong>Initial loss (3.45)</strong>: Model has limited knowledge of the specific cultural content</li>
+<li><strong>Mid-training (2.51 at epoch 1.78)</strong>: Model begins recognizing patterns in superstition descriptions</li>
+<li><strong>Final loss (2.02)</strong>: Model has learned to generate appropriate responses for cultural questions</li>
+</ul>
+<p>The validation loss of 2.06 is slightly higher than the final training loss, indicating minimal overfitting. This small gap suggests the model generalizes reasonably well to unseen examples.</p>
+</section>
+<section id="model-checkpointing" class="level4" data-number="3.5.7.3">
+<h4 data-number="3.5.7.3" class="anchored" data-anchor-id="model-checkpointing"><span class="header-section-number">3.5.7.3</span> Model Checkpointing</h4>
+<p>The fine-tuning pipeline automatically saves model checkpoints:</p>
+<p><strong>Saved Artifacts</strong>: - Final model: <code>/home/mmadale/CSC463/conlingo/models/finetuned/final_model/</code> - Checkpoint size: Approximately 1.3 GB (includes LoRA adapters only) - Configuration files: <code>adapter_config.json</code>, <code>adapter_model.bin</code></p>
+<p>The saved model contains only the LoRA adapters, not the full base model. This significantly reduces storage requirements while preserving the fine-tuning results.</p>
+</section>
+</section>
+<section id="code-implementation-highlights" class="level3" data-number="3.5.8">
+<h3 data-number="3.5.8" class="anchored" data-anchor-id="code-implementation-highlights"><span class="header-section-number">3.5.8</span> Code Implementation Highlights</h3>
+<section id="data-preprocessing-1" class="level4" data-number="3.5.8.1">
+<h4 data-number="3.5.8.1" class="anchored" data-anchor-id="data-preprocessing-1"><span class="header-section-number">3.5.8.1</span> Data Preprocessing</h4>
+<p>Key implementation details from <code>preprocess_data.py</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Unicode normalization for ASCII compatibility</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>superstition_name <span class="op">=</span> superstition_name.replace(<span class="st">'</span><span class="ch">\u2019</span><span class="st">'</span>, <span class="st">"'"</span>).replace(<span class="st">'</span><span class="ch">\u2018</span><span class="st">'</span>, <span class="st">"'"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>superstition_name <span class="op">=</span> superstition_name.replace(<span class="st">'</span><span class="ch">\u201c</span><span class="st">'</span>, <span class="st">'"'</span>).replace(<span class="st">'</span><span class="ch">\u201d</span><span class="st">'</span>, <span class="st">'"'</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Question generation</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>question <span class="op">=</span> <span class="ss">f"What is the cultural significance and meaning of the superstition: '</span><span class="sc">{</span>superstition_name<span class="sc">}</span><span class="ss">'?"</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Structured output</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>instruction_response <span class="op">=</span> {</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"instruction"</span>: question,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"response"</span>: description,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"metadata"</span>: {</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"source"</span>: <span class="st">"superstition_dataset"</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"category"</span>: <span class="st">"cultural_beliefs"</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"original_name"</span>: superstition_name</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="fine-tuning-configuration" class="level4" data-number="3.5.8.2">
+<h4 data-number="3.5.8.2" class="anchored" data-anchor-id="fine-tuning-configuration"><span class="header-section-number">3.5.8.2</span> Fine-Tuning Configuration</h4>
+<p>Key implementation details from <code>finetune_lora.py</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># LoRA configuration</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>lora_config <span class="op">=</span> LoraConfig(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    r<span class="op">=</span><span class="dv">16</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    lora_alpha<span class="op">=</span><span class="dv">32</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    target_modules<span class="op">=</span>[<span class="st">"q_proj"</span>, <span class="st">"v_proj"</span>, <span class="st">"k_proj"</span>, <span class="st">"o_proj"</span>],</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    lora_dropout<span class="op">=</span><span class="fl">0.05</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    bias<span class="op">=</span><span class="st">"none"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    task_type<span class="op">=</span><span class="st">"CAUSAL_LM"</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Training arguments</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>training_args <span class="op">=</span> TrainingArguments(</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span>OUTPUT_DIR,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    num_train_epochs<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    per_device_train_batch_size<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    gradient_accumulation_steps<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    learning_rate<span class="op">=</span><span class="fl">2e-4</span>,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    evaluation_strategy<span class="op">=</span><span class="st">"steps"</span>,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    save_steps<span class="op">=</span><span class="dv">100</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Appendix/MosesMadale/img/2_5.png" class="img-fluid figure-img"></p>
+<figcaption>Code snippet showing training configuration</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="technical-challenges-and-solutions" class="level3" data-number="3.5.9">
+<h3 data-number="3.5.9" class="anchored" data-anchor-id="technical-challenges-and-solutions"><span class="header-section-number">3.5.9</span> Technical Challenges and Solutions</h3>
+<section id="memory-management" class="level4" data-number="3.5.9.1">
+<h4 data-number="3.5.9.1" class="anchored" data-anchor-id="memory-management"><span class="header-section-number">3.5.9.1</span> Memory Management</h4>
+<p><strong>Challenge</strong>: Training with batch size of 8 caused out-of-memory errors on the 24.6 GB GPU.</p>
+<p><strong>Solution</strong>: Implemented gradient accumulation with batch size 4 and accumulation steps 8, achieving effective batch size of 32 while staying within memory constraints.</p>
+</section>
+<section id="unicode-character-handling" class="level4" data-number="3.5.9.2">
+<h4 data-number="3.5.9.2" class="anchored" data-anchor-id="unicode-character-handling"><span class="header-section-number">3.5.9.2</span> Unicode Character Handling</h4>
+<p><strong>Challenge</strong>: Original dataset contained Unicode quotation marks (e.g., <code>\u2019</code>, <code>\u201c</code>) that could cause tokenization issues.</p>
+<p><strong>Solution</strong>: Implemented systematic Unicode-to-ASCII conversion in preprocessing script, ensuring consistent character encoding throughout the dataset.</p>
+</section>
+<section id="data-quality" class="level4" data-number="3.5.9.3">
+<h4 data-number="3.5.9.3" class="anchored" data-anchor-id="data-quality"><span class="header-section-number">3.5.9.3</span> Data Quality</h4>
+<p><strong>Challenge</strong>: Some CSV entries contained null values or insufficient text.</p>
+<p><strong>Solution</strong>: Added validation checks in preprocessing script to filter entries with: - Null/missing superstition names or descriptions - Superstition names shorter than 3 characters - Descriptions shorter than 10 characters</p>
+</section>
+</section>
+<section id="validation-and-quality-assurance" class="level3" data-number="3.5.10">
+<h3 data-number="3.5.10" class="anchored" data-anchor-id="validation-and-quality-assurance"><span class="header-section-number">3.5.10</span> Validation and Quality Assurance</h3>
+<section id="data-validation" class="level4" data-number="3.5.10.1">
+<h4 data-number="3.5.10.1" class="anchored" data-anchor-id="data-validation"><span class="header-section-number">3.5.10.1</span> Data Validation</h4>
+<p>The preprocessing script includes multiple validation steps:</p>
+<ol type="1">
+<li><strong>Column Detection</strong>: Automatically identifies relevant columns, adapting to CSV structure</li>
+<li><strong>Null Filtering</strong>: Removes entries with missing critical information</li>
+<li><strong>Length Validation</strong>: Ensures minimum content length for meaningful training</li>
+<li><strong>Unicode Normalization</strong>: Standardizes character encoding</li>
+</ol>
+<p><strong>Validation Results</strong>: - Entries processed: 660 - Entries passed validation: 658 (99.7% retention rate) - Entries filtered: 2 (0.3%)</p>
+</section>
+<section id="training-validation" class="level4" data-number="3.5.10.2">
+<h4 data-number="3.5.10.2" class="anchored" data-anchor-id="training-validation"><span class="header-section-number">3.5.10.2</span> Training Validation</h4>
+<p>The training process includes continuous validation:</p>
+<ul>
+<li><strong>Gradient Norm Monitoring</strong>: Tracked to detect instability (all values &lt; 2.0, indicating stable training)</li>
+<li><strong>Validation Loss</strong>: Evaluated every 100 steps to monitor generalization</li>
+<li><strong>Checkpoint Saving</strong>: Automatic preservation of model state for recovery</li>
+</ul>
+</section>
+</section>
+<section id="key-achievements" class="level3" data-number="3.5.11">
+<h3 data-number="3.5.11" class="anchored" data-anchor-id="key-achievements"><span class="header-section-number">3.5.11</span> Key Achievements</h3>
+<p>Week 2 successfully delivered a complete fine-tuning pipeline and initial trained model:</p>
+<ol type="1">
+<li><strong>Data Preprocessing Pipeline</strong>: Created robust script converting CSV to instruction-response format</li>
+<li><strong>658 Training Examples</strong>: Processed and validated dataset of Indian superstitions</li>
+<li><strong>Fine-Tuning Script</strong>: Implemented LoRA-based training with proper configuration</li>
+<li><strong>Trained Model</strong>: Successfully fine-tuned LLaMA-3 8B on cultural content</li>
+<li><strong>Loss Reduction</strong>: Achieved 41% decrease in training loss (3.45 → 2.02)</li>
+<li><strong>Model Artifacts</strong>: Generated reusable LoRA adapters (~1.3 GB) for inference</li>
+<li><strong>Reproducible Pipeline</strong>: Created modular scripts adaptable to new datasets</li>
+</ol>
+</section>
+<section id="lessons-learned" class="level3" data-number="3.5.12">
+<h3 data-number="3.5.12" class="anchored" data-anchor-id="lessons-learned"><span class="header-section-number">3.5.12</span> Lessons Learned</h3>
+<section id="pipeline-design" class="level4" data-number="3.5.12.1">
+<h4 data-number="3.5.12.1" class="anchored" data-anchor-id="pipeline-design"><span class="header-section-number">3.5.12.1</span> Pipeline Design</h4>
+<p>The modular pipeline architecture proved effective for rapid iteration. Separating preprocessing and training into distinct scripts allowed independent testing and debugging of each component.</p>
+</section>
+<section id="batch-size-optimization" class="level4" data-number="3.5.12.2">
+<h4 data-number="3.5.12.2" class="anchored" data-anchor-id="batch-size-optimization"><span class="header-section-number">3.5.12.2</span> Batch Size Optimization</h4>
+<p>Finding the optimal batch size required balancing: - GPU memory constraints (24.6 GB available) - Training stability (larger batches → more stable gradients) - Training speed (larger batches → fewer updates per epoch)</p>
+<p>The final configuration (batch size 4 with 8 accumulation steps) effectively balanced these factors.</p>
+</section>
+<section id="data-quality-impact" class="level4" data-number="3.5.12.3">
+<h4 data-number="3.5.12.3" class="anchored" data-anchor-id="data-quality-impact"><span class="header-section-number">3.5.12.3</span> Data Quality Impact</h4>
+<p>The high validation rate (99.7% of entries passed filtering) indicated good initial data quality. Manual inspection of filtered entries confirmed they were legitimately problematic (null values), validating the filtering criteria.</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Week1.html" class="pagination-link" aria-label="Week 1: Foundations &amp; Data Collection">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Week 1: Foundations &amp; Data Collection</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Week3.html" class="pagination-link" aria-label="Week 3: Data Searching, Data Vetting, Dataset Collection, Data Cleaning">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Week 3: Data Searching, Data Vetting, Dataset Collection, Data Cleaning</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

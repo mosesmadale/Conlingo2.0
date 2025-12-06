@@ -1,0 +1,75 @@
+
+###########################################
+# Title: Focus Variables- Proanthocyanins & Flavanoids
+# Script Name: K-Means Clustering for Wine Data
+# Name: <Rohan Aby>
+# Date: <12/04/2025>
+# 
+###########################################
+
+# Install and Load Packages
+library(tidyverse)
+library(tidymodels)
+library(broom)
+
+#getwd()
+
+# Load Data
+wine <- read_csv("Wine.csv")
+
+# Inspect data structure
+glimpse(wine)
+
+
+# Select Variables Related to Health Benefits
+
+wine_cluster_data <- wine %>% 
+  select(Flavanoids, Proanthocyanins)
+
+# Scale the data
+wine_scaled <- wine_cluster_data %>% 
+  mutate(across(everything(), scale))
+
+
+# Determine Optimal Number of Clusters (k)
+# Elbow Method
+
+set.seed(123)
+
+wcss <- tibble(k = 1:10) %>%
+  mutate(
+    model = map(k, ~ kmeans(wine_scaled, centers = .x)),
+    tot_withinss = map_dbl(model, "tot.withinss")
+  )
+
+# Plot Elbow Curve
+wcss %>%
+  ggplot(aes(k, tot_withinss)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Elbow Method for Optimal K",
+       x = "Number of Clusters",
+       y = "Total Within-Cluster Sum of Squares")
+
+# By looking at the curve it seems like the value of 3 would be best for K 
+
+
+# Perform K-Means Clustering (With k = 3)
+
+set.seed(123)
+kmeans_model <- kmeans(wine_scaled, centers = 3)
+
+# Add Cluster Results to Original Data
+wine_results <- wine %>% 
+  bind_cols(cluster = kmeans_model$cluster)
+
+# -----------------------------------------
+# Visualize Clusters
+# -----------------------------------------
+wine_results %>%
+  ggplot(aes(x = Flavanoids, y = Proanthocyanins, color = factor(cluster))) +
+  geom_point(size = 3) +
+  labs(title = "Wine Clustering by Flavanoids & Proanthocyanins",
+       x = "Flavanoids (Higher = Healthier)",
+       y = "Proanthocyanins (Higher = Healthier)",
+       color = "Cluster Group")

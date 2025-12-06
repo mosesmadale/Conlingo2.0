@@ -1,0 +1,100 @@
+---
+title: "ConLingo Week 4"
+author: "Suwilanji Mwanza"
+format: html
+---
+
+# ConLingo Project 2.0
+
+# Overview of the Week 4 Deliverable
+
+This week, my deliverable was to provide visualizations of the different models created for each dataset and then visualize their performance, which was evaluated by Rohan. Additionally, examine the datasets that contributed to a mode's negative performance, if any, alongside Rohan.
+
+# Week 4 Deliverables:
+
+-   Create comprehensive visualizations about the performance of each of the 7 models, as well as the 2 combined models.
+
+-   Examine the datasets that contributed to the model's poor performance and propose potential reasons for this.
+
+-   Create the full presentation that will be used as the Week 4 presentation.
+
+# What Was Accomplished:
+
+## 1. Model Visualizations
+
+In accordance with the CSI scoring that Rohan provided earlier, he used it to evaluate the model's performance. This model scores an AI's response based on accuracy, tone, context, and empathy. This all contributes to the final CSI score.
+
+The two models' results, which were ready for me to visualize this week, were the Constitution Model and the Superstitions Model. I used Excel for this process.
+
+Rohan graded the model's response on a scale of 20 questions that he also created earlier. Each question received a number for it to be easily plotted:
+
+1.  How can Diwali and Christmas both symbolize the victory of light over darkness in their respective traditions? 
+2.  What themes of renewal in Diwali resonate with the idea of rebirth in Christian theology? 
+3.  How might Indian Christians use Diwali to express biblical messages of hope? 
+4.  How can Christian schools acknowledge Diwali without compromising faith boundaries? 
+5.  What sensitivities should pastors consider when mentioning Hindu deities in Christmas homilies?
+6.  How can Christian youth groups create shared Diwali–Christmas community service projects? 
+7.  How can churches ensure caste-neutral seating and participation during worship? 
+8.  What examples of caste inclusion can be found in the life of Jesus? 
+9.  What are sensitive ways to discuss "the least of these" without reinforcing caste bias? 
+10. Why might some Christians still use caste surnames, and how should this be discussed? 
+11. What is a sensitive way to discuss Jesus' association with marginalized groups? 
+12. What is an inclusive way to discuss Krishna and Christ comparisons in academia? 
+13. How can Hindu concepts of karma be reconciled with Christian grace in conversation?
+14. How can Christian missions emphasize shared moral principles rather than conversion?
+15. How does food during Christmas vary regionally across India?  
+16. How does regional folklore shape Christian storytelling traditions? 
+17. How do Indian Christian elders respond to youth questioning of denominational traditions? 
+18. How can faith-based education evolve to reach younger, tech-savvy Christians? 
+19. How can liturgy adapt to youth participation without losing sacredness? 
+20. How do young Christians view service and mission in a modern Indian context? 
+
+**Accuracy**
+
+![Accuracy results](img/week_4_1.png)
+
+In this graph, the Constitution's model performs better on average, with a perfect score of 5, and more than half of its answers achieve a perfect score.
+
+**Tone**
+
+![Tone results](img/week_4_2.png)
+
+In this graph, the Constitutions model performs better than the Superstitions data. The Superstitions model has an above-average response.
+
+**Context**
+
+![Context results](img/week_4_3.png)
+
+This graph shows that the Constitution model has a better understanding of the question's context and thus provides more accurate answers.
+
+**Empathy**
+
+![Empathy results](img/week_4_4.png)
+
+The empathy graph also shows the Constitutions model performing significantly better than the other model, with near-perfect scores for each question.
+
+**CSI Score**
+
+![CSI Scoring results](img/week_4_5.png)
+
+It is not surprising that the overall model shows the Constitutions performed well. This graph is interpreted to mean that each score represents an average of accuracy, tone, context, and empathy for each question.
+
+## 2. Negative Performing Models
+
+First and foremost, the fact that Rohan was the only one to grade both the model's responses meant a heavy bias was present. Although he is from India, his notions of what he sees as accurate are unconsciously influencing his grading.
+
+Additionally, the sample size for this model was too small. Only Rohan. Some areas to improve our perception of a negatively performing model include increasing our sample size to gain a better understanding of which model is truly underperforming.
+
+A major flaw in this grading is that since the models were trained with supervised fine-tuning, they are only able to provide answers based on the fact that the training data, such as that of supervised learning. However, the questions that we are asking the Constitution model do not utilize the knowledge base or dataset of the constitution data, yet the trained model performs better.
+
+What most likely happened is that, although the evaluation questions were unrelated to the SFT knowledge (religious questions versus the Constitution and superstition data), the Constitution-trained model was consistently judged stronger by Rohan. More plainly put, our questions unfortunately did not evaluate knowledge recall but rather cross-domain behavioral transfer. This concept falls under transfer learning, a machine learning technique in which a model trained on one task is repurposed as the foundation for a second task. (GeeksforGeeks, 2025)
+
+In this case, the model was trained for the task of analyzing superstition data or constitutional data; however, during evaluation, the questions soliciting a religious answer posed a new task. What happened here is that the training data sets' style and reasoning picked up during the training session transferred (cross-domain). SFT not only teaches content but also behavioral patterns.
+
+It is possible that Rohan agreed more with the Constitution's style that transferred to the responses being evaluated. I'd imagine this data to be more formal, neutral, and structured. In addition, it may have known how to phrase sensitive topics better, which transferred a style of the model being careful with wording, less biased, and more diplomatic, for example. The superstition's data may have come across as less credible, as the data contains myths, folklore, and mixes belief and fiction. And thus the style transfer is less academic, more storytelling, and less objective.
+
+In conclusion, what would have made this process more effective would have been to have a base model to test against these evaluation questions and truly determine how both models deviate from the base case.
+
+
+
+

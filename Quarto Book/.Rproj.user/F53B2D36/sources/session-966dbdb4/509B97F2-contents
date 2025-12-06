@@ -1,0 +1,187 @@
+---
+title: "ConLingo Week 1"
+author: "Suwilanji Mwanza"
+format: html
+---
+
+# ConLingo Project 2.0
+
+# Overview of the Week 1 Deliverable
+
+The Week 1 deliverable lays the foundation for building a culturally grounded fine-tuning dataset for the ConLingo AI system, with a focus on data collection. Establishing a data collection strategy for the fine-tuning implementation.
+
+# Week 1 Deliverables:
+
+-   Identify example sources for data
+
+-   Set up data collection infrastructure
+
+-   Collect the initial 500 examples of data
+
+-   Ethics and bias check - ensuring ethical data collection
+
+# What Was Accomplished:
+
+## 1. Arriving at a Definition of Culture
+
+To create a culturally diverse dataset representative of India, I first established a working definition of **culture** and aligned it with the dataset categories created based off of the culture definition for ConLingo.\
+\
+Using the sociological framework from *Pressbooks Howard Community College* and supplemental examples, I identified the following components of culture:
+
+-   **Symbols**: gestures, icons, religious symbols, shared images.\
+-   **Language**: idioms, semantics, dialects, scripts; linguistic relativity (Sapir–Whorf hypothesis).\
+-   **Norms**: rules/expectations for behavior (e.g., respect, authority, hospitality).\
+-   **Rituals**: ceremonies, festivals, rites of passage.\
+-   **Values**: moral beliefs regarding good/bad, desirable/undesirable.\
+-   **Artifacts**: material objects—food, dress, architecture, arts.\
+-   **Religion**: beliefs, doctrines, devotional practices, interfaith interactions.
+
+These became the **seven cultural buckets** used for dataset classification purposes:\
+**Symbolic, Language, Norms, Rituals, Values, Artifacts, Religious**. The goal was that the data sets we found must be able to fit into at least one of these 7 categories.
+
+## 2. Identify Examples from Sources
+
+I began by searching for an existing dataset or model that already contains high-quality data for the region we are targeting. A dataset that I discovered was AI4Bharat, and thus a major focus of Week 1 was exploring the AI4Bharat ecosystem (AI4Bharat, n.d.), as it contains the largest curated resources on Indian languages and cultural content.
+
+AI4Bharat is an India-based company with large partnerships with Google and Microsoft, aiming to develop AI models that reflect Indian culture and understanding. They have heavily invested in curating datasets that represent their culture.
+
+Key findings included:
+
+### **Core AI4Bharat Models (Khan et al., 2024)**
+
+-   **IndicBERT**: A multilingual ALBERT-based model covering 12 major Indic languages; trained on \~9B tokens.\
+-   **IndicBART**: A seq2seq model suitable for translation and generation tasks.\
+-   **IndicInstruct**: Instruction-following datasets for English/Hindi, including WikiHow, FLAN v2, Dolly, and more.\
+-   **IndicXTREME**: Benchmark suite for classification, QA, structure prediction, and retrieval.\
+-   **FBI Framework**: Meta-evaluation system assessing evaluator robustness (Doddapaneni et al., 2024)
+
+### **Primary Dataset Sources (AI4Bharat)**
+
+-   **Sangraha**: 251B-token pretraining dataset across 22 Indic languages—largest cleaned Indic corpus.\
+-   **IndicGLUE**: Benchmark for NLU across 11 Indic languages.\
+-   **Naamapadam**: The largest named-entity-annotated dataset for Indic languages.\
+-   **IndicNLG** Benchmark: Natural language generation tasks across Indic languages.\
+-   **MILU**: Multi-domain Indic understanding benchmark.\
+-   **IndicNLP Corpora**: 8.9B-token dataset; cultural topics across major languages.
+
+These sources were great as they ranged from data sets that can be used to pre-train a model to evaluation frameworks and the like. Many of them were millions to billions of data points, which is great. They had many of the Indian languages covered, with manually collected and transcribed data.
+
+I moved into looking at additional data sources, besides the large AI4Bharat corpus.
+
+### **Additional Data Sources Consulted**
+
+These datasets supplement cultural categories not fully represented in AI4Bharat:
+
+-   **Reddit India Communities**: r/india, r/AskAnIndian, r/hinduism, r/Christianity (via PRAW).\
+-   **World Values Survey (India subset)**: moral, political, and social values insights.\
+-   **Pew India Survey**: interfaith relations, religion, nationalism, caste, and social norms.\
+-   **Common Crawl (India-filtered)**: festival mentions, cultural knowledge, news.
+
+Reddit would be useful for finding out what topics are relevant today in the India region (r/India). The data would also be more conversational. However, after further exploration, using the API for Reddit would not be allowed, as they have a policy stating that their data cannot be used for training an AI model.
+
+The World Values Survey is a survey that has collected data on the values, beliefs, and attitudes of people in various countries. The Wave 7 has an India survey that aims to see how these beliefs change over time, and the data is free to use and access. (World Values Survey Association, n.d.)
+
+The Pew India Survey Data set is a large survey that included 29,999 Indian adults about "religious beliefs and practices, religious identity, nationalism, and tolerance in Indian society. The survey was administered face-to-face from Nov. 17, 2019, to March 23, 2020." (Sahgal & Evans, 2021)
+
+Common Crawl is a web scraping application that maintains a large corpus of petabytes of data, regularly collected, which contains web page data. The idea with the data set was to filter by region; however, that is not how data collection would work. Alternatively, you would need to be on a different AWS server to access region-specific data. It is a bit more complex and was ultimately ruled out. (Common Crawl, n.d.).
+
+## 3. Cultural Buckets & Dataset Categorization
+
+Using the cultural definition and dataset sources described above, I asked AI to create a **cultural bucket table**, placing each dataset into the dominant cultural dimension(s) it represents. I also asked it to search for additional data sets that would be good additions to each bucket for further exploration.
+
+### **Cultural Category Table**
+
+|  |  |  |  |
+|------------------|------------------|------------------|------------------|
+| **Category**  | **Description / Focus**  | **Existing Datasets**  | **Gaps / Suggested Additions**  |
+| **Symbolic**  | Myths, icons, symbols, imagery in religion or national identity.  | Sangraha, IndicNLP, Reddit (r/hinduism, r/India), Pew Survey (sections on national pride).  | Add: **Indian mythological texts** (Mahabharata, Ramayana excerpts from Project Gutenberg); **Emblem datasets** from Indian Heritage Data Portal.  |
+| **Language**  | Linguistic diversity, idioms, semantics, syntax.  | IndicBERT, IndicGLUE, MILU, Sangraha, IndicNLP Corpora, Naamapadam.  | Add: **Language–dialect corpora** (e.g., Bodo, Manipuri from Bhashini initiative).  |
+| **Norms**  | Behavioral expectations, etiquette, social order.  | Reddit (r/AskAnIndian), Pew Survey, Common Crawl (filtered by “how to behave,” “should one…”).  | Add: **Indian Etiquette Corpora** from newspapers or sociology textbooks; extract rule-like sentences from WikiHow-India subset.  |
+| **Rituals**  | Religious or cultural ceremonies, lifecycle events, festivals.  | Common Crawl (with “Diwali,” “Puja,” etc.), Pew Survey, Sangraha texts, Reddit (r/hinduism).  | Add: **Digital Library of India** (ritual manuals, cultural ethnographies).  |
+| **Values**  | Moral or philosophical ideals (karma, tolerance, family, respect).  | Pew Survey, World Values Survey India, Reddit (moral debates), MILU for culturally specific QA.  | Add: **OpenSubtitles India** (for implicit moral contexts in dialogues).  |
+| **Artifacts**  | Tangible cultural products — art, clothing, architecture, tools.  | Common Crawl (filtered “heritage,” “textiles,” “temple architecture”), Sangraha.  | Add: **Indian Heritage Portal** or Archaeological Survey of India archives.  |
+| **Religious**  | Spiritual texts, beliefs, rituals, interfaith dialogues.  | Pew India Survey, Sangraha, IndicBERT, Reddit (r/Hinduism, r/Christianity), Common Crawl.  | Add: **Sacred Books of the East** (digitized translations), **Digital Library of India** scripture scans.  |
+
+These buckets were cross-referenced with the 5,000+ cultural examples targeted for the fine-tuning dataset.
+
+## 4. Fine-Tuning Process & How the Data Fits
+
+*(High-level outline used for Week 1 documentation)*
+
+Additionally, to begin preparing for the fine-tuning process, I conducted preliminary research on the data standards and types required for fine-tuning. What type of data is best for he collected (and categorized) data feeds into the fine-tuning pipeline is as follows:
+
+|  |  |
+|------------------------------------|------------------------------------|
+| **Stage**  | **Task** **- relevant to India datasets** |
+| **(1) Base Fine-Tuning**  | General Indian language understanding.  |
+| **(2) Instruction Fine-Tuning**  | Conversational, context-aware behavior.  |
+| **(3) Cultural Alignment**  | Teach norms, values, and religious sensibility.  |
+| **(4) Ethical / Alignment Fine-Tuning**  | Ensure responses are Helpful, Honest, Harmless (HHH).  |
+
+### **Step 1: Data Curation**
+
+-   Pull data from AI4Bharat, World Values Survey, Pew, and other data sources,\
+-   Organize by cultural category.
+
+### **Step 2: Preprocessing**
+
+-   Clean text: remove noise, normalize, and keep originality.\
+-   Convert to **instruction-response** pairs for LLaMA-based fine-tuning. This would only be applicable if we do Supervised Learning.
+    -   This will be a major adjustment to the data as most data does not come in this format.
+-   Tag metadata:
+    -   region
+    -   tone
+    -   language
+
+### **Step 3: Dataset Construction**
+
+-   Build a **5,000+ example fine-tuning dataset**.\
+-   Ensure balance across categories (symbolic, norms, rituals, values, etc.).\
+-   Ensure access across languages (Hindi, Tamil, Telugu, Malayalam, Bengali, etc.).
+
+### **Step 4: Fine-Tuning Setup**
+
+-   Select model: Possibly LLaMA-3 8B (best fit for Titan GPU).
+
+### **Step 5: Evaluation Plan Preview**
+
+-   Use the Cultural Sensitivity Index (CSI) developed in Week 1.\
+-   Compare:
+    -   RAG baseline (Original ConLingo)\
+    -   Base LLaMA-3 (Example model)\
+    -   Fine-tuned LLaMA-3 (Example model)\
+-   Conduct both automated testing and human evaluation.
+
+The Week 1 work ensures that the training data is valid, representative, culturally sensitive, and ready for preprocessing in Week 2 and fine-tuning in Week 3.
+
+# Next Steps:
+
+### **For Week 2**
+
+-   Expand the dataset from 500 to 3,000 examples.\
+-   Perform deeper cleaning, annotation, and metadata tagging.\
+-   Begin converting all examples into an instruction–response format.
+
+# References:
+
+AI4Bharat. (2024). *Sangraha: Large-scale Indic language corpus*. https://huggingface.co/datasets/ai4bharat/sangraha
+
+AI4Bharat. (2024). *IndicBERT and IndicBART models*. https://ai4bharat.iitm.ac.in/
+
+Howard Community College. (n.d.). *The elements of culture*. https://pressbooks.howardcc.edu/soci101/chapter/3-2-the-elements-of-culture/
+
+Pew Research Center. (2021). *Religion in India: Tolerance and segregation*. https://www.pewresearch.org
+
+Sahgal, N., & Evans, J. (2021). *India Survey Dataset* \[Data set\]. Pew Research Center. [https://www.pewresearch.org/dataset/india-survey-dataset/](https://www.pewresearch.org/dataset/india-survey-dataset/?utm_source=chatgpt.com)
+
+World Values Survey. (2022). *India dataset documentation*. https://www.worldvaluessurvey.org/WVSDocumentationWV7.jsp
+
+Common Crawl. (n.d.). *Overview* \[Web site\]. Retrieved November 30, 2025, from [https://commoncrawl.org/overview](https://commoncrawl.org/overview?utm_source=chatgpt.com)
+
+Naamapadam Dataset. (2023). *Named entity annotated dataset for Indic languages*. AI4Bharat.
+
+IndicGLUE Benchmark. (2023). *Benchmark tasks for Indic languages*. AI4Bharat.
+
+“AI assistance: ChatGPT was used to organize and summarize my Word doc of the work I did to put on my QMD for week 1.”
+
+"AI assistance: ChatGPT was used to organize my data sources into the respective cultural buckets."\

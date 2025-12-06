@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Week 1: Foundations &amp; Data Collection – ConLingo Quarto Book</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Week2.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-485d01fc63b59abcd3ee1bf1e8e2748d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Week1.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Week 1: Foundations &amp; Data Collection</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">ConLingo Quarto Book</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">ConLingo 2.0</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week1.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Week 1: Foundations &amp; Data Collection</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Week 2: Data Cleaning &amp; Pipeline Setup</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Week 3: Data Searching, Data Vetting, Dataset Collection, Data Cleaning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Week 4: Data Searching, Data Vetting, Dataset Collection, Data Cleaning</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Week5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Week 5: Compare Fine-tuned model with RAG implementation and ChatGPT-5 &amp; Research Paper</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Future_Improvments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Future Improvements</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">2.1</span> Overview</a></li>
+  <li><a href="#rohan-aby-deliverables" id="toc-rohan-aby-deliverables" class="nav-link" data-scroll-target="#rohan-aby-deliverables"><span class="header-section-number">2.2</span> Rohan Aby Deliverables</a>
+  <ul class="collapse">
+  <li><a href="#csi-framework-document-with-detailed-rubric" id="toc-csi-framework-document-with-detailed-rubric" class="nav-link" data-scroll-target="#csi-framework-document-with-detailed-rubric"><span class="header-section-number">2.2.1</span> <strong>CSI framework document with detailed rubric</strong></a></li>
+  <li><a href="#question-baseline-evaluation-dataset" id="toc-question-baseline-evaluation-dataset" class="nav-link" data-scroll-target="#question-baseline-evaluation-dataset"><span class="header-section-number">2.2.2</span> <strong>100-question baseline evaluation dataset</strong></a></li>
+  <li><a href="#evaluation-pipeline-code" id="toc-evaluation-pipeline-code" class="nav-link" data-scroll-target="#evaluation-pipeline-code"><span class="header-section-number">2.2.3</span> <strong>Evaluation pipeline code</strong></a></li>
+  <li><a href="#metrics-definition-document" id="toc-metrics-definition-document" class="nav-link" data-scroll-target="#metrics-definition-document"><span class="header-section-number">2.2.4</span> <strong>Metrics definition document</strong></a></li>
+  </ul></li>
+  <li><a href="#william-richards-deliverables" id="toc-william-richards-deliverables" class="nav-link" data-scroll-target="#william-richards-deliverables"><span class="header-section-number">2.3</span> William Richards Deliverables</a></li>
+  <li><a href="#suwilanji-mwanza-deliverables" id="toc-suwilanji-mwanza-deliverables" class="nav-link" data-scroll-target="#suwilanji-mwanza-deliverables"><span class="header-section-number">2.4</span> Suwilanji Mwanza Deliverables</a>
+  <ul class="collapse">
+  <li><a href="#overview-of-the-week-1-deliverable" id="toc-overview-of-the-week-1-deliverable" class="nav-link" data-scroll-target="#overview-of-the-week-1-deliverable"><span class="header-section-number">2.4.1</span> Overview of the Week 1 Deliverable</a></li>
+  <li><a href="#week-1-deliverables" id="toc-week-1-deliverables" class="nav-link" data-scroll-target="#week-1-deliverables"><span class="header-section-number">2.4.2</span> Week 1 Deliverables:</a></li>
+  <li><a href="#what-was-accomplished" id="toc-what-was-accomplished" class="nav-link" data-scroll-target="#what-was-accomplished"><span class="header-section-number">2.4.3</span> What Was Accomplished:</a></li>
+  <li><a href="#core-ai4bharat-models-khan-et-al.-2024" id="toc-core-ai4bharat-models-khan-et-al.-2024" class="nav-link" data-scroll-target="#core-ai4bharat-models-khan-et-al.-2024"><span class="header-section-number">2.4.4</span> <strong>Core AI4Bharat Models (Khan et al., 2024)</strong></a></li>
+  <li><a href="#primary-dataset-sources-ai4bharat" id="toc-primary-dataset-sources-ai4bharat" class="nav-link" data-scroll-target="#primary-dataset-sources-ai4bharat"><span class="header-section-number">2.4.5</span> <strong>Primary Dataset Sources (AI4Bharat)</strong></a></li>
+  <li><a href="#additional-data-sources-consulted" id="toc-additional-data-sources-consulted" class="nav-link" data-scroll-target="#additional-data-sources-consulted"><span class="header-section-number">2.4.6</span> <strong>Additional Data Sources Consulted</strong></a></li>
+  <li><a href="#cultural-buckets-dataset-categorization" id="toc-cultural-buckets-dataset-categorization" class="nav-link" data-scroll-target="#cultural-buckets-dataset-categorization"><span class="header-section-number">2.4.7</span> 3. Cultural Buckets &amp; Dataset Categorization</a></li>
+  <li><a href="#fine-tuning-process-how-the-data-fits" id="toc-fine-tuning-process-how-the-data-fits" class="nav-link" data-scroll-target="#fine-tuning-process-how-the-data-fits"><span class="header-section-number">2.4.8</span> 4. Fine-Tuning Process &amp; How the Data Fits</a></li>
+  <li><a href="#step-1-data-curation" id="toc-step-1-data-curation" class="nav-link" data-scroll-target="#step-1-data-curation"><span class="header-section-number">2.4.9</span> <strong>Step 1: Data Curation</strong></a></li>
+  <li><a href="#step-2-preprocessing" id="toc-step-2-preprocessing" class="nav-link" data-scroll-target="#step-2-preprocessing"><span class="header-section-number">2.4.10</span> <strong>Step 2: Preprocessing</strong></a></li>
+  <li><a href="#step-3-dataset-construction" id="toc-step-3-dataset-construction" class="nav-link" data-scroll-target="#step-3-dataset-construction"><span class="header-section-number">2.4.11</span> <strong>Step 3: Dataset Construction</strong></a></li>
+  <li><a href="#step-4-fine-tuning-setup" id="toc-step-4-fine-tuning-setup" class="nav-link" data-scroll-target="#step-4-fine-tuning-setup"><span class="header-section-number">2.4.12</span> <strong>Step 4: Fine-Tuning Setup</strong></a></li>
+  <li><a href="#step-5-evaluation-plan-preview" id="toc-step-5-evaluation-plan-preview" class="nav-link" data-scroll-target="#step-5-evaluation-plan-preview"><span class="header-section-number">2.4.13</span> <strong>Step 5: Evaluation Plan Preview</strong></a></li>
+  <li><a href="#ai-assistance" id="toc-ai-assistance" class="nav-link" data-scroll-target="#ai-assistance"><span class="header-section-number">2.4.14</span> AI assistance:</a></li>
+  </ul></li>
+  <li><a href="#moses-mandale-deliverables" id="toc-moses-mandale-deliverables" class="nav-link" data-scroll-target="#moses-mandale-deliverables"><span class="header-section-number">2.5</span> Moses Mandale Deliverables</a>
+  <ul class="collapse">
+  <li><a href="#overview-1" id="toc-overview-1" class="nav-link" data-scroll-target="#overview-1"><span class="header-section-number">2.5.1</span> Overview</a></li>
+  <li><a href="#model-selection-process" id="toc-model-selection-process" class="nav-link" data-scroll-target="#model-selection-process"><span class="header-section-number">2.5.2</span> Model Selection Process</a></li>
+  <li><a href="#titan-gpu-environment-setup" id="toc-titan-gpu-environment-setup" class="nav-link" data-scroll-target="#titan-gpu-environment-setup"><span class="header-section-number">2.5.3</span> Titan GPU Environment Setup</a></li>
+  <li><a href="#baseline-testing" id="toc-baseline-testing" class="nav-link" data-scroll-target="#baseline-testing"><span class="header-section-number">2.5.4</span> Baseline Testing</a></li>
+  <li><a href="#technical-specifications-documentation" id="toc-technical-specifications-documentation" class="nav-link" data-scroll-target="#technical-specifications-documentation"><span class="header-section-number">2.5.5</span> Technical Specifications Documentation</a></li>
+  <li><a href="#key-achievements" id="toc-key-achievements" class="nav-link" data-scroll-target="#key-achievements"><span class="header-section-number">2.5.6</span> Key Achievements</a></li>
+  <li><a href="#challenges-and-solutions" id="toc-challenges-and-solutions" class="nav-link" data-scroll-target="#challenges-and-solutions"><span class="header-section-number">2.5.7</span> Challenges and Solutions</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Week 1: Foundations &amp; Data Collection</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">2.1</span> Overview</h2>
+<p>The team established the foundational plans, infrastructure, evaluation framework, and architecture needed to begin data collection and model fine-tuning in Week 1.</p>
+</section>
+<section id="rohan-aby-deliverables" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="rohan-aby-deliverables"><span class="header-section-number">2.2</span> Rohan Aby Deliverables</h2>
+<p><strong>AI assistance: ChatGPT was used to develop the CSI framework document, 100-question baseline evaluation dataset, Evaluation pipeline code and the Metrics definition document (accessed Nov, 2025).</strong></p>
+<section id="csi-framework-document-with-detailed-rubric" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="csi-framework-document-with-detailed-rubric"><span class="header-section-number">2.2.1</span> <strong>CSI framework document with detailed rubric</strong></h3>
+<p>Rohan created the Cultural Sensitivity Index (<a href="../Appendix/RohanAby/CulturalSensitivityIndex.pdf">Download CSI Framework document</a>)</p>
+<p>The Cultural Sensitivity Index Framework uses 4 main variables to judge the model’s performance. The variables used to judge the models performance are accuracy, tone, context, and empathy. Accuracy evaluates factual correctness about cultural practices, festivals, history, and social norms. Tone measures how respectful, inclusive, and free of stereotypes or bias the language is. Context assesses whether the response reflects appropriate cultural framing and situational relevance. Empathy captures understanding of lived experience, cultural values, and emotional nuance. Each of these four criteria is multiplied by a number which indicates how important the criteria each is in the total CSI score. The score for each response is as follows</p>
+<p>CSI Score = (0.3 * Accuracy) + (0.3 * Tone) + (0.2 * Context) + (0.2 * Empathy)</p>
+<p>From this formula we can infer that accuracy and tone are more important than context or Empathy. Each of the variables are scored on a scale from one to five. One being the lowest score and five being the best score.</p>
+</section>
+<section id="question-baseline-evaluation-dataset" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="question-baseline-evaluation-dataset"><span class="header-section-number">2.2.2</span> <strong>100-question baseline evaluation dataset</strong></h3>
+<p>Rohan created the 100 questions. (<a href="../Appendix/RohanAby/100_India_Christian_Cultural_Questions.pdf">Download the 100 Indian Cultural Questions document</a>)</p>
+<p>The 100 questions can be divided into 4 categories. They are as follows.</p>
+<ol type="1">
+<li>Indian Festivals and Biblical Parallels (Diwali / Christmas themes) (20 questions each)</li>
+<li>Caste Sensitivity in Christian Contexts (20 questions each)</li>
+<li>Hindu–Christian Cultural Bridges (20 questions each)</li>
+<li>Regional Variations (North vs South India) (20 questions each)</li>
+<li>Generational Differences in Faith Expression (20 questions each)</li>
+</ol>
+</section>
+<section id="evaluation-pipeline-code" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="evaluation-pipeline-code"><span class="header-section-number">2.2.3</span> <strong>Evaluation pipeline code</strong></h3>
+<p>The evaluation pipeline codes consists of three python files that are used to automate the scoring calculations.</p>
+<p><strong>evaluate_automated_metrics.py</strong> - Automatically evaluates the model outputs using standard NLP metrics. The code is shown below.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> nltk.translate.bleu_score <span class="im">import</span> sentence_bleu</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rouge <span class="im">import</span> Rouge</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sentence_transformers <span class="im">import</span> SentenceTransformer, util</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_perplexity(probabilities):</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> math.exp(<span class="op">-</span><span class="bu">sum</span>(math.log(p) <span class="cf">for</span> p <span class="kw">in</span> probabilities) <span class="op">/</span> <span class="bu">len</span>(probabilities))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate_automated_metrics(df):</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> SentenceTransformer(<span class="st">'all-MiniLM-L6-v2'</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    rouge <span class="op">=</span> Rouge()</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> []</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _, row <span class="kw">in</span> df.iterrows():</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        ref <span class="op">=</span> row[<span class="st">'reference'</span>]</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        gen <span class="op">=</span> row[<span class="st">'generated'</span>]</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># BLEU</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        bleu <span class="op">=</span> sentence_bleu([ref.split()], gen.split())</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ROUGE</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        rouge_scores <span class="op">=</span> rouge.get_scores(gen, ref)[<span class="dv">0</span>][<span class="st">'rouge-l'</span>][<span class="st">'f'</span>]</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Semantic Similarity</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        emb1 <span class="op">=</span> model.encode(ref, convert_to_tensor<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        emb2 <span class="op">=</span> model.encode(gen, convert_to_tensor<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        sim <span class="op">=</span> util.pytorch_cos_sim(emb1, emb2).item()</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        results.append({</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>            <span class="st">"BLEU"</span>: bleu,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>            <span class="st">"ROUGE-L"</span>: rouge_scores,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Semantic Similarity"</span>: sim</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        })</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>compute_csi_scores.py</strong> - Calculates the Cultural Sensitivity Index CSI) for model responses using a human or rubric-based scoring template. The code is shown below.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_csi_score(row):</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    weights <span class="op">=</span> {<span class="st">"Accuracy"</span>: <span class="fl">0.3</span>, <span class="st">"Tone"</span>: <span class="fl">0.3</span>, <span class="st">"Context"</span>: <span class="fl">0.2</span>, <span class="st">"Empathy"</span>: <span class="fl">0.2</span>}</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(row[k] <span class="op">*</span> w <span class="cf">for</span> k, w <span class="kw">in</span> weights.items())</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> apply_csi_rubric(df):</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">"CSI_Score"</span>] <span class="op">=</span> df.<span class="bu">apply</span>(compute_csi_score, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df[[<span class="st">"Question_ID"</span>, <span class="st">"Accuracy"</span>, <span class="st">"Tone"</span>, <span class="st">"Context"</span>, <span class="st">"Empathy"</span>, <span class="st">"CSI_Score"</span>]]</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>compare_models.py</strong> - Aggregates and compares metrics across multiple models (RAG, Fine-Tuned, Baseline). The code is shown below.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compare_models(rag_df, finetuned_df, baseline_df):</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    comparison <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Metric"</span>: [<span class="st">"BLEU"</span>, <span class="st">"ROUGE-L"</span>, <span class="st">"Semantic Similarity"</span>, <span class="st">"CSI_Score"</span>],</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"RAG"</span>: [rag_df[<span class="st">"BLEU"</span>].mean(), rag_df[<span class="st">"ROUGE-L"</span>].mean(), rag_df[<span class="st">"Semantic Similarity"</span>].mean(), rag_df[<span class="st">"CSI_Score"</span>].mean()],</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Fine-Tuned"</span>: [finetuned_df[<span class="st">"BLEU"</span>].mean(), finetuned_df[<span class="st">"ROUGE-L"</span>].mean(), finetuned_df[<span class="st">"Semantic Similarity"</span>].mean(), finetuned_df[<span class="st">"CSI_Score"</span>].mean()],</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Baseline"</span>: [baseline_df[<span class="st">"BLEU"</span>].mean(), baseline_df[<span class="st">"ROUGE-L"</span>].mean(), baseline_df[<span class="st">"Semantic Similarity"</span>].mean(), baseline_df[<span class="st">"CSI_Score"</span>].mean()]</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> comparison</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="metrics-definition-document" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="metrics-definition-document"><span class="header-section-number">2.2.4</span> <strong>Metrics definition document</strong></h3>
+<p>This document is a table detailing various metrics used for the evaluation of language generation models. (<a href="../Appendix/RohanAby/Comparison_Metrics_Definition.pdf">Download the Metrics definition document</a>)</p>
+</section>
+</section>
+<section id="william-richards-deliverables" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="william-richards-deliverables"><span class="header-section-number">2.3</span> William Richards Deliverables</h2>
+<p>Williams first deliverable was to establish a good architecture to our original plan, creating a development roadmap and risk mitigation table along with the architectural diagram.</p>
+<p>Architecture Diagram <img src="Appendix/WilliamRichards/Architecture Diagram.jpg" class="img-fluid" alt="Architecture Diagram"></p>
+<p>Development Roadmap <img src="Appendix/WilliamRichards/Development 1.png" class="img-fluid" alt="Development Roadmap 1"> <img src="Appendix/WilliamRichards/Development 2.png" class="img-fluid" alt="Development Roadmap 2"> Risk Mitigation Table</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Appendix/WilliamRichards/RiskMitigation.png" class="img-fluid figure-img"></p>
+<figcaption>Risk Mitigation Table</figcaption>
+</figure>
+</div>
+<p>Now that the (original) layout of the project was set in stone, validation of the data needed to be done to ensure the new and improved model performs accurately with no risk of bad data interfering with ConLingo 2.0.</p>
+</section>
+<section id="suwilanji-mwanza-deliverables" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="suwilanji-mwanza-deliverables"><span class="header-section-number">2.4</span> Suwilanji Mwanza Deliverables</h2>
+<section id="overview-of-the-week-1-deliverable" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="overview-of-the-week-1-deliverable"><span class="header-section-number">2.4.1</span> Overview of the Week 1 Deliverable</h3>
+<p>The Week 1 deliverable lays the foundation for building a culturally grounded fine-tuning dataset for the ConLingo AI system, with a focus on data collection. Establishing a data collection strategy for the fine-tuning implementation.</p>
+</section>
+<section id="week-1-deliverables" class="level3" data-number="2.4.2">
+<h3 data-number="2.4.2" class="anchored" data-anchor-id="week-1-deliverables"><span class="header-section-number">2.4.2</span> Week 1 Deliverables:</h3>
+<ul>
+<li><p>Identify example sources for data</p></li>
+<li><p>Set up data collection infrastructure</p></li>
+<li><p>Collect the initial 500 examples of data</p></li>
+<li><p>Ethics and bias check - ensuring ethical data collection</p></li>
+</ul>
+</section>
+<section id="what-was-accomplished" class="level3" data-number="2.4.3">
+<h3 data-number="2.4.3" class="anchored" data-anchor-id="what-was-accomplished"><span class="header-section-number">2.4.3</span> What Was Accomplished:</h3>
+<section id="arriving-at-a-definition-of-culture" class="level4" data-number="2.4.3.1">
+<h4 data-number="2.4.3.1" class="anchored" data-anchor-id="arriving-at-a-definition-of-culture"><span class="header-section-number">2.4.3.1</span> 1. Arriving at a Definition of Culture</h4>
+<p>To create a culturally diverse dataset representative of India, I first established a working definition of <strong>culture</strong> and aligned it with the dataset categories created based off of the culture definition for ConLingo.<br>
+<br>
+Using the sociological framework from <em>Pressbooks Howard Community College</em> and supplemental examples, I identified the following components of culture:</p>
+<ul>
+<li><strong>Symbols</strong>: gestures, icons, religious symbols, shared images.<br>
+</li>
+<li><strong>Language</strong>: idioms, semantics, dialects, scripts; linguistic relativity (Sapir–Whorf hypothesis).<br>
+</li>
+<li><strong>Norms</strong>: rules/expectations for behavior (e.g., respect, authority, hospitality).<br>
+</li>
+<li><strong>Rituals</strong>: ceremonies, festivals, rites of passage.<br>
+</li>
+<li><strong>Values</strong>: moral beliefs regarding good/bad, desirable/undesirable.<br>
+</li>
+<li><strong>Artifacts</strong>: material objects—food, dress, architecture, arts.<br>
+</li>
+<li><strong>Religion</strong>: beliefs, doctrines, devotional practices, interfaith interactions.</li>
+</ul>
+<p>These became the <strong>seven cultural buckets</strong> used for dataset classification purposes:<br>
+<strong>Symbolic, Language, Norms, Rituals, Values, Artifacts, Religious</strong>. The goal was that the data sets we found must be able to fit into at least one of these 7 categories.</p>
+</section>
+<section id="identify-examples-from-sources" class="level4" data-number="2.4.3.2">
+<h4 data-number="2.4.3.2" class="anchored" data-anchor-id="identify-examples-from-sources"><span class="header-section-number">2.4.3.2</span> 2. Identify Examples from Sources</h4>
+<p>I began by searching for an existing dataset or model that already contains high-quality data for the region we are targeting. A dataset that I discovered was AI4Bharat, and thus a major focus of Week 1 was exploring the AI4Bharat ecosystem (AI4Bharat, n.d.), as it contains the largest curated resources on Indian languages and cultural content.</p>
+<p>AI4Bharat is an India-based company with large partnerships with Google and Microsoft, aiming to develop AI models that reflect Indian culture and understanding. They have heavily invested in curating datasets that represent their culture.</p>
+<p>Key findings included:</p>
+</section>
+</section>
+<section id="core-ai4bharat-models-khan-et-al.-2024" class="level3" data-number="2.4.4">
+<h3 data-number="2.4.4" class="anchored" data-anchor-id="core-ai4bharat-models-khan-et-al.-2024"><span class="header-section-number">2.4.4</span> <strong>Core AI4Bharat Models (Khan et al., 2024)</strong></h3>
+<ul>
+<li><strong>IndicBERT</strong>: A multilingual ALBERT-based model covering 12 major Indic languages; trained on ~9B tokens.<br>
+</li>
+<li><strong>IndicBART</strong>: A seq2seq model suitable for translation and generation tasks.<br>
+</li>
+<li><strong>IndicInstruct</strong>: Instruction-following datasets for English/Hindi, including WikiHow, FLAN v2, Dolly, and more.<br>
+</li>
+<li><strong>IndicXTREME</strong>: Benchmark suite for classification, QA, structure prediction, and retrieval.<br>
+</li>
+<li><strong>FBI Framework</strong>: Meta-evaluation system assessing evaluator robustness (Doddapaneni et al., 2024)</li>
+</ul>
+</section>
+<section id="primary-dataset-sources-ai4bharat" class="level3" data-number="2.4.5">
+<h3 data-number="2.4.5" class="anchored" data-anchor-id="primary-dataset-sources-ai4bharat"><span class="header-section-number">2.4.5</span> <strong>Primary Dataset Sources (AI4Bharat)</strong></h3>
+<ul>
+<li><strong>Sangraha</strong>: 251B-token pretraining dataset across 22 Indic languages—largest cleaned Indic corpus.<br>
+</li>
+<li><strong>IndicGLUE</strong>: Benchmark for NLU across 11 Indic languages.<br>
+</li>
+<li><strong>Naamapadam</strong>: The largest named-entity-annotated dataset for Indic languages.<br>
+</li>
+<li><strong>IndicNLG</strong> Benchmark: Natural language generation tasks across Indic languages.<br>
+</li>
+<li><strong>MILU</strong>: Multi-domain Indic understanding benchmark.<br>
+</li>
+<li><strong>IndicNLP Corpora</strong>: 8.9B-token dataset; cultural topics across major languages.</li>
+</ul>
+<p>These sources were great as they ranged from data sets that can be used to pre-train a model to evaluation frameworks and the like. Many of them were millions to billions of data points, which is great. They had many of the Indian languages covered, with manually collected and transcribed data.</p>
+<p>I moved into looking at additional data sources, besides the large AI4Bharat corpus.</p>
+</section>
+<section id="additional-data-sources-consulted" class="level3" data-number="2.4.6">
+<h3 data-number="2.4.6" class="anchored" data-anchor-id="additional-data-sources-consulted"><span class="header-section-number">2.4.6</span> <strong>Additional Data Sources Consulted</strong></h3>
+<p>These datasets supplement cultural categories not fully represented in AI4Bharat:</p>
+<ul>
+<li><strong>Reddit India Communities</strong>: r/india, r/AskAnIndian, r/hinduism, r/Christianity (via PRAW).<br>
+</li>
+<li><strong>World Values Survey (India subset)</strong>: moral, political, and social values insights.<br>
+</li>
+<li><strong>Pew India Survey</strong>: interfaith relations, religion, nationalism, caste, and social norms.<br>
+</li>
+<li><strong>Common Crawl (India-filtered)</strong>: festival mentions, cultural knowledge, news.</li>
+</ul>
+<p>Reddit would be useful for finding out what topics are relevant today in the India region (r/India). The data would also be more conversational. However, after further exploration, using the API for Reddit would not be allowed, as they have a policy stating that their data cannot be used for training an AI model.</p>
+<p>The World Values Survey is a survey that has collected data on the values, beliefs, and attitudes of people in various countries. The Wave 7 has an India survey that aims to see how these beliefs change over time, and the data is free to use and access. (World Values Survey Association, n.d.)</p>
+<p>The Pew India Survey Data set is a large survey that included 29,999 Indian adults about “religious beliefs and practices, religious identity, nationalism, and tolerance in Indian society. The survey was administered face-to-face from Nov.&nbsp;17, 2019, to March 23, 2020.” (Sahgal &amp; Evans, 2021)</p>
+<p>Common Crawl is a web scraping application that maintains a large corpus of petabytes of data, regularly collected, which contains web page data. The idea with the data set was to filter by region; however, that is not how data collection would work. Alternatively, you would need to be on a different AWS server to access region-specific data. It is a bit more complex and was ultimately ruled out. (Common Crawl, n.d.).</p>
+</section>
+<section id="cultural-buckets-dataset-categorization" class="level3" data-number="2.4.7">
+<h3 data-number="2.4.7" class="anchored" data-anchor-id="cultural-buckets-dataset-categorization"><span class="header-section-number">2.4.7</span> 3. Cultural Buckets &amp; Dataset Categorization</h3>
+<p>Using the cultural definition and dataset sources described above, I asked AI to create a <strong>cultural bucket table</strong>, placing each dataset into the dominant cultural dimension(s) it represents. I also asked it to search for additional data sets that would be good additions to each bucket for further exploration.</p>
+<section id="cultural-category-table" class="level4" data-number="2.4.7.1">
+<h4 data-number="2.4.7.1" class="anchored" data-anchor-id="cultural-category-table"><span class="header-section-number">2.4.7.1</span> <strong>Cultural Category Table</strong></h4>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Category</strong>&nbsp;</td>
+<td><strong>Description / Focus</strong>&nbsp;</td>
+<td><strong>Existing Datasets</strong>&nbsp;</td>
+<td><strong>Gaps / Suggested Additions</strong>&nbsp;</td>
+</tr>
+<tr class="even">
+<td><strong>Symbolic</strong>&nbsp;</td>
+<td>Myths, icons, symbols, imagery in religion or national identity.&nbsp;</td>
+<td>Sangraha, IndicNLP, Reddit (r/hinduism, r/India), Pew Survey (sections on national pride).&nbsp;</td>
+<td>Add: <strong>Indian mythological texts</strong> (Mahabharata, Ramayana excerpts from Project Gutenberg); <strong>Emblem datasets</strong> from Indian Heritage Data Portal.&nbsp;</td>
+</tr>
+<tr class="odd">
+<td><strong>Language</strong>&nbsp;</td>
+<td>Linguistic diversity, idioms, semantics, syntax.&nbsp;</td>
+<td>IndicBERT, IndicGLUE, MILU, Sangraha, IndicNLP Corpora, Naamapadam.&nbsp;</td>
+<td>Add: <strong>Language–dialect corpora</strong> (e.g., Bodo, Manipuri from Bhashini initiative).&nbsp;</td>
+</tr>
+<tr class="even">
+<td><strong>Norms</strong>&nbsp;</td>
+<td>Behavioral expectations, etiquette, social order.&nbsp;</td>
+<td>Reddit (r/AskAnIndian), Pew Survey, Common Crawl (filtered by “how to behave,” “should one…”).&nbsp;</td>
+<td>Add: <strong>Indian Etiquette Corpora</strong> from newspapers or sociology textbooks; extract rule-like sentences from WikiHow-India subset.&nbsp;</td>
+</tr>
+<tr class="odd">
+<td><strong>Rituals</strong>&nbsp;</td>
+<td>Religious or cultural ceremonies, lifecycle events, festivals.&nbsp;</td>
+<td>Common Crawl (with “Diwali,” “Puja,” etc.), Pew Survey, Sangraha texts, Reddit (r/hinduism).&nbsp;</td>
+<td>Add: <strong>Digital Library of India</strong> (ritual manuals, cultural ethnographies).&nbsp;</td>
+</tr>
+<tr class="even">
+<td><strong>Values</strong>&nbsp;</td>
+<td>Moral or philosophical ideals (karma, tolerance, family, respect).&nbsp;</td>
+<td>Pew Survey, World Values Survey India, Reddit (moral debates), MILU for culturally specific QA.&nbsp;</td>
+<td>Add: <strong>OpenSubtitles India</strong> (for implicit moral contexts in dialogues).&nbsp;</td>
+</tr>
+<tr class="odd">
+<td><strong>Artifacts</strong>&nbsp;</td>
+<td>Tangible cultural products — art, clothing, architecture, tools.&nbsp;</td>
+<td>Common Crawl (filtered “heritage,” “textiles,” “temple architecture”), Sangraha.&nbsp;</td>
+<td>Add: <strong>Indian Heritage Portal</strong> or Archaeological Survey of India archives.&nbsp;</td>
+</tr>
+<tr class="even">
+<td><strong>Religious</strong>&nbsp;</td>
+<td>Spiritual texts, beliefs, rituals, interfaith dialogues.&nbsp;</td>
+<td>Pew India Survey, Sangraha, IndicBERT, Reddit (r/Hinduism, r/Christianity), Common Crawl.&nbsp;</td>
+<td>Add: <strong>Sacred Books of the East</strong> (digitized translations), <strong>Digital Library of India</strong> scripture scans.&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>These buckets were cross-referenced with the 5,000+ cultural examples targeted for the fine-tuning dataset.</p>
+</section>
+</section>
+<section id="fine-tuning-process-how-the-data-fits" class="level3" data-number="2.4.8">
+<h3 data-number="2.4.8" class="anchored" data-anchor-id="fine-tuning-process-how-the-data-fits"><span class="header-section-number">2.4.8</span> 4. Fine-Tuning Process &amp; How the Data Fits</h3>
+<p><em>(High-level outline used for Week 1 documentation)</em></p>
+<p>Additionally, to begin preparing for the fine-tuning process, I conducted preliminary research on the data standards and types required for fine-tuning. What type of data is best for he collected (and categorized) data feeds into the fine-tuning pipeline is as follows:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Stage</strong>&nbsp;</td>
+<td><strong>Task</strong> <strong>- relevant to India datasets</strong></td>
+</tr>
+<tr class="even">
+<td><strong>(1) Base Fine-Tuning</strong>&nbsp;</td>
+<td>General Indian language understanding.&nbsp;</td>
+</tr>
+<tr class="odd">
+<td><strong>(2) Instruction Fine-Tuning</strong>&nbsp;</td>
+<td>Conversational, context-aware behavior.&nbsp;</td>
+</tr>
+<tr class="even">
+<td><strong>(3) Cultural Alignment</strong>&nbsp;</td>
+<td>Teach norms, values, and religious sensibility.&nbsp;</td>
+</tr>
+<tr class="odd">
+<td><strong>(4) Ethical / Alignment Fine-Tuning</strong>&nbsp;</td>
+<td>Ensure responses are Helpful, Honest, Harmless (HHH).&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="step-1-data-curation" class="level3" data-number="2.4.9">
+<h3 data-number="2.4.9" class="anchored" data-anchor-id="step-1-data-curation"><span class="header-section-number">2.4.9</span> <strong>Step 1: Data Curation</strong></h3>
+<ul>
+<li>Pull data from AI4Bharat, World Values Survey, Pew, and other data sources,<br>
+</li>
+<li>Organize by cultural category.</li>
+</ul>
+</section>
+<section id="step-2-preprocessing" class="level3" data-number="2.4.10">
+<h3 data-number="2.4.10" class="anchored" data-anchor-id="step-2-preprocessing"><span class="header-section-number">2.4.10</span> <strong>Step 2: Preprocessing</strong></h3>
+<ul>
+<li>Clean text: remove noise, normalize, and keep originality.<br>
+</li>
+<li>Convert to <strong>instruction-response</strong> pairs for LLaMA-based fine-tuning. This would only be applicable if we do Supervised Learning.
+<ul>
+<li>This will be a major adjustment to the data as most data does not come in this format.</li>
+</ul></li>
+<li>Tag metadata:
+<ul>
+<li>region</li>
+<li>tone</li>
+<li>language</li>
+</ul></li>
+</ul>
+</section>
+<section id="step-3-dataset-construction" class="level3" data-number="2.4.11">
+<h3 data-number="2.4.11" class="anchored" data-anchor-id="step-3-dataset-construction"><span class="header-section-number">2.4.11</span> <strong>Step 3: Dataset Construction</strong></h3>
+<ul>
+<li>Build a <strong>5,000+ example fine-tuning dataset</strong>.<br>
+</li>
+<li>Ensure balance across categories (symbolic, norms, rituals, values, etc.).<br>
+</li>
+<li>Ensure access across languages (Hindi, Tamil, Telugu, Malayalam, Bengali, etc.).</li>
+</ul>
+</section>
+<section id="step-4-fine-tuning-setup" class="level3" data-number="2.4.12">
+<h3 data-number="2.4.12" class="anchored" data-anchor-id="step-4-fine-tuning-setup"><span class="header-section-number">2.4.12</span> <strong>Step 4: Fine-Tuning Setup</strong></h3>
+<ul>
+<li>Select model: Possibly LLaMA-3 8B (best fit for Titan GPU).</li>
+</ul>
+</section>
+<section id="step-5-evaluation-plan-preview" class="level3" data-number="2.4.13">
+<h3 data-number="2.4.13" class="anchored" data-anchor-id="step-5-evaluation-plan-preview"><span class="header-section-number">2.4.13</span> <strong>Step 5: Evaluation Plan Preview</strong></h3>
+<ul>
+<li>Use the Cultural Sensitivity Index (CSI) developed in Week 1.<br>
+</li>
+<li>Compare:
+<ul>
+<li>RAG baseline (Original ConLingo)<br>
+</li>
+<li>Base LLaMA-3 (Example model)<br>
+</li>
+<li>Fine-tuned LLaMA-3 (Example model)<br>
+</li>
+</ul></li>
+<li>Conduct both automated testing and human evaluation.</li>
+</ul>
+<p>The Week 1 work ensures that the training data is valid, representative, culturally sensitive, and ready for preprocessing in Week 2 and fine-tuning in Week 3.</p>
+</section>
+<section id="ai-assistance" class="level3" data-number="2.4.14">
+<h3 data-number="2.4.14" class="anchored" data-anchor-id="ai-assistance"><span class="header-section-number">2.4.14</span> AI assistance:</h3>
+<p>“AI assistance: ChatGPT was used to organize and summarize my Word doc of the work I did to put on my QMD for week 1.”</p>
+<p>“AI assistance: ChatGPT was used to organize my data sources into the respective cultural buckets.”<br>
+</p>
+</section>
+</section>
+<section id="moses-mandale-deliverables" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="moses-mandale-deliverables"><span class="header-section-number">2.5</span> Moses Mandale Deliverables</h2>
+<p><strong>AI assistance: Claude Sonnet 4.5 was used to create commands that I ran on Titan to get all the GPU specs available on Titan’s GPU Nodes. Through this I was able to find out that they are NVIDIA A30 GPUs with 24.6 GB of VRAM. After doing some thorough research on Google about the Candidate base models, I then had a debate with Claude Sonnet 4.5 about which base model would fit and after that debate the LlaMA-3 8B Instruct was the best fit. Claude Sonnet 4.5 was used to troubleshoot python package version conflicts and was able to assist with adding version numbers to the packages in the requirements.txt file allowing me to setup the Titan environment for the training correctly. (accessed Nov, 2025).</strong></p>
+<section id="overview-1" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="overview-1"><span class="header-section-number">2.5.1</span> Overview</h3>
+<p>Week 1 focused on establishing the technical foundation for fine-tuning a large language model (LLM) with Indian cultural awareness. The primary deliverables included researching and selecting an appropriate base model, configuring the Titan GPU environment for model training, conducting baseline tests, and documenting technical specifications for the project.</p>
+</section>
+<section id="model-selection-process" class="level3" data-number="2.5.2">
+<h3 data-number="2.5.2" class="anchored" data-anchor-id="model-selection-process"><span class="header-section-number">2.5.2</span> Model Selection Process</h3>
+<section id="evaluation-criteria" class="level4" data-number="2.5.2.1">
+<h4 data-number="2.5.2.1" class="anchored" data-anchor-id="evaluation-criteria"><span class="header-section-number">2.5.2.1</span> Evaluation Criteria</h4>
+<p>The model selection process evaluated five candidate models based on three critical criteria:</p>
+<ol type="1">
+<li><strong>Compatibility with Hardware</strong>: The model must fit within the 24.6 GB VRAM available on the NVIDIA A30 GPU</li>
+<li><strong>Training Feasibility</strong>: The model must be trainable within a reasonable timeframe (15-18 hours estimated)</li>
+<li><strong>Cultural Reasoning Capability</strong>: The model must have sufficient capacity to learn and generate culturally nuanced responses</li>
+</ol>
+</section>
+<section id="candidate-models-comparison" class="level4" data-number="2.5.2.2">
+<h4 data-number="2.5.2.2" class="anchored" data-anchor-id="candidate-models-comparison"><span class="header-section-number">2.5.2.2</span> Candidate Models Comparison</h4>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 23%">
+<col style="width: 32%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Description</th>
+<th>Why Consider It?</th>
+<th>Why NOT Use It?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>GPT-2 (1.5B)</strong></td>
+<td>Older OpenAI model from 2019</td>
+<td>Free, well-documented, easy to train</td>
+<td>Too old - poor at complex cultural reasoning</td>
+</tr>
+<tr class="even">
+<td><strong>DistilGPT-2</strong></td>
+<td>Smaller, faster version of GPT-2</td>
+<td>Very fast to train, low memory</td>
+<td>Too small - won’t capture cultural nuances</td>
+</tr>
+<tr class="odd">
+<td><strong>IndicBERT</strong></td>
+<td>Model trained on Indian languages</td>
+<td>Made for Indian content</td>
+<td>Only understands, doesn’t generate well</td>
+</tr>
+<tr class="even">
+<td><strong>GPT-4o mini (API)</strong></td>
+<td>OpenAI’s newest small model</td>
+<td>Very smart, easy to use via API</td>
+<td>Can’t truly fine-tune it for deep learning</td>
+</tr>
+<tr class="odd">
+<td><strong>LLaMA-3 8B Instruct</strong></td>
+<td>Meta’s powerful open-source model</td>
+<td>Perfect size, good at reasoning, you control it, fits in 24.6 GB GPU</td>
+<td><strong>SELECTED</strong> - Best option for our setup</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="selection-rationale" class="level4" data-number="2.5.2.3">
+<h4 data-number="2.5.2.3" class="anchored" data-anchor-id="selection-rationale"><span class="header-section-number">2.5.2.3</span> Selection Rationale</h4>
+<p><strong>LLaMA-3 8B Instruct</strong> was selected as the optimal base model for the following reasons:</p>
+<ul>
+<li><strong>Parameter Count</strong>: With 8 billion parameters, the model provides sufficient capacity for learning cultural nuances without being prohibitively large</li>
+<li><strong>Hardware Compatibility</strong>: The model requires approximately 16-17 GB of GPU memory when loaded in half-precision (float16), well within the A30’s 24.6 GB capacity</li>
+<li><strong>Open-Source License</strong>: Meta’s permissive license allows full control over fine-tuning and deployment</li>
+<li><strong>Instruction-Tuned</strong>: The “Instruct” variant has been pre-trained to follow instructions, providing a strong foundation for conversational applications</li>
+<li><strong>Community Support</strong>: Extensive documentation and community resources facilitate troubleshooting and optimization</li>
+</ul>
+<p><strong>Key Technical Specifications</strong>: - Model Parameters: 8,037,076,992 (8.03 billion) - Architecture: Decoder-only transformer - Precision: Half-precision (float16) for memory efficiency - License: Meta LLaMA 3 Community License</p>
+</section>
+</section>
+<section id="titan-gpu-environment-setup" class="level3" data-number="2.5.3">
+<h3 data-number="2.5.3" class="anchored" data-anchor-id="titan-gpu-environment-setup"><span class="header-section-number">2.5.3</span> Titan GPU Environment Setup</h3>
+<section id="hardware-configuration" class="level4" data-number="2.5.3.1">
+<h4 data-number="2.5.3.1" class="anchored" data-anchor-id="hardware-configuration"><span class="header-section-number">2.5.3.1</span> Hardware Configuration</h4>
+<p>The Titan supercomputer provided the computational infrastructure for this project. The allocated resources included:</p>
+<p><strong>GPU Specifications</strong>: - Model: NVIDIA A30 - Memory: 24.6 GB VRAM - Compute Capability: 8.0 - CUDA Version: 12.1</p>
+<p><strong>System Specifications</strong>: - RAM: 32 GB minimum - Storage: 50 GB for model and checkpoints - CPU: 4 cores for data preprocessing</p>
+</section>
+<section id="software-environment" class="level4" data-number="2.5.3.2">
+<h4 data-number="2.5.3.2" class="anchored" data-anchor-id="software-environment"><span class="header-section-number">2.5.3.2</span> Software Environment</h4>
+<p>The environment was configured with the following key components:</p>
+<p><strong>Core Dependencies</strong>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PyTorch with CUDA support</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">torch</span><span class="op">=</span>=2.5.1+cu121</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Transformers ecosystem</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="va">transformers</span><span class="op">=</span>=4.36.0</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="va">accelerate</span><span class="op">=</span>=0.25.0</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="va">peft</span><span class="op">=</span>=0.7.0  <span class="co"># For LoRA fine-tuning</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Data processing</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="va">datasets</span><span class="op">=</span>=2.15.0</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="va">pandas</span><span class="op">=</span>=2.1.0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>LoRA (Low-Rank Adaptation)</strong> is a parameter-efficient fine-tuning technique that adds small trainable adapter layers to the model while keeping the original weights frozen. This approach reduces memory requirements and training time while maintaining model quality.</p>
+</section>
+<section id="installation-process" class="level4" data-number="2.5.3.3">
+<h4 data-number="2.5.3.3" class="anchored" data-anchor-id="installation-process"><span class="header-section-number">2.5.3.3</span> Installation Process</h4>
+<p>The environment setup involved creating a Python virtual environment and installing dependencies:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create virtual environment</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv llama_env</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> llama_env/bin/activate</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Install PyTorch with CUDA 12.1</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install torch torchvision torchaudio <span class="dt">\</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">--index-url</span> https://download.pytorch.org/whl/cu121</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Install Transformers and PEFT</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install transformers accelerate peft bitsandbytes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The installation completed successfully, confirming GPU availability and proper CUDA configuration:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Appendix/MosesMadale/img/1_2.png" class="img-fluid figure-img"></p>
+<figcaption>Titan GPU environment setup confirmation</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="baseline-testing" class="level3" data-number="2.5.4">
+<h3 data-number="2.5.4" class="anchored" data-anchor-id="baseline-testing"><span class="header-section-number">2.5.4</span> Baseline Testing</h3>
+<section id="model-loading-test" class="level4" data-number="2.5.4.1">
+<h4 data-number="2.5.4.1" class="anchored" data-anchor-id="model-loading-test"><span class="header-section-number">2.5.4.1</span> Model Loading Test</h4>
+<p>Initial tests verified that the LLaMA-3 8B model could be successfully loaded onto the GPU:</p>
+<p><strong>Test Results</strong>: - Tokenizer loading: Successful - Model loading time: ~55 seconds - GPU memory usage: 16.06 GB (65% of available VRAM) - GPU memory cached: 17.23 GB</p>
+</section>
+<section id="lora-configuration-test" class="level4" data-number="2.5.4.2">
+<h4 data-number="2.5.4.2" class="anchored" data-anchor-id="lora-configuration-test"><span class="header-section-number">2.5.4.2</span> LoRA Configuration Test</h4>
+<p>LoRA adapters were configured to enable efficient fine-tuning:</p>
+<p><strong>LoRA Parameters</strong>: - Rank (r): 16 - Alpha: 32 - Target modules: <code>q_proj</code>, <code>v_proj</code> (query and value projection layers) - Dropout: 0.05 - Trainable parameters: 6,815,744 (0.08% of total parameters)</p>
+<p>This configuration means only 0.08% of the model’s parameters need to be trained, dramatically reducing memory requirements and training time while maintaining effectiveness.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Appendix/MosesMadale/img/1_3.png" class="img-fluid figure-img"></p>
+<figcaption>Baseline test output showing model loading and LoRA setup</figcaption>
+</figure>
+</div>
+</section>
+<section id="inference-test" class="level4" data-number="2.5.4.3">
+<h4 data-number="2.5.4.3" class="anchored" data-anchor-id="inference-test"><span class="header-section-number">2.5.4.3</span> Inference Test</h4>
+<p>A simple inference test confirmed the model’s ability to generate culturally relevant responses:</p>
+<p><strong>Test Prompt</strong>: “Explain the cultural significance of Diwali in India.”</p>
+<p><strong>Model Response</strong>: The model successfully generated a coherent explanation of Diwali, describing it as the Festival of Lights celebrated over five days, typically in October or November. The response demonstrated the base model’s existing cultural knowledge and confirmed that the inference pipeline was functioning correctly.</p>
+</section>
+</section>
+<section id="technical-specifications-documentation" class="level3" data-number="2.5.5">
+<h3 data-number="2.5.5" class="anchored" data-anchor-id="technical-specifications-documentation"><span class="header-section-number">2.5.5</span> Technical Specifications Documentation</h3>
+<section id="hardware-requirements" class="level4" data-number="2.5.5.1">
+<h4 data-number="2.5.5.1" class="anchored" data-anchor-id="hardware-requirements"><span class="header-section-number">2.5.5.1</span> Hardware Requirements</h4>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Component</th>
+<th>Specification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>GPU Model</strong></td>
+<td>NVIDIA A30</td>
+</tr>
+<tr class="even">
+<td><strong>GPU Memory</strong></td>
+<td>24.6 GB VRAM</td>
+</tr>
+<tr class="odd">
+<td><strong>GPU Compute</strong></td>
+<td>8.0 capability</td>
+</tr>
+<tr class="even">
+<td><strong>Training Time Estimate</strong></td>
+<td>15-18 hours</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="model-architecture" class="level4" data-number="2.5.5.2">
+<h4 data-number="2.5.5.2" class="anchored" data-anchor-id="model-architecture"><span class="header-section-number">2.5.5.2</span> Model Architecture</h4>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Specification</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Base Model</strong></td>
+<td>LLaMA-3 8B Instruct</td>
+</tr>
+<tr class="even">
+<td><strong>Total Parameters</strong></td>
+<td>8,037,076,992</td>
+</tr>
+<tr class="odd">
+<td><strong>Architecture</strong></td>
+<td>Decoder-only transformer</td>
+</tr>
+<tr class="even">
+<td><strong>Context Window</strong></td>
+<td>8,192 tokens</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="fine-tuning-configuration" class="level4" data-number="2.5.5.3">
+<h4 data-number="2.5.5.3" class="anchored" data-anchor-id="fine-tuning-configuration"><span class="header-section-number">2.5.5.3</span> Fine-Tuning Configuration</h4>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 22%">
+<col style="width: 41%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Fine-tuning Method</strong></td>
+<td>LoRA (Low-Rank Adaptation)</td>
+<td>Parameter-efficient technique</td>
+</tr>
+<tr class="even">
+<td><strong>LoRA Rank (r)</strong></td>
+<td>16</td>
+<td>Controls adapter size</td>
+</tr>
+<tr class="odd">
+<td><strong>LoRA Alpha</strong></td>
+<td>32</td>
+<td>Scaling factor for adapters</td>
+</tr>
+<tr class="even">
+<td><strong>Target Modules</strong></td>
+<td>q_proj, v_proj</td>
+<td>Query and value projections</td>
+</tr>
+<tr class="odd">
+<td><strong>Trainable Parameters</strong></td>
+<td>6,815,744 (0.08%)</td>
+<td>Only adapters are trained</td>
+</tr>
+<tr class="even">
+<td><strong>Total Parameters</strong></td>
+<td>8,043,892,736</td>
+<td>Base + adapter parameters</td>
+</tr>
+</tbody>
+</table>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Appendix/MosesMadale/img/1_4.png" class="img-fluid figure-img"></p>
+<figcaption>Technical specifications diagram</figcaption>
+</figure>
+</div>
+</section>
+<section id="system-configuration" class="level4" data-number="2.5.5.4">
+<h4 data-number="2.5.5.4" class="anchored" data-anchor-id="system-configuration"><span class="header-section-number">2.5.5.4</span> System Configuration</h4>
+<p><strong>Directory Structure</strong>:</p>
+<pre><code>/home/mmadale/CSC463/conlingo/
+├── data/
+│   ├── raw/              # Original datasets
+│   ├── processed/        # Cleaned and formatted data
+│   └── test/             # Test sets
+├── models/
+│   ├── base/             # LLaMA-3 base model
+│   ├── finetuned/        # Fine-tuned models
+│   └── checkpoints/      # Training checkpoints
+├── scripts/
+│   ├── setup/            # Environment setup scripts
+│   ├── training/         # Training scripts
+│   └── evaluation/       # Evaluation scripts
+├── logs/                 # Training and job logs
+└── llama_env/            # Python virtual environment</code></pre>
+</section>
+</section>
+<section id="key-achievements" class="level3" data-number="2.5.6">
+<h3 data-number="2.5.6" class="anchored" data-anchor-id="key-achievements"><span class="header-section-number">2.5.6</span> Key Achievements</h3>
+<p>Week 1 successfully established the technical foundation for the project:</p>
+<ol type="1">
+<li><strong>Model Selection</strong>: Identified and justified LLaMA-3 8B Instruct as the optimal base model</li>
+<li><strong>Environment Configuration</strong>: Set up a fully functional GPU environment on Titan with all required dependencies</li>
+<li><strong>Baseline Validation</strong>: Confirmed the model loads correctly, uses GPU resources efficiently, and can generate responses</li>
+<li><strong>LoRA Integration</strong>: Configured parameter-efficient fine-tuning with only 0.08% of parameters trainable</li>
+<li><strong>Documentation</strong>: Created comprehensive technical specifications for reproducibility</li>
+</ol>
+</section>
+<section id="challenges-and-solutions" class="level3" data-number="2.5.7">
+<h3 data-number="2.5.7" class="anchored" data-anchor-id="challenges-and-solutions"><span class="header-section-number">2.5.7</span> Challenges and Solutions</h3>
+<p><strong>Challenge 1: HuggingFace Authentication</strong> - <strong>Issue</strong>: LLaMA-3 requires accepting Meta’s license agreement through HuggingFace - <strong>Solution</strong>: Created HuggingFace account, accepted license terms, and configured authentication token</p>
+<p><strong>Challenge 2: GPU Memory Management</strong> - <strong>Issue</strong>: Full-precision model (float32) would exceed 24.6 GB VRAM - <strong>Solution</strong>: Used half-precision (float16) loading, reducing memory footprint to ~16 GB</p>
+<p><strong>Challenge 3: Training Efficiency</strong> - <strong>Issue</strong>: Fine-tuning all 8 billion parameters would be computationally expensive - <strong>Solution</strong>: Implemented LoRA adapters, training only 6.8 million parameters (0.08%)</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="ConLingo 2.0">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">ConLingo 2.0</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Week2.html" class="pagination-link" aria-label="Week 2: Data Cleaning &amp; Pipeline Setup">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Week 2: Data Cleaning &amp; Pipeline Setup</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,85 @@
+###########################################
+# Title: Unsupervised Learning Models - kmeans/hierarchical
+# Script Name: 
+# Name: <Rohan Aby>
+# Date: <12/01/2025>
+# Script purpose:
+# 
+###########################################
+
+### Install required packages if not installed
+#install.packages("tidyverse")
+#install.packages("tidyclust")
+#install.packages("factoextra")
+
+### Load the packages
+library(tidyverse)      # For tidy tools
+#install.packages("tidyclust")
+library(tidyclust)  
+#install.packages("factoextra")
+library(factoextra)
+######################  Learning about k-means ######################
+# Load dataset for analysis
+data("USArrests")
+df_arrest <- USArrests
+
+# Initial Data Analysis (IDA) for arrest data
+glimpse(df_arrest)
+summary(df_arrest)
+
+#Look for missing values
+sapply(df_arrest, 
+       function(x) sum(is.na(x)))
+
+# Check column means and standard deviations
+apply(df_arrest,2,mean)
+apply(df_arrest,2,sd)
+
+# Scale the data
+mx_arrest_scaled <- scale(df_arrest, center = TRUE, scale = TRUE)
+df_arrest_scaled <- as_tibble(df_arrest, rownames = NA)
+summary(df_arrest)
+
+# Determine best number of clusters
+fviz_nbclust(df_arrest_scaled, kmeans, method = "wss")
+fviz_nbclust(df_arrest_scaled, kmeans, method = "gap_stat")
+fviz_nbclust(df_arrest_scaled, kmeans, method = "silhouette")
+
+# Create a k-means model on arrest data
+set.seed(1234)  # For reproducible results
+
+# Create a k-means model specification
+kmeans_arrest_spec <- k_means(num_clusters  = 4) %>%
+  set_engine("stats")
+
+# Create a k-means model using the specification
+kmeans_arrest_fit <- kmeans_arrest_spec %>%
+  fit(~., data=df_arrest_scaled)
+
+# Check model output
+print(km_arrest)
+tidy(km_arrest)
+glance(km_arrest)
+
+kmeans_arrest_fit$fit$totss
+
+# Append cluster number to each observation
+df_arrest_km <- df_arrest %>% 
+  mutate(cluster = 
+           extract_cluster_assignment(kmeans_arrest_fit)$.cluster)
+
+# calculate average values for clusters
+df_arrest_km %>% 
+  group_by(cluster) %>%
+  summarise(mean(Murder),mean(Assault), 
+            mean(UrbanPop), mean(Rape))
+
+# Visualize clusters 
+fviz_cluster(kmeans_arrest_fit$fit, data = df_arrest_scaled,
+             ellipse.type = "euclid", # Concentration ellipse
+             star.plot = TRUE, # Add segments from centroids to items
+             repel = TRUE, # Avoid label overplotting (slow)
+             ggtheme = theme_minimal())
+
+# Create predictions from model
+predict(kmeans_arrest_fit, df_arrest_scaled[1:4, ])
