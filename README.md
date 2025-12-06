@@ -1,13 +1,40 @@
-# Conlingo2.0
-This repo consits of the files that were used in the training of the AI model that was worked on by the ORU students during fall 2025. 
+# ConLingo 2.0 
 
-The code folder in this repo consists of all our code that was used to run on titan. You will find instruction to run on Titan in the readme of that folder. 
+## Introduction
+This repo consists of the files that were used in the training of the AI model that was worked on by the ORU students during fall 2025. 
+
+The code folder in this repo consists of all our code that was used to run on the Titan Supercomputer. You will find instructions to run on Titan in the README of that folder. 
+
+## Problem Statement 
+
+Culture is an essential aspect of society and how we relate and think in our day-to-day lives. Because culture is necessary to help make sense of what occurs around us in different contexts, it is important as the advancement of AI that we consider how and if different cultures are well-represented in an LLM. The cultural bias implicit in AI models is what this project aims to understand and ways to improve cultural understanding of the original model.   
+
+## Project Context 
+
+We will be tackling this research problem by specifically fine-tuning a base model such as the Llama Model, on a specific culture, in this case India, and seeing how the variety of data influences the model. Additionally, we will be comparing the models created from these data sources to an existing Retrieval Augmented Generation (RAG) implementation which was trained on 300,000+ data points of Reddit posts, threads and comments from the subreddits r/India.  
+
+## Research Question 
+
+We want to answer the question of how a dataset affects a model in the fine-tuning process. In our case specifically, Supervised Fine Tuning (SFT), and secondly, can our finetuned model perform at par or better than the existing RAG implementation.  
+
+## Project Timeline
+
+| Week | Focus 
+|------|-------|
+| **Week 1** | Foundations & Data Collection 
+| **Week 2** | Data Cleaning & Pipeline Setup
+| **Week 3** | Data Searching, Data Vetting, Dataset Collection, Data Cleaning
+| **Week 4** | Fine-Tuning the Model on Titan
+| **Week 5** | Compare Fine-tuned model with RAG implementation and ChatGPT-5 & Research Paper
+
+## Team
+
+- **Team Leader**: Rohan Aby
+- **Team Members**: Moses Madale, Suwilanji Mwanza, William Richards
+
+## Acknowledgments
+
+Special thanks to:
+- **Dr. V** for guiding us
 
 
-Team
-Team Leader: Rohan Aby
-Team Members: Moses Madale, Suwilanji Mwanza, William Richards
-
-Content description:
-Human Results: consists of the CSI scoring done by a human subject. 
-Model Results: consists of the responses from the different models. 
