@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Used Claude Sonnet 4.5 to generate descriptive docstrings to allow good readability for code readers.
 """
 Enhanced Test: Combined Model with RAG-Style Prompting
 3 Critical Questions - 100 word responses with cultural depth
@@ -11,6 +12,8 @@ from datetime import datetime
 import os
 import re
 
+# Used Claude Sonnet 4.5 to add detailed logging and prettified separators throughout the script
+# to improve readability of the output of the code.
 print("="*80)
 print("Combined Model - Enhanced Prompting Test (3 Questions)")
 print("="*80)
@@ -19,6 +22,7 @@ BASE_MODEL_NAME = "meta-llama/Meta-Llama-3-8B-Instruct"
 FINETUNED_MODEL_PATH = "trained_model/final_model"
 OUTPUT_FILE = "results/test_output.txt"
 
+# Claude Sonnet 4.5 was used to help me structure the following prompt to the AI Llama model which I originally developed myself based on the prompt that was given to the Conlingo RAG model so that it is more LLM friendly.
 CULTURAL_SYSTEM_PROMPT = """You are a cultural anthropologist and contextual researcher with deep experience studying values, beliefs, customs, and worldview formation across diverse Indian communities.
 
 Your expertise includes:
@@ -79,6 +83,8 @@ print("="*80)
 
 os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
 
+# Used Claude Sonnet 4.5 to help me develop a comprehensive set of regular expressions to clean the model's output
+# removing any weird characters that might show up because of temperature settings.
 def clean_response(text):
     """Remove all artifacts and ensure clean prose"""
     text = re.sub(r'\[Insert.*?\]', '', text, flags=re.IGNORECASE)

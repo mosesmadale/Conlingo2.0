@@ -18,6 +18,8 @@ from datasets import Dataset
 import os
 from sklearn.model_selection import train_test_split
 
+# Used Claude Sonnet 4.5 to add detailed logging and prettified separators throughout the script
+# to improve readability of the output of the code.
 print("="*60)
 print("Combined All-Data LoRA Fine-Tuning Pipeline")
 print("="*60)
@@ -165,6 +167,7 @@ print(f"  Total parameters: {total_params:,}")
 
 print(f"\n6. Setting up training arguments...")
 
+# Used Claude Sonnet 4.5 to help me choose optimal training parameters for LoRA fine-tuning on this dataset.
 training_args = TrainingArguments(
     output_dir=OUTPUT_DIR,
     num_train_epochs=3,
@@ -234,6 +237,7 @@ eval_results = trainer.evaluate()
 for key, value in eval_results.items():
     print(f"    {key}: {value:.4f}")
 
+# Used Claude Sonnet 4.5 to help me structure a clear and informative training summary file.
 # Save training summary
 summary_file = f"{OUTPUT_DIR}/training_summary.txt"
 with open(summary_file, 'w') as f:
@@ -256,6 +260,7 @@ with open(summary_file, 'w') as f:
         f.write(f"  {key}: {value:.4f}\n")
 
 print(f"\n  Training summary saved to: {summary_file}")
+
 
 print("\n" + "="*60)
 print("Fine-tuning pipeline complete")
